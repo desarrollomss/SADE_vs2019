@@ -1,0 +1,119 @@
+﻿<%@ Master Language="VB" CodeFile="SiteMap.master.vb" Inherits="SiteMap" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head id="Head1" runat="server">
+    <title></title>
+	<link rel="stylesheet" href="css/themes/base/jquery.ui.all.css">
+    <script src="js/jquery.js" type="text/javascript"></script>
+	<script src="js/jquery-1.9.1.js"></script>
+	<script src="js/ui/jquery.ui.core.js"></script>
+	<script src="js/ui/jquery.ui.widget.js"></script>
+	<script src="js/ui/jquery.ui.accordion.js"></script>
+	<link rel="stylesheet" href="css/demos.css">
+	<link rel="stylesheet" href="css/master.css">
+    <link href="css/boton.css" rel="stylesheet" type="text/css" />
+    <link href="css/calendario.css" rel="stylesheet" type="text/css" />
+    <link href="css/grid2.css" rel="stylesheet" type="text/css" />
+    <link href="css/controles.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+	    var x;
+	    x = $(document);
+	    x.ready(inicializar);
+	    function inicializar() {
+	        $("#accordion").accordion({
+	            collapsible: true
+	        });
+	        $("#mostrar").click(function () {
+	            $("#opcionesMap").animate({ width: 'toggle' }); ;
+	        });
+	    }
+	</script> 
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+<style type="text/css">
+	#opcionesMap
+	{
+	    left:0px;
+		width:300px;
+		height:100%;
+		background-color:#F2F1F1;
+		float:left;
+	}
+	#BotonOpcionesMap
+	{
+		width:27px;
+		height:100%;
+		color:#009ad0;
+	}
+	#FondoOpcionesMap
+	{
+		position:absolute;		
+	    left:0px;
+		width:327px;
+		height:100%;
+		float :left;
+	}
+	#ContenedorMap
+	{
+	  width:100%;
+	  left:30px;
+	}
+	
+#paginaMap
+	{
+	width:98%;
+    background-color:#fff;
+	vertical-align:top; 
+	float :right;
+	margin-left:1%;
+	margin-right:1%;
+	margin-top:5px;
+	}	
+#titulo2{
+	height:25px;		
+	background-color:#F0F0F0;		
+	width :100%;
+    margin-top:2px;
+    color:#1E436E;
+    font-size:10pt;
+    font-weight:bold;
+    padding-top: 7px;
+    padding-left:5px;
+	}	
+		
+</style>
+</head>
+<body>
+ <form id="form1" runat="server">
+<div id="contenedorMap">
+  <div id="cabecera">
+     <div id="cabecerapagina">
+        <div id="logoizq"></div>
+        <div id="sistema"></div>
+        <div id="logoder"></div>
+     </div>
+  </div>
+  <div id="cabeceradivisor"></div>
+  <div id="usuario">
+  <table style="width:100%; color:#ffffff;">
+  <tr>
+  <td style="width:90%; vertical-align:middle; height:30px; padding-left:10px">
+ </td>
+  <td style="width:10%; text-align :left; font-size:10pt; vertical-align:middle; height:30px">
+      &nbsp;</td>
+  </tr>
+  </table>
+  </div>
+ <div id = "paginaMap">
+        <div id = "titulo2"><asp:Label ID="lblTitulo" runat="server" Text=""></asp:Label></div>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+
+        </asp:ContentPlaceHolder>
+</div>
+</div>  
+</form>
+</body>
+</html>
+   

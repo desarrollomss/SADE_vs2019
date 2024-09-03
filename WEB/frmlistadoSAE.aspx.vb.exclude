@@ -1,0 +1,135 @@
+﻿Imports System.Data
+Imports System.Text
+Imports System.IO
+Imports System.Net
+Imports System.Threading
+Imports SISSADE.BE
+Imports SISSADE.BL
+
+
+Partial Class frmListadoSAE
+    Inherits System.Web.UI.Page
+    '    Dim objHilo1 As New Thread(AddressOf RellamarPagina)
+    Protected Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+        If Session("DatosUsuarioActivo") Is Nothing Then
+            Session.Clear()
+            Session.Abandon()
+            Response.Redirect(Request.ApplicationPath & "/frmLogin.aspx")
+        End If
+    End Sub
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        If Not Page.IsPostBack Then
+            Dim mp As MasterPage = Me.Master
+            Dim tit As Label = CType(mp.FindControl("lblTitulo"), Label)
+            tit.Text = ":: LISTADO INCIDENCIAS SAE-911"
+            txtDesde.Text = "01" & "/" + Date.Now.Month.ToString("00") & "/" & Date.Now.Year.ToString
+            txtHasta.Text = Date.Now.ToString
+        End If
+    End Sub
+
+    Protected Sub btnSAEExportar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSAEExportar.Click
+
+        Dim dt As DataTable = New DataTable
+        Dim obj As SAE = New SAE
+        Try
+            dt = obj.ListadoSAE(txtDesde.Text, txtHasta.Text)
+            BajarCSV(dt)
+        Catch ex As Exception
+            lblMensaje.Text = "Desde:" & txtDesde.Text & "  Hasta:" & txtHasta.Text & " - " & ex.Message
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+        End Try
+    End Sub
+    Private Sub BajarCSV(dt As DataTable)
+        Dim Archivo As String = Server.MapPath("ListadoIncidenciasSAE.csv")
+        Dim linea As String = String.Empty
+        Dim t As Integer
+        Using File As StreamWriter = New StreamWriter(Archivo, True, Encoding.UTF8)
+            t = 0
+            For Each row As DataRow In dt.Rows
+                Dim items As New List(Of String)()
+                If t = 0 Then
+                    For Each col As DataColumn In dt.Columns
+                        items.Add(col.ColumnName)
+                    Next
+                    linea = String.Join(",", items.ToArray())
+                    File.WriteLine(linea)
+                    linea = String.Empty
+                    t = t + 1
+                Else
+                    For Each col As DataColumn In dt.Columns
+                        items.Add(Server.HtmlDecode(row(col.ColumnName).ToString.Replace(",", " ")))
+                    Next
+                    linea = String.Join(",", items.ToArray())
+                    File.WriteLine(linea)
+                End If
+            Next
+        End Using
+
+        Dim oUtil As New Util
+        oUtil.BajarArchivo("text/csv", "ListadoIncidenciasSAE.csv", Archivo)
+        If File.Exists(Archivo) Then
+            File.Delete(Archivo)
+        End If
+    End Sub
+
+    Protected Sub btnSAEMigracion_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSAEMigracion.Click
+
+        Dim dt As DataTable = New DataTable
+        Dim obj As SAE = New SAE
+        Dim oBE As CCOINCIDENCIA_BE
+        Dim lstBE As New List(Of CCOINCIDENCIA_BE)
+        Dim oBL As CCOINCIDENCIA_BL = New CCOINCIDENCIA_BL
+
+        Try
+            dt = obj.ListadoSAE(txtDesde.Text, txtHasta.Text)
+            For Each r As DataRow In dt.Rows
+                oBE = New CCOINCIDENCIA_BE
+                With oBE
+                    .PropINCCODIGO = Int32.Parse(r("ID_INCID"))
+                    .PropINCFECHA = r("FECHA")
+                    .PropINCNUMEROORIGEN = ParseString(r("TELEFONO"), 15)
+                    .PropINCCOMENTARIO = ParseString(r("COMMENTARIO"), 500)
+                    '.PropINCLOCVIACODIGO1 = r("CODVIA_INC")
+                    .PropINCLOCVIANOMBRE1 = ParseString(r("NOMVIA_INC"), 150)
+                    '.PropINCLOCVIACODIGO2 = r("CODVIA1_INC")
+                    .PropINCLOCVIANOMBRE2 = ParseString(r("NOMVIA1_INC"), 150)
+                    .PropINCLOCNUMERO = ParseString(r("NROVIA_INC"), 10)
+                    .PropINCLOCDPTO = ParseString(r("NRODPTO_INC"), 10)
+                    .PropINCLOCBLOCK = ParseString(r("EDIFIC_INC"), 10)
+                    .PropINCLOCCOMENTARIO = ParseString(r("REF_INC"), 250)
+                    .PropINCRELATO = ParseString(r("REPORTE"), 500)
+                    '.PropINCNOMBRE = ParseString(r("NOMBRE"), 30)
+                    '.PropINCAPELLIDOS = ParseString(r("APEELIDOS"), 50)
+                    .PropINCNOMBRECOMP = ParseString(r("NOMBRE"), 100)
+                    .PropTIDCODIGO = ParseString(r("TIPDOC").ToString, 2)
+                    .PropINCDOCUMENTO = ParseString(r("NUMDOC"), 20)
+                    .PropINCESTADO = 10
+                    .PropAUDUSUCREACION = ParseString(r("REC_USUARIO"), 15)
+                    .PropAUDUSUMODIF = ParseString(r("STATUS_USUARIO"), 15)
+                    .PropINCACODIGO = r("LLAMADA_ASOCIADA")
+                    .PropINCANUMERO = r("CANT_ASOCIADA")
+                    .PropORICODIGO = r("ID_MOTIVO")
+                    .PropTINCODIGO = r("ID_TIPO")
+                    .PropSTICODIGO = r("ID_SUBTIPO")
+                    .PropPRICODIGO = r("ID_PRIORIDAD")
+                    .PropINCIDLONGITUDE = 0
+                    .PropINCIDLATITUDE = 0
+                End With
+                lstBE.Add(oBE)
+            Next
+            oBL.Insertar_SQL_DB2(lstBE)
+        Catch ex As Exception
+            lblMensaje.Text = ex.Message
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+        End Try
+
+    End Sub
+
+    Function ParseString(ByVal cad As String, ByVal tam As Integer) As String
+        Dim txtForma As String = ""
+        txtForma = cad + Space(tam)
+        txtForma = txtForma.Substring(0, tam).Trim
+        Return txtForma
+    End Function
+End Class

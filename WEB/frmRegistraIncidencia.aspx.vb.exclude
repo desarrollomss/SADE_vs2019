@@ -1,0 +1,455 @@
+﻿Imports SISSADE.BE
+Imports SISSADE.BL
+
+Partial Class frmRegistraIncidencia
+    Inherits System.Web.UI.Page
+    'Estado de Incidencia: A=Abierto, D=Derivado (a OT, OD, S, E), R=Recepcionado, P=Despachado (con recurso asignado), T=En Atención, C=Cerrado
+    Enum Estado
+        Abierto = 7
+        Derivado = 8
+        Recepcionado = 9
+        Despachado = 10
+        Atencion = 11
+        Cerrado = 12
+    End Enum
+
+    Dim oINC As New CCOINCIDENCIA_BE
+    Dim oINC_BL As New CCOINCIDENCIA_BL
+    Dim olstENC As New List(Of CCOENCUESTAINCIDENCIA_BE)
+    Dim oENC_BL As New CCOENCUESTAINCIDENCIA_BL
+
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+
+        If Not IsPostBack() Then
+            Dim mp As MasterPage = Me.Master
+            Dim tit As Label = CType(mp.FindControl("lblTitulo"), Label)
+            tit.Text = "Registrar Incidencia"
+            Session("activo") = "1"
+            Session("opcion") = "1.2"
+            LlenarCombos()
+            btnGrabar.Attributes.Add("onclick", "javascript:return ValidarGrabar();")
+            ViewState("pID") = Request.QueryString("pID")
+            ViewState("pModo") = Request.QueryString("pModo")
+            ViewState("pAnexo") = "510"
+
+            If CType(ViewState("pID"), Integer) > 0 Then
+                oINC.PropINCCODIGO = CType(ViewState("pID"), Integer)
+                oINC = oINC_BL.ListarKey(oINC)
+                CargaDatosControl()
+            End If
+
+            If ViewState("pModo") = "VISUALIZAR" Then
+                ActivaControles(False)
+            End If
+            If ViewState("pModo") = "NUEVO" Then
+                ActivaControles(True)
+            End If
+
+            If ViewState("pModo") = "MODIFICAR" Then
+                ActivaControles(True)
+            End If
+
+
+
+
+        End If
+    End Sub
+    Public Sub LlenarCombos()
+        Dim lstOrigenIncidencia As New List(Of CCOORIGENINCIDENCIA_BE)
+        Dim lstTipoPersona As New List(Of CCOTIPOPERSONA_BE)
+
+        Dim oCCOSUBTIPOINCIDENCIA_BE As New CCOSUBTIPOINCIDENCIA_BE
+
+        Dim oCCOORIGENINCIDENCIA_BL As New CCOORIGENINCIDENCIA_BL
+        Dim oCCOTIPOPERSONA_BL As New CCOTIPOPERSONA_BL
+        Dim oCCOTIPODOCUMENTO_BL As New CCOTIPODOCUMENTO_BL
+        Dim oCCOTIPOINCIDENCIA_BL As New CCOTIPOINCIDENCIA_BL
+        Dim oCCOSUBTIPOINCIDENCIA_BL As New CCOSUBTIPOINCIDENCIA_BL
+        Dim oCCOPRIORIDADINCIDENCIA_BL As New CCOPRIORIDADINCIDENCIA_BL
+        Dim oSYSCATASTRO_BL As New SYSCATASTRO_BL
+
+        With ddlOrigen
+            .DataSource = oCCOORIGENINCIDENCIA_BL.ListarCombo
+            .DataTextField = "PropORIDESCRIPCION"
+            .DataValueField = "PropORICODIGO"
+        End With
+        ddlOrigen.DataBind()
+        ddlOrigen.Items.Insert(0, New ListItem("(Seleccionar)", ""))
+
+
+        With ddlTipoPersona
+            .DataSource = oCCOTIPOPERSONA_BL.ListarCombo
+            .DataTextField = "PropTPEDESCRIPCION"
+            .DataValueField = "PropTPECODIGO"
+        End With
+        ddlTipoPersona.DataBind()
+        ddlTipoPersona.Items.Insert(0, New ListItem("(Seleccionar)", "0"))
+
+        With ddlTipoInc
+            .DataSource = oCCOTIPOINCIDENCIA_BL.ListarCombo
+            .DataTextField = "PropTINDESCRIPCION"
+            .DataValueField = "PropTINCODIGO"
+        End With
+        ddlTipoInc.DataBind()
+        ddlTipoInc.Items.Insert(0, New ListItem("(Seleccionar)", "0"))
+
+
+        oCCOSUBTIPOINCIDENCIA_BE.PropSTICODIGO = -1
+        oCCOSUBTIPOINCIDENCIA_BE.PropTINCODIGO = 0
+        With ddlSubTipoInc
+            .DataSource = oCCOSUBTIPOINCIDENCIA_BL.ListarCombo(oCCOSUBTIPOINCIDENCIA_BE)
+            .DataTextField = "PropSTIDESCRIPCION"
+            .DataValueField = "PropSTICODIGO"
+        End With
+        ddlSubTipoInc.DataBind()
+        ddlSubTipoInc.Items.Insert(0, New ListItem("(Seleccionar)", "0"))
+
+
+        With ddlPrioridad
+            .DataSource = oCCOPRIORIDADINCIDENCIA_BL.ListarCombo()
+            .DataTextField = "PropPRIDESCRIPCION"
+            .DataValueField = "PropPRICODIGO"
+        End With
+        ddlPrioridad.DataBind()
+        ddlPrioridad.Items.Insert(0, New ListItem("(Seleccionar)", "0"))
+
+        Dim lstSYSCATASTRO_BE As New List(Of SYSCATASTRO_BE)
+        lstSYSCATASTRO_BE = oSYSCATASTRO_BL.consultComboVias()
+
+    End Sub
+    Protected Sub ddlTipoInc_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlTipoInc.SelectedIndexChanged
+        CargaTipoInc()
+    End Sub
+    Protected Sub ddlSubTipoInc_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlSubTipoInc.SelectedIndexChanged
+        CargaSubTipoInc()
+        CargaPreguntasInc()
+    End Sub
+    Protected Sub chkAnonimo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkAnonimo.CheckedChanged
+        If chkAnonimo.Checked Then
+            Me.pnlPersona.Visible = False
+        Else
+            Me.pnlPersona.Visible = True
+        End If
+    End Sub
+    Protected Sub gvPreguntas_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvPreguntas.RowDataBound
+        If e.Row.RowType = DataControlRowType.DataRow Then
+
+            Dim _SMLTRECODIGO As Label = DirectCast(e.Row.FindControl("lblSMLTRECODIGO"), Label)
+            Dim _cmbRespuesta As DropDownList = DirectCast(e.Row.FindControl("cmbRespuesta"), DropDownList)
+            Dim _txtRespuesta As TextBox = DirectCast(e.Row.FindControl("txtRespuesta"), TextBox)
+            Dim _SMLALTCODIGO As Label = DirectCast(e.Row.FindControl("lblSMLALTCODIGO"), Label)
+
+
+            If _SMLTRECODIGO.Text <> "0" Then
+                ' Tiene alternativas de respuesta
+                Dim oCCOALTERNATIVARESPUESTA_BE As New CCOALTERNATIVARESPUESTA_BE
+                oCCOALTERNATIVARESPUESTA_BE.PropTRECODIGO = _SMLTRECODIGO.Text
+                _cmbRespuesta.DataSource = (New CCOALTERNATIVARESPUESTA_BL).ListarCombo(oCCOALTERNATIVARESPUESTA_BE)
+
+                _cmbRespuesta.DataTextField = "DESCRIPCION"
+                _cmbRespuesta.DataValueField = "CODIGO"
+                _cmbRespuesta.DataBind()
+                _cmbRespuesta.Items.Insert(0, New ListItem("-Sin Responder-", 0))
+                _cmbRespuesta.Visible = True
+                _cmbRespuesta.SelectedValue = _SMLALTCODIGO.Text
+            Else
+                _txtRespuesta.Visible = True
+            End If
+        End If
+    End Sub
+    Protected Sub btnCancelar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancelar.Click
+        Response.Redirect("frmPrincipal.aspx")
+    End Sub
+    Public Sub ActivaControles(ByVal pboolEstado As Boolean)
+
+        '--Origen
+        ddlOrigen.Enabled = pboolEstado
+        txtNumero.Enabled = pboolEstado
+        txtPrevias.Enabled = pboolEstado
+        txtFechaInc.Enabled = pboolEstado
+        txtHoraInc.Enabled = pboolEstado
+
+        '--Llamada
+        txtViaLlam.Enabled = pboolEstado
+        txtNroLlam.Enabled = pboolEstado
+        txtUrbLlam.Enabled = pboolEstado
+        txtComLlam.Enabled = pboolEstado
+
+        '--Incidente
+        txtViaInc.Enabled = pboolEstado
+        txtNroInc.Enabled = pboolEstado
+        txtUrbInc.Enabled = pboolEstado
+        txtIntInc.Enabled = pboolEstado
+        txtComInc.Enabled = pboolEstado
+
+        '--Informante
+        ddlTipoPersona.Enabled = pboolEstado
+        chkAnonimo.Enabled = pboolEstado
+        txtNombre.Enabled = pboolEstado
+        txtTipoDocIde.Enabled = pboolEstado
+        txtNumDocIde.Enabled = pboolEstado
+
+        '--Relato
+        txtRelato.Enabled = pboolEstado
+
+        '--Tipificación
+        ddlTipoInc.Enabled = pboolEstado
+        ddlSubTipoInc.Enabled = pboolEstado
+        ddlPrioridad.Enabled = pboolEstado
+
+        '--Consejo
+        txtConsejo.Enabled = pboolEstado
+
+        '--Preguntas
+        gvPreguntas.Enabled = pboolEstado
+
+        '--Botonera
+        btnMap.Visible = pboolEstado
+        btnLlam.Visible = pboolEstado
+        btnInc.Visible = pboolEstado
+        btnGrabar.Enabled = pboolEstado
+        btnGrabar.Visible = pboolEstado
+    End Sub
+    Protected Sub cargaDatos()
+        oINC = New CCOINCIDENCIA_BE
+        oINC.PropINCCODIGO = CType(ViewState("pID"), Integer)
+        oINC.PropINCNUMEROORIGEN = txtNumero.Text
+        oINC.PropINCLOCVIACODIGO1 = hfViaInc.Value
+        oINC.PropINCLOCVIANOMBRE1 = txtViaInc.Text
+        oINC.PropINCLOCVIACODIGO2 = hfIntInc.Value
+        oINC.PropINCLOCVIANOMBRE2 = txtIntInc.Text
+
+        oINC.PropINCLOCNUMERO = txtNroInc.Text
+        oINC.PropINCLOCHABCODIGO = hfUrbInc.Value
+        oINC.PropINCLOCHABNOMBRE = txtUrbInc.Text
+        oINC.PropINCLOCCOMENTARIO = txtComInc.Text
+
+        oINC.PropINCLLAVIACODIGO = hfViaLlam.Value
+        oINC.PropINCLLAVIANOMBRE = txtViaLlam.Text
+        oINC.PropINCLLANUMERO = txtNroLlam.Text
+        oINC.PropINCLLAHABCODIGO = hfUrbLlam.Value
+        oINC.PropINCLLAHABNOMBRE = txtUrbLlam.Text
+        oINC.PropINCLLACOMENTARIO = txtComLlam.Text
+        oINC.PropINCFECHA = DateTime.Parse(txtFechaInc.Text & " " & txtHoraInc.Text)
+
+        If chkAnonimo.Checked Then
+            oINC.PropINCANONIMO = 1
+            oINC.PropADMCODIGO = Nothing
+            oINC.PropINCNOMBRE = Nothing
+            oINC.PropTIDCODIGO = Nothing
+            oINC.PropINCDOCUMENTO = Nothing
+        Else
+            oINC.PropINCANONIMO = 0
+            oINC.PropADMCODIGO = hfNombreLlam.Value
+            oINC.PropINCNOMBRE = txtNombre.Text
+            oINC.PropTIDCODIGO = hfTipoDocIde.Value
+            oINC.PropINCDOCUMENTO = txtNumDocIde.Text
+        End If
+        oINC.PropINCRELATO = txtRelato.Text
+        oINC.PropINCESTADO = Estado.Abierto
+
+        'Estado de Incidencia: A=Abierto, D=Derivado (a OT, OD, S, E), R=Recepcionado, P=Despachado (con recurso asignado), T=En Atención, C=Cerrado
+
+        oINC.PropPRECODIGO = Nothing
+        oINC.PropINCIDLATITUDE = txtLat.Text
+        oINC.PropINCIDLONGITUDE = txtLon.Text
+        oINC.PropCATCODIGO = "" 'ddlUbicateInc.SelectedValue
+        oINC.PropORICODIGO = ddlOrigen.SelectedValue
+        oINC.PropTINCODIGO = ddlTipoInc.SelectedValue
+        oINC.PropSTICODIGO = ddlSubTipoInc.SelectedValue
+        oINC.PropPRICODIGO = ddlPrioridad.SelectedValue
+        oINC.PropTPECODIGO = ddlTipoPersona.SelectedValue
+
+        '-- asociacion de incidencia
+        oINC.PropINCACODIGO = Nothing
+        oINC.PropINCANUMERO = Nothing
+        '-- No se actualiza en CREAR
+        oINC.PropINCCOMENTARIO = Nothing
+        oINC.PropINCINTERVENIDOS = Nothing
+        oINC.PropPAQCODIGO = Nothing
+        oINC.PropPINCODIGO = Nothing
+        oINC.PropAUDROLCREACION = Nothing
+        oINC.PropAUDROLMODIF = Nothing
+        oINC.PropINCUSUDERIVADO = Nothing
+        oINC.PropINCROLDERIVADO = Nothing
+        oINC.PropINCFECDERIVADO = Now.Date
+        oINC.PropRESCODIGO = Nothing
+        oINC.PropINCRESULTADO = Nothing '-- resultado incidencia
+        '-- creacion incidencia
+        oINC.PropAUDPRGCREACION = CType(Session("proyecto"), String)
+        oINC.PropAUDEQPCREACION = CType(Session("equipo"), String)
+        oINC.PropAUDFECCREACION = Now.Date
+        oINC.PropAUDUSUCREACION = CType(Session("Usuario"), String)   '--Session("user")
+        '=-- modificacion incidencia
+        oINC.PropAUDPRGMODIF = CType(Session("proyecto"), String)
+        oINC.PropAUDEQPMODIF = CType(Session("equipo"), String)
+        oINC.PropAUDFECMODIF = Now.Date
+        oINC.PropAUDUSUMODIF = CType(Session("Usuario"), String)   '--Session("user")
+
+        Dim oEnc As New CCOENCUESTAINCIDENCIA_BE
+        olstENC = New List(Of CCOENCUESTAINCIDENCIA_BE)
+
+        For Each row As GridViewRow In gvPreguntas.Rows
+            Dim _SMLPRGCODIGO As Label = row.FindControl("lblSMLPRGCODIGO")
+            Dim _SMLTRECODIGO As Label = row.FindControl("lblSMLTRECODIGO")
+            Dim _INTPRRCODIGO As Label = row.FindControl("lblINTPRRCODIGO")
+            Dim _INTINCCODIGO As Label = row.FindControl("lblINTINCCODIGO")
+
+            Dim _cmbRespuesta As DropDownList = row.FindControl("cmbRespuesta")
+            Dim _txtRespuesta As TextBox = row.FindControl("txtRespuesta")
+            oEnc = New CCOENCUESTAINCIDENCIA_BE
+            oEnc.PropPRRCODIGO = _INTPRRCODIGO.Text
+            oEnc.PropINCCODIGO = _INTINCCODIGO.Text
+            oEnc.PropPRGCODIGO = _SMLPRGCODIGO.Text
+
+            If _SMLTRECODIGO.Text = "0" Then
+                ' NO HAY ALTERNATIVA
+                oEnc.PropALTCODIGO = Nothing
+                oEnc.PropPRRRESPUESTA = _txtRespuesta.Text
+            Else
+                If _cmbRespuesta.SelectedIndex <= 0 Then
+                    oEnc.PropALTCODIGO = Nothing
+                Else
+                    oEnc.PropALTCODIGO = _cmbRespuesta.SelectedValue
+                End If
+            End If
+
+            olstENC.Add(oEnc)
+        Next
+    End Sub
+    Public Sub CargaDatosControl()
+
+        LblNumeroInc.Text = oINC.PropINCCODIGO
+        lblAnexo.Text = CType(ViewState("pAnexo"), String)
+
+        ddlOrigen.SelectedValue = oINC.PropORICODIGO
+        txtNumero.Text = oINC.PropINCNUMEROORIGEN
+        txtFechaInc.Text = oINC.PropINCFECHA.ToShortDateString
+        txtHoraInc.Text = oINC.PropINCFECHA.ToString("HH:mm")
+        txtPrevias.Text = oINC.PropINCANUMERO
+
+        hfViaLlam.Value = oINC.PropINCLLAVIACODIGO
+        txtViaLlam.Text = oINC.PropINCLLAVIANOMBRE
+        txtNroLlam.Text = oINC.PropINCLLANUMERO
+        hfUrbLlam.Value = oINC.PropINCLLAHABCODIGO
+        txtUrbLlam.Text = oINC.PropINCLLAHABNOMBRE
+        txtComLlam.Text = oINC.PropINCLLACOMENTARIO
+
+        hfViaInc.Value = oINC.PropINCLOCVIACODIGO1
+        txtViaInc.Text = oINC.PropINCLOCVIANOMBRE1
+        hfIntInc.Value = oINC.PropINCLOCVIACODIGO2
+        txtIntInc.Text = oINC.PropINCLOCVIANOMBRE2
+
+        txtNroInc.Text = oINC.PropINCLOCNUMERO
+        hfUrbInc.Value = oINC.PropINCLOCHABCODIGO
+        txtUrbInc.Text = oINC.PropINCLOCHABNOMBRE
+        txtComInc.Text = oINC.PropINCLOCCOMENTARIO
+
+        '--oINC.PropINCLOCSECTOR = Nothing
+        '--oINC.PropINCLOCCUADRANTE = Nothing
+
+        ddlTipoPersona.SelectedValue = oINC.PropTPECODIGO
+
+        If oINC.PropINCANONIMO = 1 Then
+            hfNombreLlam.Value = 0
+            txtNombre.Text = oINC.PropINCNOMBRE
+            txtTipoDocIde.Text = oINC.PropTIDCODIGO
+            hfTipoDocIde.Value = 0
+            txtNumDocIde.Text = oINC.PropINCDOCUMENTO
+        Else
+            hfNombreLlam.Value = oINC.PropADMCODIGO
+            txtNombre.Text = oINC.PropINCNOMBRE
+            txtTipoDocIde.Text = oINC.PropTIDCODIGO
+            hfTipoDocIde.Value = oINC.PropTIDCODIGO
+            txtNumDocIde.Text = oINC.PropINCDOCUMENTO
+        End If
+        txtRelato.Text = oINC.PropINCRELATO
+        ddlTipoInc.SelectedValue = oINC.PropTINCODIGO
+        CargaTipoInc()
+        ddlSubTipoInc.SelectedValue = oINC.PropSTICODIGO
+        ddlPrioridad.SelectedValue = oINC.PropPRICODIGO
+        CargaSubTipoInc()
+        CargaPreguntasInc()
+    End Sub
+    Protected Sub CargaTipoInc()
+        Dim oCCOTIPOINCIDENCIA_BE As New CCOTIPOINCIDENCIA_BE
+        Dim oCCOTIPOINCIDENCIA_BL As New CCOTIPOINCIDENCIA_BL
+        Dim oCCOSUBTIPOINCIDENCIA_BE As New CCOSUBTIPOINCIDENCIA_BE
+        Dim oCCOSUBTIPOINCIDENCIA_BL As New CCOSUBTIPOINCIDENCIA_BL
+        oCCOSUBTIPOINCIDENCIA_BE.PropSTICODIGO = 0
+        oCCOSUBTIPOINCIDENCIA_BE.PropTINCODIGO = ddlTipoInc.SelectedValue
+        With ddlSubTipoInc
+            .DataSource = oCCOSUBTIPOINCIDENCIA_BL.ListarCombo(oCCOSUBTIPOINCIDENCIA_BE)
+            .DataTextField = "PropSTIDESCRIPCION"
+            .DataValueField = "PropSTICODIGO"
+        End With
+        ddlSubTipoInc.DataBind()
+        ddlSubTipoInc.Items.Insert(0, New ListItem("(Seleccionar)", "0"))
+    End Sub
+    Protected Sub CargaSubTipoInc()
+        If ddlSubTipoInc.SelectedValue > 0 Then
+            Dim oCCOSUBTIPOINCIDENCIA_BE As New CCOSUBTIPOINCIDENCIA_BE
+            Dim oCCOSUBTIPOINCIDENCIA_BL As New CCOSUBTIPOINCIDENCIA_BL
+            oCCOSUBTIPOINCIDENCIA_BE.PropSTICODIGO = ddlSubTipoInc.SelectedValue
+            oCCOSUBTIPOINCIDENCIA_BE.PropTINCODIGO = ddlTipoInc.SelectedValue
+            oCCOSUBTIPOINCIDENCIA_BE = oCCOSUBTIPOINCIDENCIA_BL.Listarkey(oCCOSUBTIPOINCIDENCIA_BE)
+            txtConsejo.Text = oCCOSUBTIPOINCIDENCIA_BE.PropSTICONSEJO
+            If oCCOSUBTIPOINCIDENCIA_BE.PropPRICODIGO IsNot Nothing Then
+                ddlPrioridad.SelectedValue = oCCOSUBTIPOINCIDENCIA_BE.PropPRICODIGO
+            End If
+        End If
+    End Sub
+    Protected Sub CargaPreguntasInc()
+        Dim oCCOPREGUNTAINCIDENCIA_BE As New CCOPREGUNTAINCIDENCIA_BE
+        Dim oCCOPREGUNTAINCIDENCIA_BL As New CCOPREGUNTAINCIDENCIA_BL
+        oCCOPREGUNTAINCIDENCIA_BE.PropSTICODIGO = ddlSubTipoInc.SelectedValue
+        gvPreguntas.DataSource = oCCOPREGUNTAINCIDENCIA_BL.ListarGrilla(oCCOPREGUNTAINCIDENCIA_BE, CType(ViewState("pID"), Integer))
+        gvPreguntas.DataBind()
+    End Sub
+    Protected Sub btnGrabar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGrabar.Click
+        Try
+            oINC_BL = New CCOINCIDENCIA_BL
+            cargaDatos()
+            If oINC.PropINCCODIGO > 0 Then
+                oINC_BL.Actualizar(oINC)
+                For Each obj As CCOENCUESTAINCIDENCIA_BE In olstENC
+                    Dim oCCOENC_BE As New CCOENCUESTAINCIDENCIA_BE
+                    oCCOENC_BE.PropPRRCODIGO = obj.PropPRRCODIGO
+                    oCCOENC_BE.PropALTCODIGO = obj.PropALTCODIGO
+                    oCCOENC_BE.PropPRRRESPUESTA = obj.PropPRRRESPUESTA
+                    oCCOENC_BE.PropINCCODIGO = oINC.PropINCCODIGO
+                    oCCOENC_BE.PropPRGCODIGO = obj.PropPRGCODIGO
+                    oCCOENC_BE.PropAUDPRGCREACION = CType(Session("proyecto"), String)
+                    oCCOENC_BE.PropAUDEQPCREACION = CType(Session("equipo"), String)
+                    oCCOENC_BE.PropAUDFECCREACION = Now.Date
+                    oCCOENC_BE.PropAUDROLCREACION = CType(Session("Usuario"), String)   '--Session("user")
+                    oENC_BL.Insertar(oCCOENC_BE)
+                Next
+            Else
+                Dim result As Integer = oINC_BL.InsertarMan(oINC)
+                If result > 0 Then
+                    ViewState("pID") = result
+                    For Each obj As CCOENCUESTAINCIDENCIA_BE In olstENC
+                        Dim oCCOENC_BE As New CCOENCUESTAINCIDENCIA_BE
+                        oCCOENC_BE.PropPRRCODIGO = obj.PropPRRCODIGO
+                        oCCOENC_BE.PropALTCODIGO = obj.PropALTCODIGO
+                        oCCOENC_BE.PropPRRRESPUESTA = obj.PropPRRRESPUESTA
+                        oCCOENC_BE.PropINCCODIGO = result
+                        oCCOENC_BE.PropPRGCODIGO = obj.PropPRGCODIGO
+                        oCCOENC_BE.PropAUDPRGCREACION = CType(Session("proyecto"), String)
+                        oCCOENC_BE.PropAUDEQPCREACION = CType(Session("equipo"), String)
+                        oCCOENC_BE.PropAUDFECCREACION = Now.Date
+                        oCCOENC_BE.PropAUDROLCREACION = CType(Session("Usuario"), String)   '--Session("user")
+                        oENC_BL.Insertar(oCCOENC_BE)
+                    Next
+                End If
+            End If
+            CargaPreguntasInc()
+
+        Catch ex As Exception
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+            Throw ex
+        End Try
+    End Sub
+
+End Class

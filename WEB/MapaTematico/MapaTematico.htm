@@ -1,0 +1,821 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+ 	<style type="text/css">
+        html {
+            height: 100%;
+            background-color: #ebefda;
+        }
+
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #title {
+            width: 100%;
+            height: 120px;
+            background-color: #131F2A;
+            margin: 0px 0px 0px 0px;
+            padding: 1px 0px 0px 1px;
+        }
+
+ 	    #tableLogo {
+            width: 100%;
+ 	    }
+
+         #LogoMSS {
+             width: 300px;
+             height: 80px;
+             border: 1px solid #131F2A;
+         }
+
+         #LogoCCO {
+             width: 100px;
+             height: 110px;
+             border: 1px solid #131F2A;
+         }
+
+<!--         #mappanel {
+             width: 80%;
+             height: 100%;
+             border: 1px solid black;
+         }-->
+         
+        #divDatos         
+        {
+             width: 360px;
+        }
+
+        #navi {
+	        list-style-type:square;
+        }
+
+         #maparea {
+             width: 1000px;
+             height: 700px;
+             border: 1px solid black;
+         }
+         #permalink{
+             position:absolute;
+             margin-left:822px;
+         }
+        #Select1 {
+            width: 173px;
+        }
+
+        #divUnidades {
+	        width: 95%;
+            height:450px;
+	        margin: 0;
+	        padding-right :1px;
+            overflow-y:scroll;
+            overflow-x:no-display;
+        }
+
+        #divCalles {
+	        width: 95%;
+            height:450px;
+	        margin: 0;
+	        padding-right :1px;
+            overflow-y:scroll;
+            overflow-x:no-display;
+
+        }
+
+
+        div.menu
+        {
+            padding: 2px 2px 2px 2px;
+        }
+
+        div.menu ul
+        {
+            list-style: none;
+            margin: 0px;
+            padding: 2px;
+            width: auto;
+        }
+
+        div.menu ul li a, div.menu ul li a:visited
+        {
+            font: normal 12px/1 "Aclonica", Helvetica, sans-serif;            
+            border: 1px #5a5757 solid;
+            background-color: #fff; /*#465c71;*/
+            color: #040404;   /* #dde4ec;*/
+            display: block;
+            line-height: 1.35em;
+            padding: 1px 1px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        div.menu ul li a:hover
+        {
+            background-color: #bfcbd6;
+            color: #040404;  /*#465c71;*/
+            text-decoration: none;
+        }
+
+        div.menu ul li a:active
+        {
+            background-color: #465c71;
+            color: #cfdbe6;
+            text-decoration: none;
+        }
+
+
+
+
+
+     </style>
+        <script type="text/javascript" src="http://extjs.cachefly.net/ext-3.4.0/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="http://extjs.cachefly.net/ext-3.4.0/ext-all.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://extjs.cachefly.net/ext-3.4.0/resources/css/ext-all.css" />
+
+
+    <script src="jquery/jquery-1.7.2.js" type="text/javascript"></script>
+    
+    <script src="OpenLayers-2.13.1/OpenLayers.js" type="text/javascript"></script>
+
+    	<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>-->
+        <!--<script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript"></script>-->
+        <script src="http://maps.google.com/maps/api/js?v=3.3&sensor=false" type="text/javascript"></script>
+    
+        <link href="../css/boton.css" rel="stylesheet" type="text/css" />
+
+    <script src="GeoExt/GeoExt.js" type="text/javascript"></script>    
+        
+        <style type="text/css">
+            /* work around an Ext bug that makes the rendering
+               of menu items not as one would expect */
+            .ext-ie .x-menu-item-icon {
+                left: -24px;
+            }
+            .ext-strict .x-menu-item-icon {
+                left: 3px;
+            }
+            .ext-ie6 .x-menu-item-icon {
+                left: -24px;
+            }
+            .ext-ie7 .x-menu-item-icon {
+                left: -24px;
+            }
+            
+          .zoomfull { background-image:url(../img/Toolbar/tool_out.png);  width:32px; height:32px; }
+          .panMap { background-image:url(../img/Toolbar/tool_pan.png);  width:32px; height:32px; }
+          .zoomWindowIn { background-image:url(../img/Toolbar/tool_zoom_in.png);  width:32px; height:32px; }
+          .zoomOut{ background-image:url(../img/Toolbar/tool_zoom_out.png);  width:32px; height:32px; }
+          .previousExtent{ background-image:url(../img/Toolbar/tool_back.png);  width:32px; height:32px; }
+          .nextExtent{ background-image:url(../img/Toolbar/tool_forward.png);  width:32px; height:32px; }
+          .measureDist{ background-image:url(../img/Toolbar/tool_ruler.png);  width:32px; height:32px;}
+          .measureArea{ background-image:url(../img/Toolbar/tool_ruler_square.png);  width:32px; height:32px;}
+          .imprimir{ background-image:url(../img/Toolbar/tool_print.png) !important}
+
+          .alertas {
+               background-image:url(../img/Media/Detalle.png); width:32px; height:32px;
+            }
+          .layers {
+                background-image:url(../img/Media/Layers.png); width:32px; height:32px;
+            }
+          .leyenda {
+                background-image:url(../img/Media/leyenda.png); width:32px; height:32px;
+            }
+
+          .titulo {
+               background-image:url(../img/Media/logoMuniSurco.png); width:400px; height:75px;
+            }
+
+        </style>
+
+    
+</head>
+<body onload="Repetir()">
+
+
+    <div id="mappanel">
+    </div>
+
+
+    <div id="divCapas">
+    </div>
+
+    <div id="divDatos" style="width:420px">
+        <div id="" class="side-box">
+            <table style="width:100%; padding-top:10px; font-size:14px; font-family:Tahoma" width="100%" cellpadding="10" cellspacing="10" border="0">
+            <colgroup>
+                <col width="23%" />
+                <col width="2%" />
+                <col width="75%" />
+            </colgroup>
+            
+            <tr>
+            <td>Motivo</td>
+            <td>:</td>
+            <td>
+                <select id="SelMotivo" name="D1" title="Motivo" >
+                <option value="--" selected="selected">--TODOS--</option>
+                <option value="01">Limpieza de Parques</option>
+                <option value="02">Problema Vial</option>
+                <option value="03">Ruidos Molestos</option>
+                <option value="04">Veredas y Pistas en mal estado</option>
+                <option value="05">Construcciones ilegales</option>
+                <option value="06">Acumulación de basura</option>
+                <option value="07">Violencia Familiar</option>
+                </select>
+            </td>
+            </tr>
+            <tr>
+            <td>Estado</td>
+            <td>:</td>
+            <td>
+                <select id="SelEstado" name="D1" title="Estado" >
+                <option value="0" >--TODOS--</option>
+                <option value="7" selected >Abierto</option>
+                <option value="12">Cerrado</option>
+                </select>
+            </td>
+            </tr>
+            <tr>
+            <td>Periodo</td>
+            <td>:</td>
+            <td>
+                <select id="SelPeriodo" name="D1" title="Periodo" >
+                <option value="0" >Todo historial</option>
+                <option value="1" selected >Ultima semana</option>
+                </select>
+            </td>
+            </tr>
+            <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>
+                <input id="btnConsulta" type="button" value="Consultar" onclick="misAlertas()" 
+                    class="boton_consultar"/></td>
+            </tr>
+            <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
+            </tr>
+            </table>
+        </div>
+        <div id="divGrilla" class="side-box">
+        </div>
+    </div>
+    <div id="divLeyenda" style="width:420px">
+        <table style="width:100%; padding-top:20px; font-size:14px; font-family:Tahoma" cellspacing="1px" >
+            <tr><td align="center"><a href="javascript:consultaMotivo('01')"><img src="../img/Motivos/Motivo_01.jpg" width="96px" /></a></td><td>Limpieza de Parques</td></tr>
+            <tr><td align="center"><a href="javascript:consultaMotivo('02')"><img src="../img/Motivos/Motivo_02.jpg" width="96px" /></a></td><td>Problema Vial</td></tr>
+            <tr><td align="center"><a href="javascript:consultaMotivo('03')"><img src="../img/Motivos/Motivo_03.jpg" width="96px" /></a></td><td>Ruidos Molestos</td></tr>
+            <tr><td align="center"><a href="javascript:consultaMotivo('04')"><img src="../img/Motivos/Motivo_04.jpg" width="96px" /></a></td><td>Veredas y Pistas en mal estado</td></tr>
+            <tr><td align="center"><a href="javascript:consultaMotivo('05')"><img src="../img/Motivos/Motivo_05.jpg" width="96px" /></a></td><td>Construcciones ilegales</td></tr>
+            <tr><td align="center"><a href="javascript:consultaMotivo('06')"><img src="../img/Motivos/Motivo_06.jpg" width="96px" /></a></td><td>Acumulación de basura</td></tr>
+            <tr><td align="center"><a href="javascript:consultaMotivo('07')"><img src="../img/Motivos/Motivo_07.jpg" width="96px" /></a></td><td>Violencia Familiar</td></tr>
+        </table>
+    </div>
+
+    <div id="divBusqueda">
+
+
+    </div>
+
+<script>
+
+
+    var grid, gridGPS;
+    var mapPanel, gridPanel, store;
+    var panLote;
+    var infoLote;
+    var infoGPS;
+    var map;
+    
+    var layerSec;
+    var vecCuadrante, vecDistrito, vecLimaDist, vecSectores;
+    var streets, hybrid, satellite, gmap, gearth;
+    var wms, lote, clote, hurb, zoni, sc;
+    var vectorLayer, tablita;
+    var vecLayer;
+    var vecLayerAlertas;
+    var ctrl, toolbarItems = [], action, actions = {};
+    var vSelecc = null;
+    var matrizCalles = [];
+    var popup;
+    var hLat = -12.138206845042884;
+    var hLon = -76.98716361667175;
+    var center = new OpenLayers.LonLat(hLon, hLat).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+    var zoom = 12;
+    var zoom_dev = 17;
+
+
+
+
+//    var first = getUrlVars()["ID"];
+
+//    alert(first);
+
+
+
+
+    Ext.onReady(function () {
+        //Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+
+
+        var options = {
+            //maxExtent: new OpenLayers.Bounds(278200.000, 8645389.716, 288750.000, 8664783.095),
+            //projection: new OpenLayers.Projection('EPSG:900913'),
+            //projection: new OpenLayers.Projection("EPSG:4326"),
+            units: "m"
+        };
+
+        map = new OpenLayers.Map(options)
+
+
+        // create vector layer
+        vecLayer = new OpenLayers.Layer.Vector("vector");
+        vectorLayer = new OpenLayers.Layer.Vector("Unidades Seguridad Ciudadana", { visibility: false });
+        vecLayerAlertas = new OpenLayers.Layer.Vector("Surco Alerta Vecino");
+        vSelecc = new OpenLayers.Layer.Vector("Objeto Seleccionado", { 'displayInLayerSwitcher': false, noLegend: true });
+
+
+        f_createToolbar();
+
+
+
+        var __pmdl_top = {
+            id: "div_panel_mdl_top",
+            region: "north",
+            contentEl: "title",
+            height: 75
+        };
+
+
+        var __pmdl_west = {
+            id: "div_panel_mdl_west",
+            region: "west",
+            margins: '0 0 0 0',
+            bodyStyle: { "padding": "10x 0px 0px 10px" },
+            width: 450,
+            minSize: 75,
+            maxSize: 450,
+            iconCls: 'titulo',
+            layout: {
+                type: 'accordion',
+                animate: true
+            },
+            items: [
+                    {
+                        contentEl: 'divDatos',
+                        title: 'Información de Alertas',
+                        autoScroll: true,
+                        border: true,
+                        layout: 'fit',
+                        //width: 450,
+                        //bodyStyle: { "padding": "10x 10px 10px 10px" },
+                        iconCls: 'alertas' // see the HEAD section for style used
+                    },
+                    {
+                        contentEl: 'divLeyenda',
+                        title: 'Leyenda',
+                        border: true,
+                        autoScroll: true,
+                        iconCls: 'leyenda' // see the HEAD section for style used
+                    },
+                    {
+                        contentEl: 'divCapas',
+                        title: 'Configuración del Mapa',
+                        border: true,
+                        iconCls: 'layers' // see the HEAD section for style used
+                    }
+                ]
+                    ,
+            //xtype: "gx_mappanel",
+            html: '',
+            //height: 200,
+            //contentEl: "divLogo",
+            title: '',
+            //split: true,
+            collapsible: true,
+            animCollapse: true,
+            collapseMode: 'header',
+            titleCollapse: true,
+            autoScroll: false
+        };
+
+
+
+        mapPanel = new GeoExt.MapPanel({
+            border: true,
+            region: "center",
+            // we do not want all overlays, to try the OverlayLayerContainer
+            map: map,
+            //center: center,
+            //zoom: 14,
+            tbar: toolbarItems,
+            layers: [
+                    layerS = new OpenLayers.Layer.OSM("Open Street Map"),
+                    gmap = new OpenLayers.Layer.Google("Google Map Calles", { type: google.maps.MapTypeId.ROADMAP, numZoomLevels: 20 }),
+                    hybrid = new OpenLayers.Layer.Google("Google Hybrid", { type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20 }),
+                    satellite = new OpenLayers.Layer.Google("Google Satellite", { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 20 })
+            //                    vecCuadrante = new OpenLayers.Layer.Vector("Limite Cuadrantes SC", { visibility: false,
+            //                        projection: map.displayProjection,
+            //                        strategies: [new OpenLayers.Strategy.Fixed()],
+            //                        protocol: new OpenLayers.Protocol.HTTP({
+            //                            url: "KML/CuadrantesSurco.kml",
+            //                            format: new OpenLayers.Format.KML({
+            //                                extractStyles: true,
+            //                                extractAttributes: true
+            //                            })
+            //                        })
+            //                    }),
+            //                    vecDistrito = new OpenLayers.Layer.Vector("Limite Distrital MSS", { visibility: false,
+            //                        projection: map.displayProjection,
+            //                        strategies: [new OpenLayers.Strategy.Fixed()],
+            //                        protocol: new OpenLayers.Protocol.HTTP({
+            //                            url: "KML/Surco.kml",
+            //                            format: new OpenLayers.Format.KML({
+            //                                extractStyles: true,
+            //                                extractAttributes: true
+            //                            })
+            //                        })
+            //                    }),
+            //                    vecSectores = new OpenLayers.Layer.Vector("Limite Sectores MSS", { visibility: false,
+            //                        projection: map.displayProjection,
+            //                        strategies: [new OpenLayers.Strategy.Fixed()],
+            //                        protocol: new OpenLayers.Protocol.HTTP({
+            //                            url: "KML/SECTORES.kml",
+            //                            format: new OpenLayers.Format.KML({
+            //                                extractStyles: true,
+            //                                extractAttributes: true
+            //                            })
+            //                        })
+            //                    }),
+
+            //                    vecLimaDist = new OpenLayers.Layer.Vector("Lima Metropolitana", { visibility: false,
+            //                        projection: map.displayProjection,
+            //                        strategies: [new OpenLayers.Strategy.Fixed()],
+            //                        protocol: new OpenLayers.Protocol.HTTP({
+            //                            url: "KML/Distritos.kml",
+            //                            format: new OpenLayers.Format.KML({
+            //                                extractStyles: true,
+            //                                extractAttributes: true
+            //                            })
+            //                        })
+            //                    })
+                    ],
+            items: [
+            {
+                xtype: "gx_zoomslider",
+                vertical: true,
+                height: 200,
+                x: 10,
+                y: 100,
+                plugins: new GeoExt.ZoomSliderTip({ template: "<div>Zoom Level: {zoom}</div>" })
+            }
+            ]
+        });
+
+
+
+        new Ext.Viewport({
+            layout: "border",
+            items: [mapPanel, __pmdl_west]
+        });
+
+
+
+
+        var layerRoot = new Ext.tree.TreeNode({
+            text: "All Layers",
+            expanded: true
+        });
+        layerRoot.appendChild(new GeoExt.tree.BaseLayerContainer({
+            text: "Base Layers",
+            map: map,
+            expanded: true
+        }));
+        layerRoot.appendChild(new GeoExt.tree.OverlayLayerContainer({
+            text: "Overlays",
+            map: map,
+            expanded: true
+        }));
+        var layerTree = new Ext.tree.TreePanel({
+            //title: "Layers de Mapa",
+            root: layerRoot,
+            enableDD: true,
+            collapsible: false,
+            height: 500,
+            expanded: true,
+            renderTo: "divCapas"
+        });
+
+
+        map.setCenter(center, zoom);
+
+        Ext.getCmp("mappanel");
+
+        //misAlertas();
+
+
+
+    });
+    //FIN Ext.onReady
+
+
+
+    function consultaMotivo(pMOT) {
+        //alert(pMOT);
+        document.getElementById("SelMotivo").value = pMOT;
+        misAlertas();
+
+    }
+
+    function detalleSIAVE(pID) {
+        var pURL = "http://192.0.0.102/regweb/SIAVE_detalle.aspx?codinc=" + pID;
+        //var pURL = "http://www.google.com";
+        var setting = "directories=no,height=500,left=100,location=no,menubar=no,resizable=no,scrollbars=yes,status=no,toolbar=no,top=100,width=800";
+        window.open(pURL, "Detalle de Alerta en SIAVE", setting);
+        
+    }
+
+
+    function posicionMapa(x, y) {
+        var center = new OpenLayers.LonLat(x, y).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+        map.setCenter(center, zoom_dev);
+    }
+
+
+
+        
+    function f_createToolbar()
+    {
+
+        /********* Create Toolbar Buttons   *************/
+        // Pan Map
+        toolbarItems.push("-");
+        action = new GeoExt.Action({
+            control: new OpenLayers.Control.Navigation(),
+            map: map,
+            toggleGroup: "toolGroup",
+            allowDepress: false,
+            tooltip: "pan map",
+            scale: 'medium',
+            iconCls: "panMap"
+        });
+        actions["nav"] = action;
+        toolbarItems.push(action);
+
+        // Vista inicial
+        toolbarItems.push("-");
+        action = new GeoExt.Action({
+            handler: function () { map.setCenter(center, zoom); },
+            map: map,
+            tooltip: "zoom to max extent",
+            scale: 'medium',
+            cls: 'x-btn-icon',
+            iconCls: "zoomfull"
+            });
+        actions["max_extent"] = action;
+        toolbarItems.push(action);
+
+        // Zoom In
+        toolbarItems.push("-");
+        action = new GeoExt.Action({
+            control: new OpenLayers.Control.ZoomBox(),
+            map: map,
+            toggleGroup: "toolGroup",
+            allowDepress: false,
+            tooltip: "zoom box",
+            scale: 'medium',
+            cls: 'x-btn-icon',
+            iconCls: "zoomWindowIn"
+        });
+        actions["zoom_box"] = action;
+
+        // Zoom Out
+        toolbarItems.push(action);
+        action = new GeoExt.Action({
+            control: new OpenLayers.Control.ZoomBox({ out: true, displayClass: 'olControlZoomBoxOut' }),
+            map: map,
+            toggleGroup: "toolGroup",
+            allowDepress: false,
+            tooltip: "larger box, less zoom out",
+            scale: 'medium',
+            cls: 'x-btn-icon',
+            iconCls: "zoomOut"
+        });
+        actions["zoom_out"] = action;
+        toolbarItems.push(action);
+
+        // Measure Distance
+        toolbarItems.push("-");
+        action = new GeoExt.Action({
+            control: new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
+                eventListeners: {
+                    measure: function (evt) {
+                        Ext.Msg.alert('Información', '\n\nDistancia es :' + evt.measure + " sq " + evt.units + '\n\n');
+                    }
+                }
+            }),
+            map: map,
+            iconCls: "measureDist",
+            toggleGroup: "toolGroup",
+            tooltip: "measure distance",
+            cls: 'x-btn-icon',
+            scale: 'medium'
+        });
+        actions["measure_distance"] = action;
+        toolbarItems.push(action);
+
+        // Measure Area
+        toolbarItems.push("-");
+        action = new GeoExt.Action({
+            control: new OpenLayers.Control.Measure(OpenLayers.Handler.Polygon,
+                {
+                    displayClass: 'olControlMeasureArea',
+                    eventListeners: {
+                        measure: function (evt) {
+                            Ext.Msg.alert('Información', '\n\nArea es :' + evt.measure + " sq " + evt.units + '\n\n');
+                        }
+                    }
+                }),
+            map: map,
+            toggleGroup: "toolGroup",
+            tooltip: "measure area",
+            scale: 'medium',
+            cls: 'x-btn-icon',
+            iconCls: "measureArea"
+        });
+        actions["measure_area"] = action;
+        toolbarItems.push(action);
+
+        /*************   END TOOLBAR BUTTONS  **********/
+
+    }
+
+
+
+    function misAlertas() {
+        var txtMarkerHTML;
+        var txtInfoHTML;
+        var tabla = "<table style='width:100%;padding-top:5px; font-size:10px; font-family:Tahoma;' cellspacing='0' >";
+        tabla += "<colgroup align='center'><col width='5%'/><col width='15%'/><col width='25%'/><col width='45%'/><col width='5%'/><col width='5%'/></colgroup>";
+        archivoValidacion = "../WebServiceGPS.asmx/listarTematicoGEO?jsoncallback=?"
+        vecLayerAlertas.removeAllFeatures();
+
+        var sMOT = document.getElementById("SelMotivo").value;
+        var sEST = document.getElementById("SelEstado").value;
+        var sPER = document.getElementById("SelPeriodo").value;
+
+        //console.log(sMOT);
+
+        $.getJSON(archivoValidacion, { pMOTIVO: sMOT, pESTADO: sEST, pPERIODO: sPER })
+	    .done(function (rptaServer) {
+
+	        var projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+	        var epsg4326 = new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
+	        tabla += '<tr style="background:#40A8CD;color:#ffffff;"><td align="center"></td><td align="center">Id Alerta</td><td align="center">Fecha/Hora</td><td align="center">Denunciante</td><td align="center">Estado</td><td align="center">Detalle</td></tr>';
+	        for (var i = 0; i < rptaServer.Tematico.length; i++) {
+
+	            //console.log(i);
+	            var iMarker = '../img/Motivos/xMotivo00.png';
+	            var strMot = rptaServer.Tematico[i].VCHMOTIVOALERTA;
+	            if (strMot == "00") iMarker = "../img/Motivos/xMotivo00.png";
+	            if (strMot == "01") iMarker = "../img/Motivos/xMotivo01.png";
+	            if (strMot == "02") iMarker = "../img/Motivos/xMotivo02.png";
+	            if (strMot == "03") iMarker = "../img/Motivos/xMotivo03.png";
+	            if (strMot == "04") iMarker = "../img/Motivos/xMotivo04.png";
+	            if (strMot == "05") iMarker = "../img/Motivos/xMotivo05.png";
+	            if (strMot == "06") iMarker = "../img/Motivos/xMotivo06.png";
+	            if (strMot == "07") iMarker = "../img/Motivos/xMotivo07.png";
+
+
+	            //console.log(strMot);
+
+
+	            if (i % 2 == 0) {
+	                tabla += '<tr style="background:#E1E1E1;">';
+	            } else tabla += '<tr>';
+	            txtMarkerHTML = "<a href='javascript:posicionMapa(" + rptaServer.Tematico[i].VCHINCIDLONGITUDE + "," + rptaServer.Tematico[i].VCHINCIDLATITUDE + ")' >";
+	            txtMarkerHTML += '<img src="' + iMarker + '" style="height:24px; width=24px;" /></a>';
+
+	            txtInfoHTML = "<a href='javascript:detalleSIAVE(" + rptaServer.Tematico[i].INTINCCODIGO + ")' >";
+	            txtInfoHTML += '<img src="../img/Media/detalleInfo.png" style="height:24px; width=24px;" /></a>';
+
+
+	            tabla += '<td align="center">' + txtMarkerHTML + '</td><td align="center">' + rptaServer.Tematico[i].INTINCCODIGO + '</td><td>' + rptaServer.Tematico[i].DTMINCFECHA + '</td><td>' + rptaServer.Tematico[i].VCHINCNOMBRECOMP + '</td><td>' + rptaServer.Tematico[i].VCHTABDESCRIPCION + '</td><td align="center">' + txtInfoHTML + '</td></tr>';
+
+	            var feature = new OpenLayers.Feature.Vector(
+                            new OpenLayers.Geometry.Point(rptaServer.Tematico[i].VCHINCIDLONGITUDE, rptaServer.Tematico[i].VCHINCIDLATITUDE).transform(epsg4326, projectTo),
+                            { description: "<h1>marker number " + rptaServer.Tematico[i].INTINCCODIGO + "</h1>" },
+                            { externalGraphic: iMarker, graphicHeight: 32, graphicWidth: 32, graphicXOffset: -16, graphicYOffset: -32 }
+                        );
+	            //console.log(feature);
+
+	            feature.attributes = {
+	                vINTINCCODIGO: rptaServer.Tematico[i].INTINCCODIGO,
+	                vVCHINCNUMEROORIGEN: rptaServer.Tematico[i].VCHINCNUMEROORIGEN,
+	                vVCHINCRELATO: rptaServer.Tematico[i].VCHINCRELATO,
+	                vVCHINCNOMBRECOMP: rptaServer.Tematico[i].VCHINCNOMBRECOMP,
+	                vSMLINCESTADO: rptaServer.Tematico[i].SMLINCESTADO,
+	                vVCHTABDESCRIPCION: rptaServer.Tematico[i].VCHTABDESCRIPCION,
+	                vVCHINCIDLATITUDE: rptaServer.Tematico[i].VCHINCIDLATITUDE,
+	                vVCHINCIDLONGITUDE: rptaServer.Tematico[i].VCHINCIDLONGITUDE,
+	                vSMLORICODIGO: rptaServer.Tematico[i].SMLORICODIGO,
+	                vVCHORIDESCRIPCION: rptaServer.Tematico[i].VCHORIDESCRIPCION,
+	                vSMLTINCODIGO: rptaServer.Tematico[i].SMLTINCODIGO,
+	                vVCHTINDESCRIPCION: rptaServer.Tematico[i].VCHTINDESCRIPCION,
+	                vSMLSTICODIGO: rptaServer.Tematico[i].SMLSTICODIGO,
+	                vVCHSTIDESCRIPCION: rptaServer.Tematico[i].VCHSTIDESCRIPCION,
+	                vSMLPRICODIGO: rptaServer.Tematico[i].SMLPRICODIGO,
+	                vVCHPRIDESCRIPCION: rptaServer.Tematico[i].VCHPRIDESCRIPCION,
+	                vDTMINCFECHA: rptaServer.Tematico[i].DTMINCFECHA,
+	                vVCHMOTIVOALERTA: rptaServer.Tematico[i].VCHMOTIVOALERTA,
+	                vVCHDESMOTIVOALERTA: rptaServer.Tematico[i].VCHDESMOTIVOALERTA,
+	                vVCHCODQUEJA: rptaServer.Tematico[i].VCHCODQUEJA
+	            };
+
+	            vecLayerAlertas.addFeatures(feature);
+
+	        }
+	        tabla += '</table>';
+	        //console.log(tabla);
+	        map.addLayer(vecLayerAlertas);
+	        document.getElementById("divGrilla").innerHTML = tabla;
+
+	        var selControlAlerta = new OpenLayers.Control.SelectFeature(vecLayerAlertas, {
+	            hover: true,
+	            toggle: true,
+	            selectStyle: {
+	                fillOpacity: 0.6,
+	                fillColor: "#FFFF99",
+	                strokeColor: "#FFFF99",
+	                cursor: "pointer"
+	            },
+	            callbacks: {
+	                click: function (event) {
+	                    var punto = new OpenLayers.LonLat(event.attributes.vVCHINCIDLONGITUDE, event.attributes.vVCHINCIDLATITUDE).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+	                    var xHTML;
+	                    //console.log(punto);
+	                    xHTML = "<table style='font-size:11px; font-family:Tahoma, Sans-Serif;' width='100%'>";
+	                    xHTML += "<tr><td>Id Alerta</td><td> : </td><td>" + event.attributes.vINTINCCODIGO + "</td></tr>";
+	                    xHTML += "<tr><td>Motivo</td><td> : </td><td>" + event.attributes.vVCHDESMOTIVOALERTA + "</td></tr>";
+	                    xHTML += "<tr><td>Teléfono</td><td> : </td><td>" + event.attributes.vVCHINCNUMEROORIGEN + "</td></tr>";
+	                    xHTML += "<tr><td>Fecha denuncia</td><td> : </td><td>" + event.attributes.vDTMINCFECHA + "</td></tr>";
+	                    xHTML += "<tr><td>Denunciante</td><td> : </td><td>" + event.attributes.vVCHINCNOMBRECOMP + "</td></tr>";
+	                    xHTML += "<tr><td>Asunto</td><td> : </td><td>" + event.attributes.vVCHINCRELATO + "</td></tr>";
+	                    xHTML += "<tr><td>Origen</td><td> : </td><td>" + event.attributes.vVCHORIDESCRIPCION + "</td></tr>";
+	                    xHTML += "<tr><td>Estado</td><td> : </td><td>" + event.attributes.vVCHTABDESCRIPCION + "</td></tr>";
+	                    xHTML += "<tr><td>Id SIAVE</td><td> : </td><td>" + event.attributes.vVCHCODQUEJA + "</td></tr>";
+	                    xHTML += "</table>";
+
+	                    if (infoGPS != null && infoGPS != undefined) {
+	                        infoGPS.hide();
+	                    }
+
+
+	                    infoGPS = new OpenLayers.Popup("unidad",
+                                                   punto,
+                                                   new OpenLayers.Size(350, 170),
+                                                   xHTML,
+                                                   true);
+	                    infoGPS.setBackgroundColor("#FFFF99");
+	                    infoGPS.closeOnMove = true;
+	                    map.addPopup(infoGPS);
+
+	                },
+	                over: function (event) {
+	                    //console.log(event.attributes.vINTINCCODIGO);
+	                }
+	            }
+	        })
+
+	        map.addControl(selControlAlerta);
+	        selControlAlerta.activate();
+	    }
+	);
+
+
+	}
+
+
+	function getUrlVars() {
+	    var vars = {};
+	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+	        vars[key] = value;
+	    });
+	    return vars;
+	}
+
+	function Repetir() {
+	    setInterval("misAlertas()", 30000);  //multiplicas la cantidad de segundos por mil                  
+	}
+
+</script>
+
+</body>
+</html>

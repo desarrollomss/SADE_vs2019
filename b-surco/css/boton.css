@@ -1,0 +1,99 @@
+﻿     .boton
+    {
+     border:1px;
+     border-color:#D3D3D3;
+     background-color:#EEEEEE;
+     border-style:solid;
+     color:#555555;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:25px;
+     padding-left:10px;
+     padding-right:10px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');  
+    }
+    .boton:hover{
+    background: #E5E5E5;
+    border-color:#999999;
+    color: #212121;
+}
+    .boton_dialogo
+    {
+     border:1px;
+     border-color:#1E436E;
+     background-color:#1E436E;
+     border-style:solid;
+     color:#fff;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:25px;
+     padding-left:10px;
+     padding-right:10px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');   
+    }
+    .boton_dialogo:hover{
+    background: #2a394a;
+    border-color:#2a394a;
+    color: #fff;
+}
+
+        .boton_menu
+    {
+     border:1px;
+     border-color:#1E436E;
+     background-color:#1E436E;
+     border-style:solid;
+     color:#ffffff;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration :none;
+     width:auto;
+     height:auto;
+     padding-top:2px;
+     padding-bottom :2px;
+     padding-left:10px;
+     padding-right:10px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');   
+    }
+    .boton_menu:hover{
+    background: #2a394a;
+    border-color:#2a394a;
+    color: #ffffff;
+}
+        .boton_busca
+    {
+     border:1px;
+     border-color:#f4c237;
+     background-color:#f4c237;
+     border-style:solid;
+     color:#ffffff;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration :none;
+     width:auto;
+     height:auto;
+     padding-top:2px;
+     padding-bottom :2px;
+     padding-left:10px;
+     padding-right:10px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');   
+    }
+    .boton_busca:hover{
+    background: #f5b500;
+    border-color:#f5b500;
+    color: #ffffff;
+}

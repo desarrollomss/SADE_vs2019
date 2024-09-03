@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script type="text/javascript">
+        var soundObject = null;
+        function PlaySound() {
+            if (soundObject != null) {
+                document.body.removeChild(soundObject);
+                soundObject.removed = true;
+                soundObject = null;
+            }
+            soundObject = document.createElement("embed");
+            //soundObject.setAttribute("src", "http://192.0.0.3/sacs/5010301.ogg");
+            soundObject.setAttribute("src", "5010301.ogg");
+            soundObject.setAttribute("hidden", true);
+            soundObject.setAttribute("autostart", true);
+            document.body.appendChild(soundObject);
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <input type = "button" onclick = "PlaySound()" value = "Play Sound" />
+    </form>
+</body>
+</html>

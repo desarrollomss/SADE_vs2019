@@ -1,0 +1,440 @@
+﻿Imports SISSADE.BE
+Imports SISSADE.BL
+Imports System.Data
+Imports Util
+
+Partial Class frmBuscaComponente
+    Inherits System.Web.UI.Page
+
+#Region "Eventos Iniciales"
+
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+        If Session("DatosUsuarioActivo") Is Nothing Then
+            Session.Clear()
+            Session.Abandon()
+            Response.Redirect(Request.ApplicationPath & "/frmLogin.aspx")
+        End If
+        ViewState("dkincidencia") = 0
+        ViewState("oRowIndex") = -1
+        btnBuscar.Attributes.Add("onclick", "javascript:return ValidaBuscar();")
+        'btnActualizaBusca.Attributes.Add("onclick", "javascript:return ValidaActualizaBusca();")
+        btnNuevo.Attributes.Add("onclick", "javascript:return ValidaNuevo();")
+    End Sub
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        txtID.Attributes.Add("onkeypress ", "javascript:return validarNum(event)")
+
+        If Not Page.IsPostBack Then
+            Dim mp As MasterPage = Me.Master
+            Dim tit As Label = CType(mp.FindControl("lblTitulo"), Label)
+            tit.Text = ":: GESTIONAR COMPONENTES DE SEGURIDAD ::"
+            CargaComboBusqueda()
+            CargaGrilla()
+        End If
+    End Sub
+
+#End Region
+
+#Region "Modos"
+
+    Private Sub ModoBusqueda()
+        pnlEdicion.Visible = False
+        pnlBusqueda.Visible = True
+        lblMensajeReg.Text = ""
+        CargaGrilla()
+    End Sub
+
+    Private Sub ModoEdicion(ByVal accion As String)
+
+        pnlEdicion.Visible = True
+        pnlBusqueda.Visible = False
+        btnGrabar.Visible = True
+
+        txtIdEdit.Attributes.Add("onkeypress ", "javascript:return validarNum(event)")
+
+        hdTipoAccion.Value = accion
+        txtIdEdit.Text = ""
+        CargaCombosEdicion()
+
+
+        txtInfoEdit.Text = ""
+        txtObservacionEdit.Text = ""
+        txtDescripcionEdit.Text = ""
+        txtContactoEdit.Text = ""
+        txtIPRedEdit.Text = ""
+        hfGeoX.Value = ""
+        hfGeoY.Value = ""
+        txtFechaInstEdit.Text = ""
+
+        txtIdEdit.Enabled = False
+        txtInfoEdit.Enabled = False
+        ddlTipoCmpntEdit.Enabled = True
+        ddlEstadoCmpntEdit.Enabled = True
+        txtObservacionEdit.Enabled = True
+        txtDescripcionEdit.Enabled = True
+        txtContactoEdit.Enabled = True
+        txtIPRedEdit.Enabled = True
+
+
+
+        If accion = "V" Or accion = "U" Then
+
+            If gvTetras.SelectedIndex >= 0 Then
+                Dim dk As DataKey = Me.gvTetras.DataKeys(gvTetras.SelectedIndex)
+                txtIdEdit.Text = dk.Item("idcs")
+            End If
+            txtIdEdit.Enabled = False
+
+
+            Dim oBE As TB_COMPSEG_BE = New TB_COMPSEG_BE
+            Dim oBESel As TB_COMPSEG_BE = New TB_COMPSEG_BE
+            Dim oBL As TB_COMPSEG_BL = New TB_COMPSEG_BL
+            Try
+                With oBE
+                    .PropIDCS = txtIdEdit.Text
+                End With
+                oBESel = oBL.ListarKey(oBE)
+
+                ddlTipoCmpntEdit.SelectedValue = oBESel.PropIDCST
+                ddlEstadoCmpntEdit.SelectedValue = oBESel.PropIDCSE
+                If oBESel.PropIDCS_PADRE IsNot Nothing Then
+                    ddlGrupoCmpntEdit.SelectedValue = oBESel.PropIDCS_PADRE
+                End If
+                txtFechaInstEdit.Text = oBESel.PropFECINST_CS
+                txtInfoEdit.Text = oBESel.PropINFO_CS.ToUpper
+                txtObservacionEdit.Text = oBESel.PropOBSERV_EST.ToUpper
+                txtDescripcionEdit.Text = oBESel.PropDIRECCION.ToUpper
+                txtContactoEdit.Text = oBESel.PropCOMUNICA_CS.ToUpper
+                txtIPRedEdit.Text = oBESel.PropIPRED_CS
+                hfGeoX.Value = oBESel.PropGeoX
+                hfGeoY.Value = oBESel.PropGeoY
+
+            Catch ex As Exception
+                lblMensajeReg.Text = ex.Message
+            End Try
+
+            If accion = "V" Then
+                btnGrabar.Visible = False
+                txtObservacionEdit.Enabled = False
+                txtDescripcionEdit.Enabled = False
+                txtContactoEdit.Enabled = False
+                txtIPRedEdit.Enabled = False
+                ddlGrupoCmpntEdit.Enabled = False
+                txtFechaInstEdit.Enabled = False
+                ddlTipoCmpntEdit.Enabled = False
+                ddlEstadoCmpntEdit.Enabled = False
+                txtObservacionEdit.Enabled = False
+            End If
+
+        End If
+    End Sub
+
+#End Region
+
+#Region "Eventos Busqueda"
+
+    Protected Sub btnNuevo_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNuevo.Click
+        ModoEdicion("I")
+    End Sub
+
+    Protected Sub btnModificar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnModificar.Click
+        If gvTetras.SelectedIndex >= 0 Then
+            ModoEdicion("U")
+        End If
+    End Sub
+
+    Protected Sub btnEliminar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEliminar.Click
+        If gvTetras.SelectedIndex >= 0 Then
+            Dim oBE As TB_CAMARA_BE = New TB_CAMARA_BE
+            Dim oBL As TB_CAMARA_BL = New TB_CAMARA_BL
+
+            Dim dk As DataKey = Me.gvTetras.DataKeys(gvTetras.SelectedIndex)
+            Dim intID As Integer = dk.Item("idcs")
+            Try
+                With oBE
+                    .PropIDCS = intID
+                End With
+                oBL.Eliminar(oBE)
+                CargaGrilla()
+                Bitacora.Escribir("Eliminacion Exitosa", LogMsg.INFO)
+            Catch ex As Exception
+                'lblMensaje.Text = ex.Message
+                Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+            End Try
+        End If
+
+    End Sub
+
+    Protected Sub btnVer_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnVer.Click
+        If gvTetras.SelectedIndex >= 0 Then
+            ModoEdicion("V")
+        End If
+    End Sub
+
+    Protected Sub btnBuscar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBuscar.Click
+        CargaGrilla()
+    End Sub
+
+    Protected Sub gvTetras_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvTetras.SelectedIndexChanged
+        Dim dk As DataKey = Me.gvTetras.DataKeys(gvTetras.SelectedIndex) '-- es la fila de la grilla 
+        Dim intID As Integer = dk.Item("INTNISSI")  ' se pone el nombre de la llave 
+        ViewState("dkincidencia") = intID
+        ViewState("oRowIndex") = gvTetras.SelectedIndex
+    End Sub
+
+    Protected Sub gvTetras_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvTetras.RowCreated
+        If e.Row.RowType = DataControlRowType.DataRow Then
+            e.Row.Attributes("onmouseover") = "javascript: this.style.cursor='pointer';"
+            e.Row.Attributes("onmouseout") = "javascript: this.style.cursor='normal';"
+            e.Row.Attributes("onclick") = Page.ClientScript.GetPostBackClientHyperlink(gvTetras, "Select$" + e.Row.RowIndex.ToString)
+
+        End If
+    End Sub
+
+    Protected Sub gvTetras_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvTetras.RowDataBound
+        If e.Row.RowType = DataControlRowType.DataRow Then
+            If gvTetras.PageSize < 10 Then
+                Dim dk As DataKey = Me.gvTetras.DataKeys(e.Row.DataItemIndex)
+                Dim intID2 As Integer = dk.Item("INTNISSI")
+                If intID2 = ViewState("dkincidencia") Then
+                    ViewState("oRowIndex") = e.Row.RowIndex
+                    For i = 0 To e.Row.Cells.Count - 1
+                        Dim dcfc2 As DataControlFieldCell = CType(e.Row.Controls(i), DataControlFieldCell)
+                        dcfc2.BackColor = Drawing.Color.FromName("#a3a2a7")
+                        dcfc2.ForeColor = Drawing.Color.FromName("#F0F0F0")
+                    Next
+                End If
+            End If
+        End If
+    End Sub
+
+    Protected Sub gvTetras_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvTetras.PageIndexChanging
+        gvTetras.PageIndex = e.NewPageIndex
+        gvTetras.DataSource = ViewState("datos")
+        gvTetras.DataBind()
+    End Sub
+
+#End Region
+
+#Region "Metodos Busqueda"
+
+    Private Sub CargaComboBusqueda()
+
+        Dim oTB_CAMARA_BL As TB_CAMARA_BL = New TB_CAMARA_BL
+        Try
+
+            ddlMarca.DataSource = oTB_CAMARA_BL.ListarComboMarca()
+            ddlMarca.DataTextField = "DESCRIPCION"
+            ddlMarca.DataValueField = "CODIGO"
+            ddlMarca.DataBind()
+            ddlMarca.Items.Insert(0, "(Seleccione)")
+            ddlMarca.Items(0).Value = 0
+
+            ddlEstado.DataSource = oTB_CAMARA_BL.ListarComboEstado()
+            ddlEstado.DataTextField = "DESCRIPCION"
+            ddlEstado.DataValueField = "CODIGO"
+            ddlEstado.DataBind()
+            ddlEstado.Items.Insert(0, "(Seleccione)")
+            ddlEstado.Items(0).Value = 0
+
+            ddlCOVV.DataSource = oTB_CAMARA_BL.ListarComboCOVV()
+            ddlCOVV.DataTextField = "DESCRIPCION"
+            ddlCOVV.DataValueField = "CODIGO"
+            ddlCOVV.DataBind()
+            ddlCOVV.Items.Insert(0, "(Seleccione)")
+            ddlCOVV.Items(0).Value = 0
+
+
+        Catch ex As Exception
+            lblMensaje.Text = ex.Message
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+        End Try
+    End Sub
+
+    Private Sub CargaGrilla()
+
+        Dim oBE As TB_CAMARA_BE = New TB_CAMARA_BE
+        Dim oBL As TB_CAMARA_BL = New TB_CAMARA_BL
+        Try
+
+            With oBE
+                If txtID.Text.Trim = "" Then .PropINTIDCAMARA = 0 Else .PropINTIDCAMARA = CType(txtID.Text, Int32)
+                .PropINTCODESTADO = ddlEstado.SelectedValue
+                .PropINTCODMARCA = ddlMarca.SelectedValue
+                .PropINTCODCOVV = ddlCOVV.SelectedValue
+                .PropVCHUBICACION = txtUbicacion.Text.ToUpper
+                .PropVCHOBSERVA = txtDescripcion.Text.ToUpper
+            End With
+            Dim dt As DataTable = New DataTable
+            dt = oBL.Busqueda(oBE)
+            ViewState("datos") = dt
+            gvTetras.DataSource = dt
+            gvTetras.DataBind()
+        Catch ex As Exception
+            lblMensaje.Text = ex.Message
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+        End Try
+    End Sub
+
+#End Region
+
+#Region "Eventos Edicion"
+
+    Protected Sub btnRegresar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnRegresar.Click
+        ModoBusqueda()
+    End Sub
+
+
+
+    Protected Sub btnGrabar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGrabar.Click
+
+        Dim oBE As TB_CAMARA_BE = New TB_CAMARA_BE
+        Dim oBL As TB_CAMARA_BL = New TB_CAMARA_BL
+
+        lblMensajeReg.Text = ""
+        'If txtIdEdit.Text.Trim = "" Or txtIdEdit.Text.Trim = "0" Then
+        '    lblMensajeReg.Text = "<li>Ingrese el Código</li>"
+        'End If
+        If ddlMarcaEdit.SelectedItem.Text = "(Seleccione)" Then
+            lblMensajeReg.Text = "<li>Seleccione la Marca de la camara</li>"
+        End If
+        If ddlEstadoEdit.SelectedItem.Text = "(Seleccione)" Then
+            lblMensajeReg.Text = lblMensajeReg.Text & "<li>Seleccione el Estado de camara</li>"
+        End If
+        If hfGeoX.Value.ToString = "" Or hfGeoY.Value.ToString = "" Then
+            lblMensajeReg.Text = lblMensajeReg.Text & "<li>Ubique en el mapa la ubicacion del componente</li>"
+        End If
+
+        If txtFechaInstEdit.Text.ToString = "" Then
+            lblMensajeReg.Text = lblMensajeReg.Text & "<li>Ingrese fecha de instalacion</li>"
+        End If
+
+
+        If lblMensajeReg.Text = "" Then
+            Try
+
+                With oBE
+                    If (txtIdEdit.Text <> "") Then
+                        .PropINTIDCAMARA = txtIdEdit.Text
+                    End If
+                    .PropINTCODMARCA = ddlMarcaEdit.SelectedValue
+                    .PropVCHMODELO = Nothing
+                    .PropVCHNROSERIE = Nothing
+                    .PropINTCODCOVV = Nothing
+                    .PropVCHIPCAMARA = txtIPRedEdit.Text
+                    .PropVCHLAT = Nothing
+                    .PropVCHLON = Nothing
+                    .PropGEOM = hfGeoX.Value.ToString + " " + hfGeoY.Value.ToString
+                    .PropVCHCODAREA = Nothing
+                    .PropVCHCODSECTOR = Nothing
+                    .PropVCHSSECVECINAL = Nothing
+                    .PropVCHCODCUADRANTE = Nothing
+                    .PropVCHCODAXXON = Nothing
+                    .PropVCHUBICACION = Nothing
+                    .PropVCHURBANIZACION = Nothing
+                    .PropTXTESTADO = Nothing
+                    .PropVCHOBSERVA = txtObservacionEdit.Text.ToUpper
+                    .PropINTCODESTADO = ddlEstadoEdit.SelectedValue
+                    .PropVCHAUDUSUARIOCREA = Session("USUARIO")
+                    .PropVCHAUDEQUIPOCREA = Session("EQUIPO")
+                    .PropTMSAUDFECHACREA = Now.Date
+                    .PropVCHAUDUSUARIOMODIF = Session("USUARIO")
+                    .PropVCHAUDEQUIPOMODIF = Session("EQUIPO")
+                    .PropTMSAUDFECHAMODIF = Now.Date
+
+                    '.PropINFO_CS = txtInfoEdit.Text.ToUpper
+                    '.PropCOMUNICA_CS = txtContactoEdit.Text.ToUpper
+                    '.PropFECINST_CS = txtFechaInstEdit.Text
+                End With
+                Dim intID As Integer = 0
+                If hdTipoAccion.Value = "I" Then
+
+                    intID = oBL.Insertar(oBE)
+                    If intID > 0 Then
+                        lblMensajeReg.Text = "Se Registro de manera Exitosa"
+                        Bitacora.Escribir("Se Registro de manera Exitosa", LogMsg.INFO)
+                        ModoBusqueda()
+                    Else
+                        lblMensajeReg.Text = "Problemas de insercion!!!"
+                    End If
+
+                ElseIf hdTipoAccion.Value = "U" Then
+                    oBL.Actualizar(oBE)
+                    lblMensajeReg.Text = "Se Actualizó de manera Exitosa"
+                    Bitacora.Escribir("Se Actualizó de manera Exitosa", LogMsg.INFO)
+                    ModoBusqueda()
+                End If
+            Catch ex As Exception
+                lblMensajeReg.Text = ex.Message
+                Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+            End Try
+        End If
+
+    End Sub
+
+#End Region
+
+#Region "Metodos Edicion"
+
+    Private Sub CargaCombosEdicion()
+        Dim oTB_CAMARA_BL As TB_CAMARA_BL = New TB_CAMARA_BL
+        Try
+
+            ddlMarcaEdit.DataSource = oTB_CAMARA_BL.ListarComboMarca()
+            ddlMarcaEdit.DataTextField = "DESCRIPCION"
+            ddlMarcaEdit.DataValueField = "CODIGO"
+            ddlMarcaEdit.DataBind()
+            ddlMarcaEdit.Items.Insert(0, "(Seleccione)")
+            ddlMarcaEdit.Items(0).Value = 0
+
+            ddlEstadoEdit.DataSource = oTB_CAMARA_BL.ListarComboEstado()
+            ddlEstadoEdit.DataTextField = "DESCRIPCION"
+            ddlEstadoEdit.DataValueField = "CODIGO"
+            ddlEstadoEdit.DataBind()
+            ddlEstadoEdit.Items.Insert(0, "(Seleccione)")
+            ddlEstadoEdit.Items(0).Value = 0
+
+            ddlCOVVEdit.DataSource = oTB_CAMARA_BL.ListarComboCOVV()
+            ddlCOVVEdit.DataTextField = "DESCRIPCION"
+            ddlCOVVEdit.DataValueField = "CODIGO"
+            ddlCOVVEdit.DataBind()
+            ddlCOVVEdit.Items.Insert(0, "(Seleccione)")
+            ddlCOVVEdit.Items(0).Value = 0
+
+        Catch ex As Exception
+            lblMensaje.Text = ex.Message
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+        End Try
+    End Sub
+
+
+#End Region
+
+    Protected Sub btnExportar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnExportar.Click
+
+        Dim oBE As TB_CAMARA_BE = New TB_CAMARA_BE
+        Dim oBL As TB_CAMARA_BL = New TB_CAMARA_BL
+        Try
+            With oBE
+                If txtID.Text.Trim = "" Then .PropINTIDCAMARA = 0 Else .PropINTIDCAMARA = CType(txtID.Text, Int32)
+                .PropVCHOBSERVA = txtDescripcion.Text.ToUpper
+                .PropINTCODMARCA = ddlMarca.SelectedValue
+                .PropINTCODESTADO = ddlEstado.SelectedValue
+            End With
+            Dim dt As DataTable = New DataTable
+            Dim GV As GridView = New GridView
+            dt = oBL.Busqueda(oBE)
+            GV.DataSource = dt
+            GV.DataBind()
+            GridViewExportUtil.ExportaUsuario("ComponenteSeguridad.xls", GV)
+            Bitacora.Escribir("Exportacion Exitosa", LogMsg.INFO)
+        Catch ex As Exception
+            lblMensaje.Text = ex.Message
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+        End Try
+
+
+
+    End Sub
+End Class

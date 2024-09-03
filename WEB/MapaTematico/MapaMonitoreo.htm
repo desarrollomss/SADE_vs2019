@@ -1,0 +1,1226 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+    <title></title>
+ 	<style type="text/css">
+        html {
+            height: 100%;
+            background-color: #ebefda;
+        }
+
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #title {
+            width: 100%;
+            height: 120px;
+            background-color: #131F2A;
+            margin: 0px 0px 0px 0px;
+            padding: 1px 0px 0px 1px;
+        }
+
+ 	    #tableLogo {
+            width: 100%;
+ 	    }
+
+         #LogoMSS {
+             width: 300px;
+             height: 80px;
+             border: 1px solid #131F2A;
+         }
+
+         #LogoCCO {
+             width: 100px;
+             height: 110px;
+             border: 1px solid #131F2A;
+         }
+
+         #mappanel {
+             width: 80%;
+             height: 100%;
+             border: 1px solid black;
+         }
+
+
+        #navi {
+	        list-style-type:square;
+        }
+
+         #maparea {
+             width: 1000px;
+             height: 700px;
+             border: 1px solid black;
+         }
+         #permalink{
+             position:absolute;
+             margin-left:822px;
+         }
+        #Select1 {
+            width: 173px;
+
+
+     
+        }
+        .lista:hover
+        {
+        background: #E5E5E5;
+        border-color:#999999;
+        color: #212121;
+        }
+        
+<!--        .boldtable, .boldtable TD, .boldtable TH 
+        { 
+            font-family:sans-serif; 
+            font-size:8pt; 
+            color:white; 
+            background-color:navy; 
+        }
+-->
+        .tftable {font-family:Tahoma, Sans-Serif; font-size:10px;color:#333333;width:100%;border-width: 1px;border-color: #a9a9a9;border-collapse: collapse;}
+        .tftable th {font-family:Tahoma, Sans-Serif; font-size:10px;background-color:#b8b8b8;border-width: 1px;padding: 2px;border-style: solid;border-color: #a9a9a9;text-align:left;}
+        .tftable tr {background-color:#cdcdcd;}
+        .tftable td {font-family:Tahoma, Sans-Serif; font-size:10px;border-width: 1px;padding: 2px;border-style: solid;border-color: #a9a9a9;}
+        .tftable tr:hover {background-color:#ffffff;}
+
+        .tftableW {font-family:Tahoma, Sans-Serif; font-size:10px;color:#333333;width:100%;border-width: 1px;border-color: #a9a9a9;border-collapse: collapse;}
+        .tftableW th {font-family:Tahoma, Sans-Serif; font-size:10px;background-color:#b8b8b8;border-width: 1px;padding: 2px;border-style: solid;border-color: #a9a9a9;text-align:left;}
+        .tftableW tr {background-color:#cdcdcd;}
+        .tftableW td {font-family:Tahoma, Sans-Serif; font-size:10px;border-width: 1px;padding: 2px;border-style: solid;border-color: #a9a9a9;}
+
+        .tftableC {font-family:Tahoma, Sans-Serif; font-size:11px;color:#333333;width:100%;border-width: 1px;border-color: #a9a9a9;border-collapse: collapse;}
+        .tftableC th {font-family:Tahoma, Sans-Serif; font-size:11px;background-color:#b8b8b8;border-width: 1px;padding: 2px;border-style: solid;border-color: #a9a9a9;text-align:left;}
+        .tftableC tr {background-color:#FFFF99;}
+        .tftableC td {font-family:Tahoma, Sans-Serif; font-size:11px;border-width: 1px;padding: 2px;border-style: solid;border-color: #a9a9a9;}
+
+
+     </style>
+        <script src="GeoExt/js/ext-base.js" type="text/javascript"></script>
+        <script src="GeoExt/js/ext-all.js" type="text/javascript"></script>
+        <script src="GeoExt/UX/GMapPanel.js" type="text/javascript"></script>
+
+        <link href="GeoExt/css/ext-all.css" rel="stylesheet" type="text/css" />
+        <link href="GeoExt/css/xtheme-gray.css" rel="stylesheet" type="text/css" />
+
+               
+        <script src="jquery/jquery-1.7.2.js" type="text/javascript"></script>
+        <script src="OpenLayers-2.13.1/OpenLayers.js" type="text/javascript"></script>
+
+        <script src="GeoExt/GeoExt.js" type="text/javascript"></script>
+
+
+        <script src="JS/JSToolBar.js" type="text/javascript"></script>
+
+        <script src="JS/JSReport.js" type="text/javascript"></script>
+        <script src="JS/JSGridExt.js" type="text/javascript"></script>
+        <script src="JS/JSReport.js" type="text/javascript"></script>
+        <script src="JS/JSGoogleMap.js" type="text/javascript"></script>
+        <script src="JS/JSLayerMap.js" type="text/javascript"></script>
+
+        <link href="../css/boton.css" rel="stylesheet" type="text/css" />
+        <link href="../Styles/accordionmenu.css" rel="stylesheet" type="text/css" />
+    	
+
+        <style type="text/css">
+            /* work around an Ext bug that makes the rendering
+               of menu items not as one would expect */
+            .ext-ie .x-menu-item-icon {
+                left: -24px;
+            }
+            .ext-strict .x-menu-item-icon {
+                left: 3px;
+            }
+            .ext-ie6 .x-menu-item-icon {
+                left: -24px;
+            }
+            .ext-ie7 .x-menu-item-icon {
+                left: -24px;
+            }
+           
+          .zoomfull { background-image:url(../img/Toolbar/_home-button.png) !important; }
+          .panMap { background-image:url(../img/Toolbar/_pan-button.png) !important;  }
+          .zoomIn { background-image:url(../img/Toolbar/_zoomin-button.png) !important;  }
+          .zoomOut{ background-image:url(../img/Toolbar/_zoomout-button.png) !important;  }
+          .previousExtent{ background-image:url(../img/Toolbar/view-tool_back.png) !important;  }
+          .nextExtent{ background-image:url(../img/Toolbar/tool_forward.png) !important;  }
+          .measureDist{ background-image:url(../img/Toolbar/_ruler-button.png) !important;  }
+          .measureArea{ background-image:url(../img/Toolbar/_polygon-button.png) !important;  }
+          .imprimir{ background-image:url(../img/Toolbar/_printer-button.png) !important;  }
+
+          .componente{ background-image:url(../img/Toolbar/tool_infocmp.png) !important;  }
+          .gsview{ background-image:url(../img/Toolbar/_streetview-button.png) !important;  }
+          .infolote{ background-image:url(../img/Toolbar/_info-button.png) !important;  }
+
+          .salida{ background-image:url(../img/Toolbar/_exit-button.png) !important;  }
+           
+           
+            
+
+          
+          .informacion {
+               background-image:url(../img/Collapse/informacion.png); width:32px; height:32px;
+            }
+
+          .recurso {
+               background-image:url(../img/Collapse/recursos.png); width:32px; height:32px;
+            }
+          
+          
+          .alertas {
+               background-image:url(../img/Collapse/alertas.png); width:32px; height:32px;
+            }
+          .layers {
+                background-image:url(../img/Collapse/mapas.png); width:32px; height:32px;
+            }
+          .calles {
+                background-image:url(../img/Collapse/calles.png); width:32px; height:32px;
+            }
+
+          .titulo {
+               background-image:url(../img/Media/logoMSS-CCO.png); width:500px; height:110px;
+            }
+
+          
+        </style>
+
+
+</head>
+<body onload="Repetir()">
+    
+    <form id="form1" runat="server">
+    <div id="mappanel" style="background:#fff" ></div>
+
+<!--    <div id="divPopup" style="width:390px" class="x-hidden">
+        <div class="x-window-header">Detalle Lote Catastral</div>
+    </div>-->
+
+<!--    <div id="statusbar">
+    </div>-->
+
+    <div id="divLote">
+        <table border="1" cellpadding="0px" cellspacing="5px">
+        <tr valign="middle">
+            <td align="center">
+                <div id="divFoto" />
+            </td>
+            <td align="center">
+                <div id="divPlano" />
+            </td>
+        </tr>
+        <tr valign="middle">
+            <td align="center" colspan="2">
+                <div id="divTabsPop">
+                    <div id="divTab01">
+                    </div>
+                    <div id="divTab02">
+                    </div>
+                    <div id="divTab03">
+                    </div>
+                    <div id="divTab04">
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        </table>
+    </div>
+
+
+
+
+        <div id="divDatos" style="width:470px">
+            <div id="divTabsL">
+                <div id="divTabAlertas" class="x-hide-display">
+                    <div id="divAlertas" style="width: 450px;  margin-left: 2%; ">
+                        <div id="divFiltraA">
+                            <table id="tbFiltrarA" style="width:100%; padding-top:10px; padding-bottom:10px; font-size:14px; font-family:Tahoma" width="100%" cellpadding="10" cellspacing="10" border="0">
+                                <colgroup>
+                                    <col width="20%" />
+                                    <col width="80%" />
+                                </colgroup>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Alerta</td>
+                                    <td><input type="text" onkeyup="{ this.value=this.value.toUpperCase(); filterAlertas(this); }" style="width:80%" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div id="divAlertasVer">
+                        </div>
+                    </div>
+                </div>
+                <div id="divTabCamaras" class="x-tab">
+                    <div id="divRecursos" style="width: 450px;  margin-left: 2%; ">
+                        <div id="divFiltraRec">
+                            <table id="tbFiltrarGPS" style="width:100%; padding-top:10px; padding-bottom:10px; font-size:14px; font-family:Tahoma" width="100%" cellpadding="10" cellspacing="10" border="0">
+                                <colgroup>
+                                    <col width="20%" />
+                                    <col width="80%" />
+                                </colgroup>
+                                <tr>
+                                    <td>COVV</td>
+                                    <td>
+                                        <select id="SelCOVV" onchange="mostrarGeoCamaras()" name="S1" title="COVV" width="80%">
+                                            <option value="0">-- TODOS --</option>
+                                            <option value="1">COVV ALAMOS</option>
+                                            <option value="2">COVV ALBORADA</option>
+                                            <option value="3">COVV ALFREDO FRANCO</option>
+                                            <option value="4">COVV AVIACION</option>
+                                            <option value="5">COVV AYACUCHO</option>
+                                            <option value="6">COVV BENAVIDES</option>
+                                            <option value="7">COVV CAPULLANA</option>
+                                            <option value="8">COVV CASTILLA</option>
+                                            <option value="9">COVV CASUARINAS</option>
+                                            <option value="10">COVV COOVIECMA</option>
+                                            <option value="11">COVV ENCALADA</option>
+                                            <option value="12">COVV FUNDADORES</option>
+                                            <option value="13">COVV INGENIEROS</option>
+                                            <option value="14">COVV JACARANDA</option>
+                                            <option value="15">COVV JORGE CHAVEZ</option>
+                                            <option value="16">COVV JULITO ESCOBAR</option>
+                                            <option value="17">COVV MARTINELLI</option>
+                                            <option value="18">COVV MATEO PUMACAHUA</option>
+                                            <option value="19">COVV MONTERRICO</option>
+                                            <option value="20">COVV NEPTUNO</option>
+                                            <option value="21">COVV OLAVEGOYA</option>
+                                            <option value="22">COVV PAZOS</option>
+                                            <option value="23">COVV PRECURSORES</option>
+                                            <option value="24">COVV PRIMAVERA</option>
+                                            <option value="25">COVV SAGITARIO</option>
+                                            <option value="26">COVV SAN JUAN</option>
+                                            <option value="27">COVV SAN ROQUE</option>
+                                            <option value="28">COVV SANTA MARIA</option>
+                                            <option value="29">COVV VILLA LIBERTAD</option>
+                                            <option value="30" selected="selected">CCO</option>
+                                            <option value="31">CCO - INTERNAS</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Estado</td>
+                                    <td>
+                                        <select id="SelESTADO" onchange="mostrarGeoCamaras()" name="S1" title="ESTADO" width="80%">
+                                            <option value="0">-- TODOS --</option>
+                                            <option value="1" selected="selected">OPERATIVA</option>
+                                            <option value="2">INOPERATIVA</option>
+                                            <option value="3">CON LIMITACIONES</option>
+                                            <option value="4">PENDIENTE</option>
+                                            <option value="5">PROYECTO</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>Recurso</td>
+                                    <td><input type="text" onkeyup="{ this.value=this.value.toUpperCase(); filterRecurso(this); }" style="width:80%" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div id="divCamarasVer">
+                        </div>
+                    </div>
+                </div>
+                <div id="divTabUnidades" class="x-hide-display">
+                    <div id="divUnidades" style="width: 450px;  margin-left: 2%; ">
+                        <div id="divFiltraUnidad">
+                            <table id="tbFiltrarUni" style="width:100%; padding-top:10px; padding-bottom:10px; font-size:14px; font-family:Tahoma" width="100%" cellpadding="10" cellspacing="10" border="0">
+                                <colgroup>
+                                    <col width="20%" />
+                                    <col width="80%" />
+                                </colgroup>
+
+                                <tr>
+                                    <td>Unidad</td>
+                                    <td><input type="text" onkeyup="{ this.value = this.value.toUpperCase(); filterUnidades(this); }" style="width:80%" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div id="divUnidadesVer">
+                        </div>
+                    </div>
+                </div>
+                <div id="divTabCalles" class="x-hide-display">
+                    <div id="divCalles" style="width: 450px;  margin-left: 2%; ">
+                        <div id="divFilterCalles">
+                            <table id="tbFiltrarCalle" style="width:100%; padding-top:10px; padding-bottom:10px; font-size:14px; font-family:Tahoma" width="100%" cellpadding="10" cellspacing="10" border="0">
+                                <colgroup>
+                                    <col width="20%" />
+                                    <col width="80%" />
+                                </colgroup>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Calle / Via</td>
+                                    <td>
+                                        <input type="text" onkeyup="{ this.value=this.value.toUpperCase(); filterCalle(this); } " style="width:95%" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="divDataCalles">
+                        </div>
+                    </div>
+                </div>
+                <div id="divTabParques" class="x-hide-display">
+                    <div id="divParques" style="width: 430px;  margin-left: 2%; ">
+                        <div id="divFilterParques" style="width: 420px;  margin-left: 2%;">
+                            <table id="tbFiltrarParque" style="width:100%; padding-top:10px; padding-bottom:10px; font-size:14px; font-family:Tahoma" width="100%" cellpadding="10" cellspacing="10" border="0">
+                                <colgroup>
+                                    <col width="20%" />
+                                    <col width="80%" />
+                                </colgroup>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Parque</td>
+                                    <td>
+                                        <input type="text" onkeyup="{ this.value=this.value.toUpperCase(); filterParque(this); } " style="width:95%" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="divDataParques" style="width: 420px;  margin-left: 2%;">
+                        </div>
+
+                    </div>
+                    <div id="divTabHabilita" class="x-hide-display">
+                        <div id="divHabilita" style="width: 430px;  margin-left: 2%; ">
+                            <div id="divFilterHabilitas" style="width: 420px;  margin-left: 2%;">
+                                <table id="tbFiltrarHabilita" style="width:100%; padding-top:10px; padding-bottom:10px; font-size:14px; font-family:Tahoma" width="100%" cellpadding="10" cellspacing="10" border="0">
+                                    <colgroup>
+                                        <col width="20%" />
+                                        <col width="80%" />
+                                    </colgroup>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Urbanización</td>
+                                        <td>
+                                            <input type="text" onkeyup="{ this.value = this.value.toUpperCase(); filterHabilita(this); } " style="width:95%" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="divDataHabilitas" style="width: 420px;  margin-left: 2%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+        <div id="divCapas" style="width:450px">
+            <div id="divMaps" style="width:340px">
+                <div id="divTabsL">
+                    <div id="divTabLayers" class="x-hide-display">
+                    </div>
+                    <div id="divTabLegend" class="x-tab">
+                    </div>
+                    <div id="divTabSearch" class="x-hide-display">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+</form>
+
+    <input type="text" id="txtX" style="width:0; height:0;" />
+    <input type="text" id="txtY" style="width:0; height:0;" />
+<script>
+    //OpenLayers.ProxyHost = "proxy.cgi?url=";
+    OpenLayers.IMAGE_RELOAD_ATTEMPTS        = 5;
+    OpenLayers.Util.onImageLoadErrorColor   = "transparent";
+    OpenLayers.Tile.Image.useBlankTile      = true;
+    OpenLayers.DOTS_PER_INCH = 90.71428571428572;
+    var grid;
+    var mapPanel;
+    var panLote;
+    var infoLote;
+    var infoGPS;
+    var infoCAM;
+    var map;
+    var mapwin;
+    var matrizHabilitas = [];
+
+    var wms, lote, clote, hurb, zoni, sc, gmap;
+    var vectorLayer;
+    var vecLayerAlertas;
+    var vecLayerUnidades;
+    var vecLayerCamaras;
+    var vecLayer;
+    var ctrl, toolbarItems = [], action, actions = {};
+    var vSelecc = null;
+    var matrizCalles = [];
+    var popup;
+    var zoom_dev = 17;
+    var __pmdl_west;
+    var __pmdl_top;
+    var __pmdl_bottom;
+
+    
+    var vSERVER = "http://192.0.0.92:8080//geoserver/CM150140/wms";
+    var vFOTOS = "http://192.0.0.92:8080//multimedia/fotos/catastro/2012/";
+
+    var win;
+    var tabs;
+    var tabsF;
+    var grid1;
+    var grid2;
+    var grid3;
+    var grid4;
+    var gridTB;
+
+    var gridParques;
+    var gridHabilita;
+    var tSRV = getUrlVars()["pHOST"];
+
+    if (tSRV == "PUB") {
+        vSERVER = "http://serviciosgis.munisurco.gob.pe:70/geoserver/CM150140/wms";
+        vFOTOS = "http://serviciosgis.munisurco.gob.pe:70/multimedia/fotos/catastro/2012/";
+    }
+
+
+	window.resizeTo(screen.availWidth, screen.availHeight); 
+	window.moveTo(0,0);
+
+
+	Ext.onReady(function () {
+	    //Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+
+
+
+
+	    var options = {
+	        maxExtent: new OpenLayers.Bounds(278200.000, 8645389.716, 288750.000, 8664783.095),
+	        //maxExtent: new OpenLayers.Bounds(279742.51, 8643662.42, 289139.39, 8664801.02),
+	        scales: [86500, 65500, 50000, 35000, 25000, 12500, 6300, 3500, 1500, 750, 400, 200, 100, 50, 1],
+	        //bounds: new OpenLayers.Bounds(166021.4430960765, 1116915.044047609, 849335.6704770296, 10000000.0),
+	        projection: new OpenLayers.Projection("EPSG:32718"),
+	        displayProj: new OpenLayers.Projection("EPSG:32718"),
+	        units: "m",
+	        controls: [
+                        new OpenLayers.Control.Navigation(),
+                        new OpenLayers.Control.PanZoomBar(),
+                        new OpenLayers.Control.LayerSwitcher({ 'ascending': false }),
+                        new OpenLayers.Control.MousePosition(),
+                        //new OpenLayers.Control.OverviewMap(),
+                        new OpenLayers.Control.KeyboardDefaults()
+	                   ]
+            //,
+	        //nocontrols: true
+	    };
+
+
+
+	    map = new OpenLayers.Map(options)
+
+	    vecLayerAlertas = new OpenLayers.Layer.Vector("Surco Alerta");
+	    vecLayerCamaras = new OpenLayers.Layer.Vector("Surco Camaras");
+	    vecLayerUnidades = new OpenLayers.Layer.Vector("Surco Unidades");
+	    //vectorLayer = new OpenLayers.Layer.Vector("Recursos GPS")
+	    vSelecc = new OpenLayers.Layer.Vector("Objeto Seleccionado", { 'displayInLayerSwitcher': false, noLegend: true });
+
+
+	    f_createToolbar();
+	    mostrarCapas();
+	    mostrarGeoCallejero();
+	    mostrarGeoParques();
+	    mostrarGeoHabilitas();
+	    mostrarGeoAlertas();
+	    mostrarGeoCamaras();
+    
+	    mostrarGeoUnidades();
+
+	
+
+	    new Ext.Viewport({
+	        layout: "border",
+	        items: [mapPanel, __pmdl_west]
+	    });
+
+
+	    var onMouseMove = function (e) {
+	        var lonlat = map.getLonLatFromPixel(e.xy);
+	        var epsgTxt = map.getProjection();
+	        //var txtHTML;
+	        document.getElementById("txtX").value = lonlat.lon;
+	        document.getElementById("txtY").value = lonlat.lat;
+	        //txtHTML = "<div style='font-size:12px; font-family:Tahoma, Sans-Serif;'>| " + epsgTxt + " | X:" + lonlat.lon.toFixed(3) + " Y:" + lonlat.lat.toFixed(3) + " |</div>";
+	        //document.getElementById("statusbar").innerHTML = txtHTML;
+	    };
+
+	    var onMouseClick = function (e) {
+	        var lonlat = map.getLonLatFromPixel(e.xy);
+	        //muestraComponente(lonlat.lon, lonlat.lat)
+	    };
+
+	    map.events.register("mousemove", map, onMouseMove);
+	    map.events.register("click", map, onMouseClick);
+
+	    Ext.getCmp("mappanel");
+	    map.zoomToMaxExtent();
+
+	}
+    
+);
+    //FIN Ext.onReady    
+
+
+
+    
+    function vistaLote(pLote) {
+
+        if (map.zoom < 7) {
+            Ext.Msg.alert('Información', '\n\nEscala del Mapa no permite visualizar\n\n');
+        }
+        else {
+            //__pmdl_west.items.get(4).expand();
+            Ext.getCmp('lDatos').expand(true);
+
+            var lblLote;
+            var webMethod = "WebServiceSIG.asmx/listarLoteDetalleGIS";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                data: "{'pCODLOTE':'" + pLote + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var txtHTML = response.d;
+
+                    if (txtHTML != null) {Fget
+
+                        win = new Ext.Window({
+                            title: 'Add',
+                            layout: 'fit',
+                            autoScroll: true,
+                            y: 100,
+                            width: 800,
+                            height: 500,
+                            modal: true,
+                            html: txtHTML,
+                            rrenderTo: "divTabLayers",
+                            closeAction: 'hide',
+                            collapsible: true
+                            //items: [mapPanel]
+                        });
+                        win.show();
+
+                        document.getElementById("divTab1").innerHTML = txtHTML;
+                    }
+
+                },
+                error: function (XMLHttpRequest, textStatus, error) { console.log('ERROR:' + error); }
+            });       //fin llamada ajax
+        }   // fin de else
+    }
+    
+    function posicionGPS(x, y, tISSI, tID) {
+        var center = new OpenLayers.LonLat(x, y);
+        map.setCenter(center, 8);
+    }
+
+
+    // detect point events 
+    function clickNotice(evt) {
+        alert('Point clicked');
+        point.deactivate();
+    }
+
+    
+    function filterAlertas(element) {
+        var value = $(element).val();
+        $("#ListAlertas > li").each(function () {
+            if ($(this).text().search(value) > -1) {
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+
+
+    function filterRecurso(element) {
+        var value = $(element).val();
+        $("#ListRecursos > li").each(function () {
+            if ($(this).text().search(value) > -1) {
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function filterUnidades(element) {
+        var value = $(element).val();
+        $("#ListUnidades > li").each(function () {
+            if ($(this).text().search(value) > -1) {
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function filterCalle(element) {
+        var value = $(element).val();
+        $("#ListCalle > li").each(function () {
+            if ($(this).text().search(value) > -1) {
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+
+
+    function filterParque(element) {
+        var value = $(element).val();
+        $("#ListParque > li").each(function () {
+            if ($(this).text().search(value) > -1) {
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function filterHabilita(element) {
+        var value = $(element).val();
+        $("#ListHabilita > li").each(function () {
+            if ($(this).text().search(value) > -1) {
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+
+
+    // * 
+
+    function mostrarGeoAlertas() {
+        var txtMarkerHTML;
+        var txtInfoHTML;
+        var tabla = "";
+        archivoValidacion = "../WebServiceGEO.asmx/listarMarcadorGEO?jsoncallback=?"
+        vecLayerAlertas.removeAllFeatures();
+
+        var sEST = 7;
+
+        $.getJSON(archivoValidacion, { pESTADO: sEST })
+	    .done(function (rptaServer) {
+
+	        var projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+
+	        for (var i = 0; i < rptaServer.Marcador.length; i++) {
+
+	            var iMarker;
+	            var strOri = rptaServer.Marcador[i].SMLORICODIGO;
+	            iMarker = '../img/Origen/Tipo_4.gif';
+	            if (strOri == 1) iMarker = "../img/Origen/tipo1.png";
+	            if (strOri == 2) iMarker = "../img/Origen/tipo2.png";
+	            if (strOri == 3) iMarker = "../img/Origen/tipo3.png";
+	            if (strOri == 4) iMarker = "../img/Origen/tipo4.png";
+	            if (strOri == 5) iMarker = "../img/Origen/tipo5.png";
+	            if (strOri == 6) iMarker = "../img/Origen/tipo6.png";
+	            iMarker = '../img/Origen/Tipo_4.gif';
+	
+	            tabla += "<li><a href='javascript:posicionMapa(" + rptaServer.Marcador[i].VCHINCLOCXGEO + "," + rptaServer.Marcador[i].VCHINCLOCYGEO + ")'>";
+	            tabla += '' + rptaServer.Marcador[i].INTINCCODIGO + ' - ' + rptaServer.Marcador[i].DTMINCFECHA + ' [S-' + rptaServer.Marcador[i].VCHINCLOCSECTOR + '][C-' + rptaServer.Marcador[i].VCHINCLOCCUADRANTE + '] - ' + rptaServer.Marcador[i].VCHTABDESCRIPCION + ' (' + rptaServer.Marcador[i].VCHORIDESCRIPCION + ')<BR>';
+                //tabla += 'Informante: ' + rptaServer.Marcador[i].VCHINCNOMBRECOMP + '<BR>'
+                //tabla += 'Ubicación: ' + rptaServer.Marcador[i].VCHINCLOCVIANOMBRE1 + '</a></li>';
+                tabla += '</a></li>';
+
+	            var feature = new OpenLayers.Feature.Vector(
+                            new OpenLayers.Geometry.Point(rptaServer.Marcador[i].VCHINCLOCXGEO, rptaServer.Marcador[i].VCHINCLOCYGEO),
+                            { description: "<h1>marker number " + rptaServer.Marcador[i].INTINCCODIGO + "</h1>" },
+                            { externalGraphic: iMarker, graphicHeight: 20, graphicWidth:15, graphicXOffset: -8, graphicYOffset: -8 }
+                        );
+
+	            feature.attributes = {
+	                vINTINCCODIGO: rptaServer.Marcador[i].INTINCCODIGO,
+	                vVCHINCNUMEROORIGEN: rptaServer.Marcador[i].VCHINCNUMEROORIGEN,
+	                vVCHINCRELATO: rptaServer.Marcador[i].VCHINCRELATO,
+	                vVCHINCNOMBRECOMP: rptaServer.Marcador[i].VCHINCNOMBRECOMP,
+	                vSMLINCESTADO: rptaServer.Marcador[i].SMLINCESTADO,
+	                vVCHTABDESCRIPCION: rptaServer.Marcador[i].VCHTABDESCRIPCION,
+	                vVCHINCIDLATITUDE: rptaServer.Marcador[i].VCHINCIDLATITUDE,
+	                vVCHINCIDLONGITUDE: rptaServer.Marcador[i].VCHINCIDLONGITUDE,
+	                vSMLORICODIGO: rptaServer.Marcador[i].SMLORICODIGO,
+	                vVCHORIDESCRIPCION: rptaServer.Marcador[i].VCHORIDESCRIPCION,
+	                vSMLTINCODIGO: rptaServer.Marcador[i].SMLTINCODIGO,
+	                vVCHTINDESCRIPCION: rptaServer.Marcador[i].VCHTINDESCRIPCION,
+	                vSMLSTICODIGO: rptaServer.Marcador[i].SMLSTICODIGO,
+	                vVCHSTIDESCRIPCION: rptaServer.Marcador[i].VCHSTIDESCRIPCION,
+	                vSMLPRICODIGO: rptaServer.Marcador[i].SMLPRICODIGO,
+	                vVCHPRIDESCRIPCION: rptaServer.Marcador[i].VCHPRIDESCRIPCION,
+	                vDTMINCFECHA: rptaServer.Marcador[i].DTMINCFECHA,
+	                vVCHMOTIVOALERTA: rptaServer.Marcador[i].VCHMOTIVOALERTA,
+	                vVCHDESMOTIVOALERTA: rptaServer.Marcador[i].VCHDESMOTIVOALERTA,
+	                vVCHCODQUEJA: rptaServer.Marcador[i].VCHCODQUEJA,
+                    vVCHINCLOCVIANOMBRE1: rptaServer.Marcador[i].VCHINCLOCVIANOMBRE1,
+                    vVCHINCLOCHABNOMBRE: rptaServer.Marcador[i].VCHINCLOCHABNOMBRE,
+                    vVCHINCLOCCUADRANTE: rptaServer.Marcador[i].VCHINCLOCCUADRANTE,
+                    vVCHINCLOCSECTOR: rptaServer.Marcador[i].VCHINCLOCSECTOR,
+                    vVCHINCLOCXGEO: rptaServer.Marcador[i].VCHINCLOCXGEO,
+                    vVCHINCLOCYGEO: rptaServer.Marcador[i].VCHINCLOCYGEO
+	            };
+
+	            vecLayerAlertas.addFeatures(feature);
+
+	        }
+	        map.addLayer(vecLayerAlertas);
+	        document.getElementById("divAlertasVer").innerHTML = "<ul id='ListAlertas' class='accordion'>" + tabla + "</ul>";
+
+	        var selControlAlerta = new OpenLayers.Control.SelectFeature(vecLayerAlertas, {
+	            hover: true,
+	            toggle: true,
+	            selectStyle: {
+	                fillOpacity: 0.6,
+	                fillColor: "#FFFF99",
+	                strokeColor: "#FFFF99",
+	                cursor: "pointer"
+	            },
+	            callbacks: {
+	                click: function (event) {
+	                    var punto = new OpenLayers.LonLat(event.attributes.vVCHINCLOCXGEO, event.attributes.vVCHINCLOCYGEO);
+	                    var xHTML;
+	                    //console.log(punto);
+
+	                    var ifMarker;
+	                    var strOri = event.attributes.vSMLORICODIGO;
+	                    ifMarker = '../img/Origen/Tipo_4.gif';
+	                    if (strOri == 1) ifMarker = "../img/Origen/tipo1.png";
+	                    if (strOri == 2) ifMarker = "../img/Origen/tipo2.png";
+	                    if (strOri == 3) ifMarker = "../img/Origen/tipo3.png";
+	                    if (strOri == 4) ifMarker = "../img/Origen/tipo4.png";
+	                    if (strOri == 5) ifMarker = "../img/Origen/tipo5.png";
+	                    if (strOri == 6) ifMarker = "../img/Origen/tipo6.png";
+
+	                    xHTML = "<table style='font-size:10px; font-family:Tahoma, Sans-Serif;' width='100%'>";
+	                    xHTML += "<tr valgin='center' valgin='center'><td colspan='2'><img src='" + ifMarker + "' alt='" + event.attributes.vVCHORIDESCRIPCION + "'></td></tr>";
+	                    xHTML += "<tr><td>No. Carta</td><td> : </td><td>" + event.attributes.vINTINCCODIGO + "</td></tr>";
+	                    xHTML += "<tr><td>Origen</td><td> : </td><td>" + event.attributes.vVCHORIDESCRIPCION + "</td></tr>";
+	                    xHTML += "<tr><td>No. Origen</td><td> : </td><td>" + event.attributes.vVCHINCNUMEROORIGEN + "</td></tr>";
+	                    xHTML += "<tr><td>Fecha</td><td> : </td><td>" + event.attributes.vDTMINCFECHA + "</td></tr>";
+	                    xHTML += "<tr><td>Denunciante</td><td> : </td><td>" + event.attributes.vVCHINCNOMBRECOMP + "</td></tr>";
+	                    xHTML += "<tr><td>Asunto</td><td> : </td><td>" + event.attributes.vVCHINCRELATO + "</td></tr>";
+	                    xHTML += "<tr><td>Estado</td><td> : </td><td>" + event.attributes.vVCHTABDESCRIPCION + "</td></tr>";
+	                    xHTML += "</table>";
+	                    if (infoGPS != null && infoGPS != undefined) {
+	                        infoGPS.hide();
+	                    }
+	                    infoGPS = new OpenLayers.Popup("alerta",
+                                                   punto,
+                                                   new OpenLayers.Size(350, 150),
+                                                   xHTML,
+                                                   true);
+	                    infoGPS.setBackgroundColor("#FFFF99");
+	                    infoGPS.closeOnMove = true;
+	                    map.addPopup(infoGPS);
+	                },
+	                over: function (event) {
+	                    //console.log(event.attributes.vINTINCCODIGO);
+	                }
+	            }
+	        })
+	        map.addControl(selControlAlerta);
+	        selControlAlerta.activate();
+	    }
+	);
+	}
+
+    function mostrarGeoUnidades() {
+        var txtMarkerHTML;
+        var txtInfoHTML;
+        var tabla = "";
+        archivoValidacion = "../WebServiceGEO.asmx/listarUnidadesGEO?jsoncallback=?"
+        vecLayerUnidades.removeAllFeatures();
+
+        var sEST = 7;
+
+        $.getJSON(archivoValidacion, { pESTADO: sEST })
+	    .done(function (rptaServer) {
+
+	        var projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+
+	        for (var i = 0; i < rptaServer.Unidades.length; i++) {
+
+	            var iMarker;
+	            var strUnidad = rptaServer.Unidades[i].vchcodunidad;
+
+	            iMarker = '../img/Unidades/_pngM.png';
+	            if (strUnidad.substring(0, 1) == "M") iMarker = "../img/Unidades/_pngM.png";
+	            if (strUnidad.substring(0, 1) == "A") iMarker = "../img/Unidades/_pngA.png";
+	            if (strUnidad.substring(0, 1) == "T") iMarker = "../img/Unidades/_pngT.png";
+	            if (strUnidad.substring(0, 1) == "R") iMarker = "../img/Unidades/_pngR.png";
+	            if (strUnidad.substring(0, 1) == "B") iMarker = "../img/Unidades/_pngB.png";
+                
+
+	            tabla += "<li><a href='javascript:posicionMapa(" + rptaServer.Unidades[i].vchxgeo + "," + rptaServer.Unidades[i].vchygeo + ")'>";
+	            //tabla += '' + rptaServer.Unidades[i].vchcodunidad + ' - ' + rptaServer.Unidades[i].DTMINCFECHA + ' [S-' + rptaServer.Unidades[i].VCHINCLOCSECTOR + '][C-' + rptaServer.Unidades[i].vchcdte + '] - ' + rptaServer.Unidades[i].VCHTABDESCRIPCION + ' (' + rptaServer.Unidades[i].VCHORIDESCRIPCION + ')<BR>';
+	            tabla += '' + rptaServer.Unidades[i].vchcodunidad + ' - ' + rptaServer.Unidades[i].intissi + ' ' + rptaServer.Unidades[i].datposfreg;
+	            tabla += '</a></li>';
+
+
+	            var feature = new OpenLayers.Feature.Vector(
+                            new OpenLayers.Geometry.Point(rptaServer.Unidades[i].vchxgeo, rptaServer.Unidades[i].vchygeo),
+                            { description: "<h1>marker number " + rptaServer.Unidades[i].intissi + "</h1>" },
+                            { externalGraphic: iMarker, graphicHeight: 32, graphicWidth: 28, graphicXOffset: -8, graphicYOffset: -8 }
+                        );
+
+	            feature.attributes = {
+	                intissi: rptaServer.Unidades[i].intissi,
+	                intposid: rptaServer.Unidades[i].intposid,
+	                decposlon: rptaServer.Unidades[i].decposlon,
+	                decposlat: rptaServer.Unidades[i].decposlat,
+	                datposfreg: rptaServer.Unidades[i].datposfreg,
+	                vchcodunidad: rptaServer.Unidades[i].vchcodunidad,
+	                intinccodigo: rptaServer.Unidades[i].intinccodigo,
+	                vchcodhu: rptaServer.Unidades[i].vchcodhu,
+	                vchdenhu: rptaServer.Unidades[i].vchdenhu,
+	                vchcodvia: rptaServer.Unidades[i].vchcodvia,
+	                vchnomvia: rptaServer.Unidades[i].vchnomvia,
+	                vchcdavia: rptaServer.Unidades[i].vchcdavia,
+	                vchcdte: rptaServer.Unidades[i].vchcdte,
+	                vchsector: rptaServer.Unidades[i].vchsector,
+	                vchxgeo: rptaServer.Unidades[i].vchxgeo,
+	                vchygeo: rptaServer.Unidades[i].vchygeo
+	            };
+
+	            vecLayerUnidades.addFeatures(feature);
+
+	        }
+	        map.addLayer(vecLayerUnidades);
+	        document.getElementById("divUnidadesVer").innerHTML = "<ul id='ListUnidades' class='accordion'>" + tabla + "</ul>";
+
+	        var selControlUnidades = new OpenLayers.Control.SelectFeature(vecLayerUnidades, {
+	            hover: true,
+	            toggle: true,
+	            selectStyle: {
+	                fillOpacity: 0.6,
+	                fillColor: "#FFFF99",
+	                strokeColor: "#FFFF99",
+	                cursor: "pointer"
+	            },
+	            callbacks: {
+	                click: function (event) {
+	                    var punto = new OpenLayers.LonLat(event.attributes.vchxgeo, event.attributes.vchygeo);
+	                    var xHTML;
+	                    //console.log(punto);
+	                    xHTML = "<table style='font-size:10px; font-family:Tahoma, Sans-Serif;' width='100%'>";
+	                    xHTML += "<tr><td>No. ISSI</td><td> : </td><td>" + event.attributes.intissi + "</td></tr>";
+	                    xHTML += "<tr><td>Unidad</td><td> : </td><td>" + event.attributes.vchcodunidad + "</td></tr>";
+	                    xHTML += "<tr><td>Fecha</td><td> : </td><td>" + event.attributes.datposfreg + "</td></tr>";
+	                    xHTML += "<tr><td>Ubicacion</td><td> : </td><td>" + event.attributes.vchnomvia + "</td></tr>";
+	                    xHTML += "<tr><td>Estado</td><td> : </td><td>" + event.attributes.vchdenhu + "</td></tr>";
+	                    xHTML += "</table>";
+	                    if (infoGPS != null && infoGPS != undefined) {
+	                        infoGPS.hide();
+	                    }
+	                    infoGPS = new OpenLayers.Popup("Unidades",
+                                                   punto,
+                                                   new OpenLayers.Size(350, 150),
+                                                   xHTML,
+                                                   true);
+	                    infoGPS.setBackgroundColor("#FFFF99");
+	                    infoGPS.closeOnMove = true;
+	                    map.addPopup(infoGPS);
+	                },
+	                over: function (event) {
+	                    console.log(event.attributes.intissi);
+	                }
+	            }
+	        })
+	        map.addControl(selControlUnidades);
+	        selControlUnidades.activate();
+	    }
+	);
+    }
+
+    function mostrarGeoCamaras() {
+        var txtMarkerHTML;
+        var txtInfoHTML;
+        var tabla = "";
+        archivoValidacion = "../WebServiceGEO.asmx/listarCamarasGEO?jsoncallback=?"
+        vecLayerCamaras.removeAllFeatures();
+
+        var vCOVV = document.getElementById("SelCOVV").value;
+        var vESTADO = document.getElementById("SelESTADO").value;
+
+
+        $.getJSON(archivoValidacion, { pCOVV: vCOVV , pESTADO: vESTADO })
+	    .done(function (rptaServer) {
+
+	        var projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+
+	        for (var i = 0; i < rptaServer.Camaras.length; i++) {
+
+	            var iMarker;
+	            var intEstado = rptaServer.Camaras[i].intcodestado;
+	            iMarker = '../img/Cmpnte/CamaraX.png';
+	            if (intEstado == 1) iMarker = '../img/Cmpnte/Camara1.png';
+	            if (intEstado == 3) iMarker = '../img/Cmpnte/Camara2.png';
+                
+	            tabla += "<li><a href='javascript:posicionMapa(" + rptaServer.Camaras[i]._xgeo + "," + rptaServer.Camaras[i]._ygeo + ")'>";
+	            tabla += '' + rptaServer.Camaras[i].intidcamara + ' - ';
+	            tabla += '' + rptaServer.Camaras[i].vchdescovv + ' - ';
+	            tabla += '' + rptaServer.Camaras[i].vchubicacion + '';
+	            
+	            //tabla += '' + rptaServer.Camaras[i].vchdesestado ;
+	            tabla += '</a></li>';
+	            //console.log(tabla);
+	            var featureCam = new OpenLayers.Feature.Vector(
+                            new OpenLayers.Geometry.Point(rptaServer.Camaras[i]._xgeo, rptaServer.Camaras[i]._ygeo),
+                            { description: "<h1>marker number " + rptaServer.Camaras[i].intidcamara + "</h1>" },
+                            { externalGraphic: iMarker, graphicHeight: 24, graphicWidth: 24, graphicXOffset: -8, graphicYOffset: -8 }
+                        );
+
+	            featureCam.attributes = {
+	                intidcamara: rptaServer.Camaras[i].intidcamara,
+	                intcodmarca: rptaServer.Camaras[i].intcodmarca,
+	                vchdesmarca: rptaServer.Camaras[i].vchdesmarca,
+	                vchmodelo: rptaServer.Camaras[i].vchmodelo,
+	                vchnroserie: rptaServer.Camaras[i].vchnroserie,
+	                intcodcovv: rptaServer.Camaras[i].intcodcovv,
+	                vchdescovv: rptaServer.Camaras[i].vchdescovv,
+	                vchipcamara: rptaServer.Camaras[i].vchipcamara,
+	                vchlat: rptaServer.Camaras[i].vchlat,
+	                vchlon: rptaServer.Camaras[i].vchlon,
+	                geom: rptaServer.Camaras[i].geom,
+	                _xgeo: rptaServer.Camaras[i]._xgeo,
+	                _ygeo: rptaServer.Camaras[i]._ygeo,
+	                vchcodarea: rptaServer.Camaras[i].vchcodarea,
+	                vchcodsector: rptaServer.Camaras[i].vchcodsector,
+	                vchssecvecinal: rptaServer.Camaras[i].vchssecvecinal,
+	                vchcodcuadrante: rptaServer.Camaras[i].vchcodcuadrante,
+	                vchcodaxxon: rptaServer.Camaras[i].vchcodaxxon,
+	                vchubicacion: rptaServer.Camaras[i].vchubicacion,
+	                vchurbanizacion: rptaServer.Camaras[i].vchurbanizacion,
+	                intcodestado: rptaServer.Camaras[i].intcodestado,
+	                vchdesestado: rptaServer.Camaras[i].vchdesestado,
+	                vchobserva: rptaServer.Camaras[i].vchobserva
+
+	            };
+
+	            vecLayerCamaras.addFeatures(featureCam);
+
+	        }
+	        map.addLayer(vecLayerCamaras);
+	        document.getElementById("divCamarasVer").innerHTML = "<ul id='ListRecursos' class='accordion'>" + tabla + "</ul>";
+
+	        
+	        var selControlCamaras = new OpenLayers.Control.SelectFeature(vecLayerCamaras, {
+	            hover: true,
+	            toggle: true,
+	            selectStyle: {
+	                fillOpacity: 0.6,
+	                fillColor: "#FFFF99",
+	                strokeColor: "#FFFF99",
+	                cursor: "pointer"
+	            },
+	            callbacks: {
+	                click: function (event) {
+	                    var punto = new OpenLayers.LonLat(event.attributes._xgeo, event.attributes._ygeo);
+	                    var xHTML;
+	                    //console.log(punto);
+	                    xHTML = "<table style='font-size:10px; font-family:Tahoma, Sans-Serif;' width='100%'>";
+	                    xHTML += "<tr><td>Id Camara</td><td> : </td><td>" + event.attributes.intidcamara + "</td></tr>";
+	                    xHTML += "<tr><td>COVV</td><td> : </td><td>" + event.attributes.vchdescovv + "</td></tr>";
+	                    xHTML += "<tr><td>Ubicacion</td><td> : </td><td>" + event.attributes.vchubicacion + "</td></tr>";
+	                    xHTML += "<tr><td>Urbanizacion</td><td> : </td><td>" + event.attributes.vchurbanizacion + "</td></tr>";
+	                    xHTML += "<tr><td>Localizacion</td><td> : </td><td>" + event.attributes.vchcodarea + " " + event.attributes.vchcodsector + " " +  event.attributes.vchssecvecinal + " " +  event.attributes.vchcodcuadrante + "</td></tr>";
+	                    xHTML += "<tr><td>Estado</td><td> : </td><td>" + event.attributes.vchdesestado + "</td></tr>";
+	                    xHTML += "<tr><td>Observaciones</td><td> : </td><td>" + event.attributes.vchobserva + "</td></tr>";
+	                    xHTML += "</table>";
+	                    if (infoCAM != null && infoCAM != undefined) {
+	                        infoCAM.hide();
+	                    }
+	                    infoCAM = new OpenLayers.Popup("Camaras",
+	                                               punto,
+	                                               new OpenLayers.Size(350, 150),
+	                                               xHTML,
+	                                               true);
+	                    infoCAM.setBackgroundColor("#ACF04A");
+	                    infoCAM.closeOnMove = true;
+	                    map.addPopup(infoCAM);
+	                },
+	                over: function (event) {
+	                    console.log(event.attributes._xgeo);
+	                }
+	            }
+	        })
+	        map.addControl(selControlCamaras);
+	        selControlCamaras.activate();
+	    }
+	);
+    }
+
+    function posicionMapa(x, y) {
+        var center = new OpenLayers.LonLat(x, y);
+        map.setCenter(center, 8);
+
+    }
+
+
+	function Repetir() {
+	    //setInterval("{   mostrarGeoRecursos(); mostrarGeoAlertas();}", 60000);  //multiplicas la cantidad de segundos por mil                  
+	    //setInterval("{  mostrarGeoAlertas(); mostrarGeoUnidades(); }", 15000);  //multiplicas la cantidad de segundos por mil                  
+	    setInterval("{ mostrarGeoUnidades(); }", 15000);  //multiplicas la cantidad de segundos por mil                  
+        ////setInterval("mostrarGeoRecursos()", 30000);  //multiplicas la cantidad de segundos por mil                  
+	}
+
+
+        
+    function LoteDetalle(pCodLote) {
+        var txtHTML = "";
+        var tabla = "";
+        archivoValidacion = "../WebServiceGEO.asmx/listarLoteDetalle?jsoncallback=?"
+
+        $.getJSON(archivoValidacion, { pCODLOTE: pCodLote })
+	    .done(function (rptaServer) {
+
+	        txtHTML += "<tr>";
+	        txtHTML += "<th>Cod.Predio</th>" +
+	                   "<th>Dirección</th>" +
+                       "<th>Código</th>" +
+	                   "<th>Propietario</th>" +
+                       "<th>Condición</th>"
+	        txtHTML += "</tr>";
+
+	        for (var i = 0; i < rptaServer.LoteDetalle.length; i++) {
+	            txtHTML += "<tr>";
+	            txtHTML += "<td>" + rptaServer.LoteDetalle[i].INTPRECODIGO + "</td>" +
+	                        "<td>" + rptaServer.LoteDetalle[i].VCHPREDIRECCION + "</td>" +
+                            "<td>" + rptaServer.LoteDetalle[i].INTADMCODIGO + "</td>" + 
+	                        "<td>" + rptaServer.LoteDetalle[i].VCHADMCOMPLETO + "</td>" +
+                            "<td>" + rptaServer.LoteDetalle[i].VCHCOPDESCRI + "</td>"
+	            txtHTML += "</tr>";
+	        }
+
+
+	        if (txtHTML != null) {
+	            document.getElementById("divTab2").innerHTML = "</br><table id='ListPredios' class='tftable' border='1' width='380px'>" + txtHTML + "</table></br>";
+	        }
+
+
+
+
+	    });   // FIN DE LLAMADA
+
+	}
+
+    function LoteLicencia(pCodLote) {
+	    var txtHTML = "";
+	    var tabla = "";
+	    console.log(pCodLote);
+	    archivoValidacion = "../WebServiceGEO.asmx/listarLoteLicencia?jsoncallback=?"
+
+	    $.getJSON(archivoValidacion, { pCODLOTE: pCodLote })
+	    .done(function (rptaServer) {
+
+	        txtHTML += "<tr>";
+	        txtHTML += "<th>Solicitud</th>" +
+                       "<th>Detalle</th>" +
+                       "<th>Def.Civil</th>"
+	        txtHTML += "</tr>";
+
+	        //S.CHRSOLANIO, S.VCHSOLNUMERO, S.INTPRECODIGO, T1.VCHPREDIRECCION, VCHSOLNOMBRECOMER, VCHLICDEFCIVIL, DATLICFECCERDF,
+	        //VCHSOLNOMBRESOL, TA.VCHTAUTDESCRIPCION, VCHUSODESCRI, VCHZONACOD, VCHESTRCODIGO, GIRO
+	        for (var i = 0; i < rptaServer.LoteDetalle.length; i++) {
+	            txtHTML += "<tr>";
+	            txtHTML += "<td>" + rptaServer.LoteDetalle[i].CHRSOLANIO + "-" + rptaServer.LoteDetalle[i].VCHSOLNUMERO + "</td>";
+	            txtHTML += "<td><table class='tftableW' border='1' width='100%'>" +
+                            "<tr><td>Predio   </td><td>" + rptaServer.LoteDetalle[i].INTPRECODIGO + "</td></tr>" +
+	                        "<tr><td>Dirección</td><td>" + rptaServer.LoteDetalle[i].VCHPREDIRECCION + "</td></tr>" +
+	                        "<tr><td>Nombre   </td><td>" + rptaServer.LoteDetalle[i].VCHSOLNOMBRECOMER + "</td></tr>" +
+                            "<tr><td>Giro     </td><td>" + rptaServer.LoteDetalle[i].GIRO + "</td></tr>" +
+                            "</table></td>";
+	            txtHTML += "<td>" + rptaServer.LoteDetalle[i].VCHLICDEFCIVIL + "</td>";
+	            txtHTML += "</tr>";
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].VCHCODCAT + "</td>" + 
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].VCHCODLOTEPRT + "</td>" + 
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].INTADMCODIGO + "</td>" + 
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].VCHADMCOMPLETO + "</td>" + 
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].VCHESTRCODIGO + "</td>" + 
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].VCHZONACOD + "</td>" + 
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].VCHUSODESCRI + "</td>" ;
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].VCHUSOCODIGO + "</td>" +
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].VCHCOPDESCRI + "</td>" +
+	            //	                        "<td>" + rptaServer.LoteDetalle[i].DECPREPORCOPROP + "</td>"
+	        }
+
+
+	        if (txtHTML != null) {
+	            document.getElementById("divTab3").innerHTML = "</br><table id='ListLice' class='tftable' border='1' width='380px'>" + txtHTML + "</table></br>";
+	        }
+
+	    });    // FIN DE LLAMADA
+
+	}
+    
+	function getUrlVars() {
+	    var vars = {};
+	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+	        vars[key] = value;
+	    });
+	    return vars;
+	}
+
+
+</script>
+</body>
+</html>

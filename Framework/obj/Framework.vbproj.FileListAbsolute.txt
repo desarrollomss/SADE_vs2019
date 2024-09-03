@@ -1,0 +1,8 @@
+C:\Seguridad\Framework\bin\Debug\Framework.dll
+C:\Seguridad\Framework\bin\Debug\Framework.pdb
+C:\Seguridad\Framework\bin\Debug\IBM.Data.U2.Ucinet.dll
+C:\Seguridad\Framework\obj\Debug\ResolveAssemblyReference.cache
+C:\Seguridad\Framework\obj\Debug\Framework.Resources.resources
+C:\Seguridad\Framework\obj\Debug\Framework.vbproj.GenerateResource.Cache
+C:\Seguridad\Framework\obj\Debug\Framework.dll
+C:\Seguridad\Framework\obj\Debug\Framework.pdb

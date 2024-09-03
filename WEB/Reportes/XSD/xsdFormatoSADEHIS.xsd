@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FormatoSADEHIS" targetNamespace="http://tempuri.org/BusTI.xsd" elementFormDefault="qualified" xmlns="http://tempuri.org/BusTI.xsd" xmlns:mstns="http://tempuri.org/BusTI.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="FormatoSADEHIS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="INTHISCODIGO" type="xs:integer" />
+        <xs:element name="INTINCCODIGO" type="xs:integer" />
+        <xs:element name="VCHHISUSUARIO" type="xs:string" />
+        <xs:element name="INTHISROLUSUARIO" type="xs:integer" />
+        <xs:element name="DTMHISFECHAHORA" type="xs:string" />
+        <xs:element name="VCHHISEQUIPO" type="xs:string" />
+        <xs:element name="VCHHISPROGRAMA" type="xs:string" />
+        <xs:element name="SMLHISOPERACION" type="xs:integer" />
+        <xs:element name="VCHTABDESCRIPCION" type="xs:string" />
+        <xs:element name="INTINRCODIGO" type="xs:integer" />
+        <xs:element name="VCHROLDESCRIP" type="xs:string" />
+        <xs:element name="VCHHISCOMENTARIO" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

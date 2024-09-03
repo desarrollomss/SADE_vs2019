@@ -1,0 +1,49 @@
+D:\Codigo Fuente\Seguridad\Entidades\bin\Debug\Entidades.dll
+D:\Codigo Fuente\Seguridad\Entidades\bin\Debug\Entidades.pdb
+D:\Codigo Fuente\Seguridad\Entidades\bin\Debug\Entidades.xml
+D:\Codigo Fuente\Seguridad\Entidades\bin\Debug\Framework.dll
+D:\Codigo Fuente\Seguridad\Entidades\bin\Debug\Framework.pdb
+D:\Codigo Fuente\Seguridad\Entidades\obj\Debug\Entidades.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\Seguridad\Entidades\obj\Debug\Entidades.Resources.resources
+D:\Codigo Fuente\Seguridad\Entidades\obj\Debug\Entidades.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\Seguridad\Entidades\obj\Debug\Entidades.dll
+D:\Codigo Fuente\Seguridad\Entidades\obj\Debug\Entidades.xml
+D:\Codigo Fuente\Seguridad\Entidades\obj\Debug\Entidades.pdb
+D:\Codigo Fuente\SADE\Entidades\bin\Debug\Entidades.dll
+D:\Codigo Fuente\SADE\Entidades\bin\Debug\Entidades.pdb
+D:\Codigo Fuente\SADE\Entidades\bin\Debug\Entidades.xml
+D:\Codigo Fuente\SADE\Entidades\bin\Debug\Framework.dll
+D:\Codigo Fuente\SADE\Entidades\bin\Debug\IBM.Data.DB2.dll
+D:\Codigo Fuente\SADE\Entidades\bin\Debug\Framework.pdb
+D:\Codigo Fuente\SADE\Entidades\obj\Debug\Entidades.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\Entidades\obj\Debug\Entidades.Resources.resources
+D:\Codigo Fuente\SADE\Entidades\obj\Debug\Entidades.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\SADE\Entidades\obj\Debug\Entidades.dll
+D:\Codigo Fuente\SADE\Entidades\obj\Debug\Entidades.xml
+D:\Codigo Fuente\SADE\Entidades\obj\Debug\Entidades.pdb
+D:\CodeSource\SADE\Entidades\bin\Debug\Entidades.dll
+D:\CodeSource\SADE\Entidades\bin\Debug\Entidades.pdb
+D:\CodeSource\SADE\Entidades\bin\Debug\Entidades.xml
+D:\CodeSource\SADE\Entidades\bin\Debug\Framework.dll
+D:\CodeSource\SADE\Entidades\bin\Debug\IBM.Data.DB2.dll
+D:\CodeSource\SADE\Entidades\bin\Debug\Framework.pdb
+D:\CodeSource\SADE\Entidades\obj\Debug\Entidades.vbprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\Entidades\obj\Debug\Entidades.Resources.resources
+D:\CodeSource\SADE\Entidades\obj\Debug\Entidades.vbproj.GenerateResource.Cache
+D:\CodeSource\SADE\Entidades\obj\Debug\Entidades.dll
+D:\CodeSource\SADE\Entidades\obj\Debug\Entidades.xml
+D:\CodeSource\SADE\Entidades\obj\Debug\Entidades.pdb
+D:\CodeSource\SADE 2019\Entidades\bin\Debug\Entidades.dll
+D:\CodeSource\SADE 2019\Entidades\bin\Debug\Entidades.pdb
+D:\CodeSource\SADE 2019\Entidades\bin\Debug\Entidades.xml
+D:\CodeSource\SADE 2019\Entidades\bin\Debug\Framework.dll
+D:\CodeSource\SADE 2019\Entidades\bin\Debug\IBM.Data.DB2.dll
+D:\CodeSource\SADE 2019\Entidades\bin\Debug\Framework.pdb
+D:\CodeSource\SADE 2019\Entidades\obj\Debug\Entidades.vbproj.AssemblyReference.cache
+D:\CodeSource\SADE 2019\Entidades\obj\Debug\Entidades.Resources.resources
+D:\CodeSource\SADE 2019\Entidades\obj\Debug\Entidades.vbproj.GenerateResource.cache
+D:\CodeSource\SADE 2019\Entidades\obj\Debug\Entidades.vbproj.CoreCompileInputs.cache
+D:\CodeSource\SADE 2019\Entidades\obj\Debug\Entidades.vbproj.CopyComplete
+D:\CodeSource\SADE 2019\Entidades\obj\Debug\Entidades.dll
+D:\CodeSource\SADE 2019\Entidades\obj\Debug\Entidades.xml
+D:\CodeSource\SADE 2019\Entidades\obj\Debug\Entidades.pdb

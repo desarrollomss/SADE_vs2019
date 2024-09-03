@@ -1,0 +1,360 @@
+﻿     .boton
+    {
+     border:1px;
+     border-color:#D3D3D3;
+     background-color:#EEEEEE;
+     border-style:solid;
+     color:#555555;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     height:20px;
+     padding-left:10px;
+     padding-right:10px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');  
+     margin-bottom:5px;
+    }
+    .boton:hover{
+    background: #E5E5E5;
+    border-color:#999999;
+    color: #212121;
+	}
+    .boton_dialogo
+    {
+	 border:1px;	
+     border-color:#888484;
+     background-color:transparent;
+     border-style:solid;
+     color: #888484;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     padding: 0.5em;
+      border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     margin-bottom:5px;
+     
+    }
+    .boton_dialogo:hover
+    {
+    
+    border-color:#FFA500;
+    background-color:#FFA500;
+    color: #ffffff;
+	cursor: pointer;    
+    }
+    .boton_dialogo_ant
+    {
+	 border:0px;	
+     border-right :1px;
+     border-color:#D3D3D3;
+     background-color: #888484;
+     border-style:solid;
+     color: #E0DEDE;
+     text-shadow:#000 0.1em 0.1em 0.2em;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     padding: 0.5em;
+      border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     margin-bottom:5px;
+     
+    }
+    .boton_dialogo_ant:hover
+    {
+    
+    border-color:#999999;
+    color: #E0DEDE;
+	cursor: pointer;    
+    }    
+    
+    .boton_activar
+    {
+	 border:0px;	
+     border-right :1px;
+     border-color:#D3D3D3;
+     background-color: #8DAA33;
+     border-style:solid;
+     color: #E0DEDE;
+     text-shadow:#000 0.1em 0.1em 0.2em;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     padding: 0.7em;
+      border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     
+    }
+    .boton_activar:hover
+    {
+    border-color:#999999;
+    color: #E0DEDE;
+	cursor: pointer;    
+    }    
+  .boton_alerta
+    {
+	 border:0px;	
+     border-right :1px;
+     border-color:#D34434;
+     background-color: #D34434;
+     border-style:solid;
+     color: #fff;
+     text-shadow:#000 0.1em 0.1em 0.2em;
+     font-size:1.3em;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     padding: 0.7em;
+      border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+    }
+    .boton_alerta:hover
+    {
+    background: #D34434;
+    border-color:#D34434;
+    color: #fff;
+	cursor: pointer;    
+    -webkit-transform: translateY(-5px); 
+    transform: translateY(-5px)	
+    }    
+    .boton_menu_ant
+    {
+     border: 3px;
+     border-color: #ffffff;
+     /* background-color:#FFA500; */
+     border-style:solid;
+     color:#ffffff;
+     font-size: 11pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration :none;
+     /* width:auto; */
+     padding-top:10px;
+     padding-bottom :10px;
+     padding-left:10px;
+     padding-right: 12px;
+     /* border-radius:3px; */
+     -moz-border-radius:3px;/* Firefox */
+     /* -webkit-border-radius:3px; *//* Safari y Chrome */
+     behavior:url('../borde.htc');
+     /* margin-top: 10px; */
+     display: inline-block;
+    }
+.boton_menu
+    { 
+     /*border: 3px;
+     border-color: #ffffff;*/
+     /* background-color:#FFA500; */
+     /*border-style:solid;
+     color:#ffffff;
+     font-size: 11pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration :none;*/
+      width:auto; 
+     background-image:url('../img/ic_salir.png');
+     /* border-radius:3px; */
+     -moz-border-radius:3px;/* Firefox */
+     /* -webkit-border-radius:3px; *//* Safari y Chrome */
+     behavior:url('../borde.htc');
+     /* margin-top: 10px; */
+     display: inline-block;
+     }
+    
+    .boton_menu:hover{
+    cursor: pointer;   
+}
+
+    .boton_busca
+    {
+	 border:1px;	
+     border-color:#888484;
+     background-color:transparent;
+     border-style:solid;
+     color: #888484;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     padding: 0.5em;
+      border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     margin-bottom:5px;
+     
+    }
+    .boton_busca:hover
+    {
+    border-color:#FFA500;
+    background-color:#FFA500;
+    color: #ffffff;
+	cursor: pointer;  
+    }
+
+
+
+     .boton_eliminar
+    {
+	 border:0px;	
+     border-right :1px;
+     border-color:#D34434;
+     background-color: #D34434;
+     border-style:solid;
+     color: #ffffff;
+     text-shadow:#000 0.1em 0.1em 0.2em;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     padding: 0.35em;
+      border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+    }
+    .boton_eliminar:hover{
+    background: #D34434;
+    border-color:#D34434;
+    color: #ffffff;
+	cursor: pointer;   
+}
+     .boton_regresar
+    {
+	 border:0px;	
+     border-right :1px;
+     border-color:#D34434;
+     background-color: #D34434;
+     border-style:solid;
+     color: #ffffff;
+     text-shadow:#000 0.1em 0.1em 0.2em;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     padding: 0.7em;
+      border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+    }
+    .boton_regresar:hover{
+    background: #D34434;
+    border-color:#D34434;
+    color: #ffffff;
+	cursor: pointer;   
+}
+        .boton_agregar
+    {
+	 border-color:#D3D3D3;
+     background-color:#EEEEEE;
+     border-style:solid;
+     color:#555555;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration :none;
+     width:auto;
+     height:auto;
+     padding-top:2px;
+     padding-bottom :2px;
+     padding-left:10px;
+     padding-right:10px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');   
+    }
+    .boton_agregar:hover{
+    background: #f1b614;
+    border-color:#f1b614;
+    color: #ffffff;
+}
+    .boton_selecciona
+    {
+     border:1px;
+     border-color:#C3C524;
+     background-color:#C3C524;
+     border-style:solid;
+     color:#ffffff;
+     font-size:10pt;
+     font-family:Tahoma, Sans-Serif;
+     text-decoration:none;
+     width:auto;
+     height:25px;
+     padding-left:10px;
+     padding-right:10px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');  
+    }
+    .boton_selecciona:hover{
+    background: #A7A920;
+    border-color:#A7A920;
+    color: #FFFF1F;
+}
+
+ .boton_consultar
+{
+    border-color: #40A8ff;
+    background-color: #40A8CD;
+    border-style: solid;
+    color: #FFFFFF;
+    font-size: 10pt;
+    font-family: Tahoma, Sans-Serif;
+    text-decoration: none;
+    width: auto;
+    height: auto;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+    -moz-border-radius: 3px; /* Firefox */
+    -webkit-border-radius: 3px; /* Safari y Chrome */
+    behavior: url('../borde.htc');
+    text-decoration:none;
+}
+    .boton_consultar:hover
+{
+    background: #0066CC;
+    border-color: #40A8CD;
+    color: #ffffff;
+    text-decoration:none;
+}
+
+ .boton_registrar
+{
+    border-color: #33CC33;
+    background-color: #33CC33;
+    border-style: solid;
+    color: #FFFFFF;
+    font-size: 10pt;
+    font-family: Tahoma, Sans-Serif;
+    text-decoration: none;
+    width: auto;
+    height: auto;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+    -moz-border-radius: 3px; /* Firefox */
+    -webkit-border-radius: 3px; /* Safari y Chrome */
+    behavior: url('../borde.htc');
+    text-decoration: none;
+}
+    .boton_registrar:hover
+{
+    background: #0066CC;
+    border-color: #40A8CD;
+    color: #ffffff;
+    text-decoration:none;
+}

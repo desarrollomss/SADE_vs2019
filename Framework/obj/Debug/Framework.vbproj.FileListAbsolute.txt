@@ -1,0 +1,33 @@
+D:\Codigo Fuente\Seguridad\Framework\bin\Debug\Framework.dll
+D:\Codigo Fuente\Seguridad\Framework\bin\Debug\Framework.pdb
+D:\Codigo Fuente\Seguridad\Framework\obj\Debug\Framework.Resources.resources
+D:\Codigo Fuente\Seguridad\Framework\obj\Debug\Framework.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\Seguridad\Framework\obj\Debug\Framework.dll
+D:\Codigo Fuente\Seguridad\Framework\obj\Debug\Framework.pdb
+D:\Codigo Fuente\Seguridad\Framework\obj\Debug\Framework.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\Framework\bin\Debug\Framework.dll
+D:\Codigo Fuente\SADE\Framework\bin\Debug\Framework.pdb
+D:\Codigo Fuente\SADE\Framework\bin\Debug\IBM.Data.DB2.dll
+D:\Codigo Fuente\SADE\Framework\obj\Debug\Framework.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\Framework\obj\Debug\Framework.Resources.resources
+D:\Codigo Fuente\SADE\Framework\obj\Debug\Framework.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\SADE\Framework\obj\Debug\Framework.dll
+D:\Codigo Fuente\SADE\Framework\obj\Debug\Framework.pdb
+D:\CodeSource\SADE\Framework\bin\Debug\Framework.dll
+D:\CodeSource\SADE\Framework\bin\Debug\Framework.pdb
+D:\CodeSource\SADE\Framework\bin\Debug\IBM.Data.DB2.dll
+D:\CodeSource\SADE\Framework\obj\Debug\Framework.vbprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\Framework\obj\Debug\Framework.Resources.resources
+D:\CodeSource\SADE\Framework\obj\Debug\Framework.vbproj.GenerateResource.Cache
+D:\CodeSource\SADE\Framework\obj\Debug\Framework.dll
+D:\CodeSource\SADE\Framework\obj\Debug\Framework.pdb
+D:\CodeSource\SADE 2019\Framework\bin\Debug\Framework.dll
+D:\CodeSource\SADE 2019\Framework\bin\Debug\Framework.pdb
+D:\CodeSource\SADE 2019\Framework\bin\Debug\IBM.Data.DB2.dll
+D:\CodeSource\SADE 2019\Framework\obj\Debug\Framework.vbproj.AssemblyReference.cache
+D:\CodeSource\SADE 2019\Framework\obj\Debug\Framework.Resources.resources
+D:\CodeSource\SADE 2019\Framework\obj\Debug\Framework.vbproj.GenerateResource.cache
+D:\CodeSource\SADE 2019\Framework\obj\Debug\Framework.vbproj.CoreCompileInputs.cache
+D:\CodeSource\SADE 2019\Framework\obj\Debug\Framework.vbproj.CopyComplete
+D:\CodeSource\SADE 2019\Framework\obj\Debug\Framework.dll
+D:\CodeSource\SADE 2019\Framework\obj\Debug\Framework.pdb

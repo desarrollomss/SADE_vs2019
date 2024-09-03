@@ -1,0 +1,54 @@
+Imports SISSADE.DAL
+Imports SISSADE.BE
+
+Namespace BL
+
+	Public Class CCODETALLESECUENCIASERVICIO_BL
+		Private oCCODETALLESECUENCIASERVICIO_DL As New DAL.CCODETALLESECUENCIASERVICIO_DL
+
+		Public Sub Insertar(ByVal pCCODETALLESECUENCIASERVICIO_BE As CCODETALLESECUENCIASERVICIO_BE)
+			Try
+				oCCODETALLESECUENCIASERVICIO_DL.Insertar(pCCODETALLESECUENCIASERVICIO_BE)
+			Catch ex As Exception
+				Throw ex
+			Finally
+			End Try
+		End Sub
+
+		Public Sub Actualizar(ByVal pCCODETALLESECUENCIASERVICIO_BE As CCODETALLESECUENCIASERVICIO_BE)
+			Try
+				oCCODETALLESECUENCIASERVICIO_DL.Actualizar(pCCODETALLESECUENCIASERVICIO_BE)
+			Catch ex As Exception
+				Throw ex
+			Finally
+			End Try
+		End Sub
+
+		Public Sub Eliminar(ByVal pCCODETALLESECUENCIASERVICIO_BE As CCODETALLESECUENCIASERVICIO_BE)
+			Try
+				oCCODETALLESECUENCIASERVICIO_DL.Eliminar(pCCODETALLESECUENCIASERVICIO_BE)
+			Catch ex As Exception
+				Throw ex
+			Finally
+			End Try
+		End Sub
+
+		Public Function ListarKey(ByVal pCCODETALLESECUENCIASERVICIO_BE As CCODETALLESECUENCIASERVICIO_BE) As CCODETALLESECUENCIASERVICIO_BE
+			Try
+				Return oCCODETALLESECUENCIASERVICIO_DL.ListarKey(pCCODETALLESECUENCIASERVICIO_BE)
+			Catch ex As Exception
+				Throw ex
+			Finally
+			End Try
+		End Function
+        Public Function Listar(ByVal pCCODETALLESECUENCIASERVICIO_BE As CCODETALLESECUENCIASERVICIO_BE) As DataTable
+            Try
+                Return oCCODETALLESECUENCIASERVICIO_DL.Listar(pCCODETALLESECUENCIASERVICIO_BE)
+            Catch ex As Exception
+                Throw ex
+            Finally
+            End Try
+        End Function
+
+    End Class
+End Namespace

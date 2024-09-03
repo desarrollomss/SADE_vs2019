@@ -1,0 +1,6 @@
+D:\Codigo Fuente\SADE\AccesoDatosGEO\obj\Release\AccesoDatosGEO.csprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\AccesoDatosGEO\obj\Release\SISSADE.Properties.Resources.resources
+D:\Codigo Fuente\SADE\AccesoDatosGEO\obj\Release\AccesoDatosGEO.csproj.GenerateResource.Cache
+D:\CodeSource\SADE\AccesoDatosGEO\obj\Release\AccesoDatosGEO.csprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\AccesoDatosGEO\obj\Release\SISSADE.Properties.Resources.resources
+D:\CodeSource\SADE\AccesoDatosGEO\obj\Release\AccesoDatosGEO.csproj.GenerateResource.Cache

@@ -1,0 +1,779 @@
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="frmBuscaCargasFIS.aspx.vb" Inherits="frmBuscaCargasFIS" EnableEventValidation="false" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+<asp:ScriptManager ID="ScriptManager1" runat="server" EnableScriptGlobalization = 'True'  EnableScriptLocalization = 'True'    >
+
+</asp:ScriptManager>
+    <script src="MapaTematico/OpenLayers-2.13.1/OpenLayers.js" type="text/javascript"></script>
+    <%--<script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>--%>
+
+<script type="text/javascript">    
+    function popupMostrarAdjunto() {
+        document.getElementById('verimagen').style.display = 'block';
+        document.getElementById('fade').style.display = 'block';
+    }
+    function validarNum(e) {
+        tecla = (document.all) ? e.keyCode : e.which;
+        if (tecla == 8) return true;
+        patron = /\d/;
+        te = String.fromCharCode(tecla);
+        return patron.test(te);
+    }
+</script>
+
+
+<link href="Styles/accordionmenu.css" rel="stylesheet" type="text/css" />
+<style type="text/css">    
+	    .black_overlay{
+		    display:none;
+		    position: absolute;
+		    top: 0%;
+		    left: 0%;
+		    width: 100%;
+		    height: 100%;
+		    background-color:black;
+		    z-index:1001;
+		    -moz-opacity: 0.7;
+		    opacity:.70;
+		    filter: alpha(opacity=70);
+	    }
+
+        .white_content_img
+        {
+            display: none;
+            position: absolute;
+            top: 10%;
+            left: 25%;
+            width: 50%;
+            height: 70%;
+            padding: 0px;
+            border: 0px solid #a6c25c;
+            background-color: white;
+            z-index: 1002;
+            overflow: auto;
+        }
+        .mayuscula
+        {
+            text-transform: uppercase;
+        }    
+       
+        .style1
+    {
+        height: 25px;
+    }
+       
+        </style>  
+<asp:Panel ID="pnlBusqueda" runat="server">    
+
+    <div id="pnlFiltros" class="busqueda">
+        <table style ="width:100%" class ="Tabla">
+            <colgroup>
+                <col style= "width:4%" />
+                <col style= "width:6%" />
+                <col style= "width:5%" />
+                <col style= "width:10%" />
+                <col style= "width:8%" />
+                <col style= "width:33%" />
+                <col style= "width:3%" />
+                <col style= "width:3%" />
+                <col style= "width:5%" />
+                <col style= "width:10%" />
+                <col style= "width:3%" />
+                <col style= "width:10%" />
+            </colgroup>
+ 
+                <tr>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            <td style="height :10px;">&nbsp;</td>
+            </tr>
+            <tr>
+            <td>ID</td>
+            <td><asp:TextBox ID="txtID" runat="server" Width="90%"></asp:TextBox></td>
+            <td>Tipo</td>
+            <td>                
+            <asp:DropDownList ID="ddlTipoCmpnt" runat="server" CssClass="CajaCombo" Width="90%"></asp:DropDownList>
+            </td>
+            <td>Referencia</td>
+            <td colspan="2">             
+                <asp:TextBox ID="txtDescripcion" runat="server" CssClass="mayuscula" 
+                    Width="95%"></asp:TextBox>
+                </td>
+            <td>
+                &nbsp;</td>
+            <td>Estado</td>
+            <td>
+                <asp:DropDownList ID="ddlEstadoCmpnt" runat="server" CssClass="CajaCombo" 
+                    Width="95%">
+                </asp:DropDownList>
+            </td>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>                        
+            </tr>
+            <tr>
+                <td>
+                    Grupo</td>
+                <td colspan="3">
+                    <asp:DropDownList ID="ddlGrupoCmpnt" runat="server" CssClass="CajaCombo" 
+                        Width="95%">
+                    </asp:DropDownList>
+                </td>
+                <td>
+                    Ubicación</td>
+                <td colspan="2">
+                    <asp:TextBox ID="txtUbicacion" runat="server" CssClass="mayuscula" Width="95%"></asp:TextBox>
+                </td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    <asp:Button ID="btnBuscar" runat="server" CssClass="boton_busca" 
+                        OnClientClick="cambiarvalor()" Text="  Buscar   " />
+                </td>
+            </tr>
+            <tr>
+            <td colspan= "10" style="height :10px;"></td>
+            </tr>
+        </table>
+    </div>
+    <div id = "pnlBotonera">
+        <table style ="width:100%;" class="Tabla">
+            <tr>
+                <td colspan="10" style="height: 3px;">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="10">
+                    <asp:Button ID="btnNuevo" runat="server" Text="  Nuevo  " 
+                        CssClass="boton_dialogo"  OnClientClick="cambiarvalor()" 
+                        ToolTip="Registrar componenete de seguridad" />
+                    &nbsp;<asp:Button ID="btnModificar" runat="server" Text="Modificar" 
+                        CssClass="boton_dialogo"  OnClientClick="cambiarvalor()"
+                        ToolTip="Editar datos componente de seguridad" />
+                &nbsp;<asp:Button ID="btnEliminar" runat="server" Text=" Eliminar " 
+                        CssClass="boton_dialogo"  
+                        onclientclick="{cambiarvalor();javascript:return confirm('“¿Está seguro de eliminar la asignación del Equipo?','SADE');}" 
+                        ToolTip="Eliminar componente de seguridad" />
+                &nbsp;<asp:Button ID="btnVer" runat="server" Text="Visualizar" 
+                        CssClass="boton_dialogo"  OnClientClick="cambiarvalor(); "
+                        ToolTip="Ver datos componente de seguridad" />            
+                &nbsp;<asp:Button ID="btnExportar" runat="server" Text="Exportar" 
+                        CssClass="boton_dialogo"  OnClientClick="cambiarvalor(); "
+                        ToolTip="Exportar a Excel" />            
+                </td>
+            </tr>
+            <tr>
+                <td colspan="10" align="center">
+                    <asp:Label ID="lblMensaje" runat="server" Text="" ForeColor="#CC0000"></asp:Label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="pnlGrid" class="busqueda" >
+        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+        <ContentTemplate>
+        <asp:GridView ID="gvTetras" runat="server" CssClass="Grid" AlternatingRowStyle-CssClass="GridAlternateRow"
+            HeaderStyle-CssClass="GridHeader" PagerStyle-CssClass="GridFooter" RowStyle-CssClass="GridRow"
+            AllowPaging="True" AutoGenerateColumns="False" Width="100%"
+            DataKeyNames="INTREGCODIGO" PageSize="10">
+            <RowStyle CssClass="GridRow"></RowStyle>
+            <Columns>
+                    <asp:TemplateField>
+                        <itemtemplate>
+                            <img id="imgTipo<%# Eval("INTREGCODIGO") %>" alt="<%#Eval("VCHCODLOTE")%>" src="img/arrow.gif" />
+                        </itemtemplate>
+                    </asp:TemplateField>
+                    <asp:BoundField DataField="INTREGCODIGO" HeaderText="" Visible ="false"></asp:BoundField> 
+                    <asp:BoundField DataField="VCHCODLOTE" HeaderText=""></asp:BoundField> 
+                    <asp:BoundField DataField="INTUCATID" HeaderText="" Visible ="false"></asp:BoundField> 
+                    <asp:BoundField DataField="INTCODPRE" HeaderText=""></asp:BoundField> 
+                    <asp:BoundField DataField="VCHCODCAT" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="VCHCODSEC" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="VCHCODURB" HeaderText="" Visible ="false"></asp:BoundField> 
+                    <asp:BoundField DataField="VCHCURDESCRIPCION1" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="VCHCODVIA" HeaderText="" Visible ="false"></asp:BoundField>  
+                    <asp:BoundField DataField="VCHVIADESCRIPCION" HeaderText=""></asp:BoundField> 
+                    <asp:BoundField DataField="VCHNUMPRI" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="VCHTIPPTA" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="VCHNUMINT" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="VCHEDIFIC" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="VCHSUBSECTOR" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="SMLFISESTADO" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="SMLFISDEUDA" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="DECFISDEUDA" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="SMLFISMULTA" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="DECFISMULTA" HeaderText=""></asp:BoundField>  
+                    <asp:BoundField DataField="VCHFISOSERV" HeaderText=""></asp:BoundField> 
+
+            </Columns>
+            <PagerStyle CssClass="GridFooter"></PagerStyle>
+            <EmptyDataTemplate>
+                <asp:Label ID="Label37" runat="server" Text="No existen registros para mostrar" CssClass="Tabla"></asp:Label>
+            </EmptyDataTemplate>
+            <HeaderStyle CssClass="GridHeader"></HeaderStyle>
+            <AlternatingRowStyle CssClass="GridAlternateRow"></AlternatingRowStyle>
+            <SelectedRowStyle  CssClass = "GridSeletedRow" />
+        </asp:GridView>
+        </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="gvTetras" EventName="SelectedIndexChanged" />
+                <asp:AsyncPostBackTrigger ControlID="gvTetras" EventName="PageIndexChanging" />
+                <asp:AsyncPostBackTrigger ControlID="btnBuscar" EventName="Click" />
+            </Triggers>
+        </asp:UpdatePanel>
+    </div>      
+
+</asp:Panel>
+
+
+<asp:Panel ID="pnlEdicion" runat="server" Visible="False" Width ="100%">
+    <table width="100%" cellpadding="0px" cellspacing="0px" >
+        <colgroup>
+            <col width="25%" />
+            <col width="25%" />
+            <col width="50%" />
+        </colgroup>
+        <tr>
+            <td>
+                <div id="divEdicion">
+                    <table class="Tabla" style="width: 100%">
+                        <colgroup>
+                            <col style="width: 5%" />
+                            <col style="width: 1%" />
+                            <col style="width: 5%" />
+                            <col style="width: 90%" />
+                        </colgroup>
+                        <tr>
+                            <td align="center" valign="middle">
+                                <asp:Button ID="btnGrabar" runat="server" Text=" Grabar " CssClass="boton_dialogo"
+                                    OnClientClick="{ cambiarvalor();  javascript:return confirm('¿ESTA SEGURO DE REALIZAR LA OPERACION?','SADE');}" />
+                            </td>
+                            <td>
+                            </td>
+                            <td align="center" valign="middle">
+                                <asp:Button ID="btnRegresar" runat="server" Text="Regresar" CssClass="boton_dialogo" OnClientClick="cambiarvalor()" />
+                                &nbsp;&nbsp;
+                            </td>
+                            <td align="center" valign="middle">
+                                &nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="pnlPuestoFijo" class="busqueda" runat="server">
+                    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                        <ContentTemplate>
+                            <table class="Tabla" style="width: 100%">
+                                <colgroup>
+                                    <col style="width: 1%" />
+                                    <col style="width: 9%" />
+                                    <col style="width: 20%" />
+                                    <col style="width: 10%" />
+                                    <col style="width: 25%" />
+                                    <col style="width: 9%" />
+                                    <col style="width: 1%" />
+                                </colgroup>
+                                <tr style="height: 15px">
+                                    <td colspan="7">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        <asp:HiddenField ID="hdTipoAccion" runat="server" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        Id</td>
+                                    <td>
+                                        <asp:TextBox ID="txtIdEdit" runat="server" Width="95%"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        Tipo</td>
+                                    <td colspan="4">
+                                        <asp:DropDownList ID="ddlTipoCmpntEdit" runat="server" AutoPostBack="True" 
+                                            CssClass="CajaCombo" Width="78%">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td>
+                                        &nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        Referencia</td>
+                                    <td colspan="4">
+                                        <asp:TextBox ID="txtDescripcionEdit" runat="server" CssClass="mayuscula" 
+                                            Height="40px" TextMode="MultiLine" Width="95%"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        &nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                    <td>
+                                        Estado</td>
+                                    <td colspan="4">
+                                        <asp:DropDownList ID="ddlEstadoCmpntEdit" runat="server" AutoPostBack="True" 
+                                            CssClass="CajaCombo" Width="78%">
+                                        </asp:DropDownList>
+                                        &nbsp;
+                                    </td>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="style1">
+                                        </td>
+                                    <td class="style1">
+                                        Ubicación</td>
+                                    <td colspan="4" class="style1">
+                                        <asp:TextBox ID="txtInfoEdit" runat="server" Width="95%" CssClass="mayuscula" 
+                                            Height="60px" TextMode="MultiLine"></asp:TextBox>
+                                    </td>
+                                    <td class="style1">
+                                        </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        Fec. Instalación</td>
+                                    <td colspan="3">
+                                        <asp:TextBox ID="txtFechaInstEdit" runat="server" CssClass="CajaTextoCOff"
+                                            Width="60%"></asp:TextBox>
+                                        <cc1:MaskedEditExtender ID="meetxtFechaInstEdit" 
+                                            runat="server" Mask="99/99/9999"
+                                            MaskType="Date" TargetControlID="txtFechaInstEdit">
+                                        </cc1:MaskedEditExtender>
+                                        <cc1:CalendarExtender ID="cetxtFechaInstEdit" runat="server" CssClass="calendario"
+                                            Format="dd/MM/yyyy" PopupButtonID="Image1" 
+                                            TargetControlID="txtFechaInstEdit">
+                                        </cc1:CalendarExtender>
+                                        <asp:RegularExpressionValidator ID="revtxtFechaInstEdit" runat="server" ControlToValidate="txtFechaInstEdit"
+                                            ErrorMessage="* Fecha instalación inválida" ValidationExpression="(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d"
+                                            Visible="False" ForeColor="Red"></asp:RegularExpressionValidator>
+                                        </td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        &nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        Agrupación</td>
+                                    <td colspan="4">
+                                        <asp:DropDownList ID="ddlGrupoCmpntEdit" runat="server" AutoPostBack="True" 
+                                            CssClass="CajaCombo" Width="95%">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td>
+                                        &nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        Contacto</td>
+                                    <td colspan="4">
+                                        <asp:TextBox ID="txtContactoEdit" runat="server" Width="95%" 
+                                            CssClass="mayuscula"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        &nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                    <td>
+                                        Id Red</td>
+                                    <td colspan="3">
+                                        <asp:TextBox ID="txtIPRedEdit" runat="server" Width="70%" CssClass="mayuscula"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        &nbsp;</td>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td valign="middle">
+                                        Observación
+                                    </td>
+                                    <td colspan="3">
+                                        <asp:TextBox ID="txtObservacionEdit" runat="server" CssClass="mayuscula" Height="60px"
+                                            TextMode="MultiLine" Width="95%"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <asp:HiddenField ID="hfGeoY" runat="server" />
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <asp:HiddenField ID="hfGeoX" runat="server" />
+                                    </td>
+                                </tr>
+
+                                <tr style="height: 15px">
+                                    <td>
+                                    </td>
+                                    <td align="center" colspan="5">
+                                        <asp:Label ID="lblMensajeReg" runat="server" ForeColor="#CC0000" Text=""></asp:Label>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </td>
+            <td>&nbsp;
+                <div id="divCalles" style="height:500px; border: 1px solid #ccc;" >
+                    <div id="divFilterCalles">
+                        <table id="tbFiltrarCalle" style="width:95%; padding-top:10px; padding-bottom:10px; font-size:14px; font-family:Tahoma" width="100%" cellpadding="10" cellspacing="10" border="0" >
+                            <colgroup>
+                                <col width="20%" />
+                                <col width="80%" />
+                            </colgroup>
+                            <tr>
+                                <td>&nbsp;
+                                </td>
+                                <td>&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Calle / Via
+                                </td>
+                                <td>
+                                    <input type="text" onkeyup="{ this.value=this.value.toUpperCase(); filterCalle(this); } "
+                                        style="width: 90%" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;
+                                </td>
+                                <td>&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="divDataCalles" style="height:450px; border: 1px solid #ccc; overflow:scroll;" >
+                    </div>
+                </div>
+            </td>
+            <td>&nbsp;
+                <div id="divMap" style="width:740px; height:500px; border: 1px solid #ccc;" >
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="fade" class="black_overlay">
+    </div>
+
+</asp:Panel>
+
+    
+<script type="text/javascript">
+    var coorX = '<%= hfGeoX.ClientID%>';
+    var coorY = '<%= hfGeoY.ClientID%>';
+    var map;
+    var markers;
+    var vecLayerCS;
+
+    OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
+    OpenLayers.Util.onImageLoadErrorColor = "transparent";
+    OpenLayers.Tile.Image.useBlankTile = true;
+    OpenLayers.DOTS_PER_INCH = 90.71428571428572;
+
+    initMAP();
+
+    function initMAP() {
+
+        var vSERVER = "http://192.0.0.130:70/geoserver/CM150140/wms";
+        var vFOTOS = "http://192.0.0.130:70/multimedia/fotos/catastro/2012/";
+
+        var vPtoX = document.getElementById(coorX).value;
+        var vPtoY = document.getElementById(coorY).value;
+
+
+        OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+            defaultHandlerOptions: {
+                'single': true,
+                'double': false,
+                'pixelTolerance': 0,
+                'stopSingle': false,
+                'stopDouble': false
+            },
+
+            initialize: function (options) {
+                this.handlerOptions = OpenLayers.Util.extend(
+                        {}, this.defaultHandlerOptions
+                    );
+                OpenLayers.Control.prototype.initialize.apply(
+                        this, arguments
+                    );
+                this.handler = new OpenLayers.Handler.Click(
+                        this, {
+                            'click': this.trigger
+                        }, this.handlerOptions
+                    );
+            },
+
+            trigger: function (e) {
+                var lonlat = map.getLonLatFromPixel(e.xy);
+                MapMarker(lonlat.lon, lonlat.lat);
+//                vecLayerCS.removeAllFeatures();
+//                var iMarker = 'img/marker.GIF';
+//                var feature = new OpenLayers.Feature.Vector(
+//                            new OpenLayers.Geometry.Point(lonlat.lon, lonlat.lat),
+//                            { description: "<h1>Componente</h1>" },
+//                            { externalGraphic: iMarker, graphicHeight: 24, graphicWidth: 24, graphicXOffset: -12, graphicYOffset: -24 }
+//                        );
+//                vecLayerCS.addFeatures(feature);
+//                map.addLayer(vecLayerCS);
+//                document.getElementById(coorX).value = lonlat.lon;
+//                document.getElementById(coorY).value = lonlat.lat;
+
+            }
+
+        });
+
+        var wms = new OpenLayers.Layer.WMS("MuniSurco", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'CM150140:CM150140_base',
+                                        tiled: true,
+                                        transparent: false
+                                    });
+
+        var lote = new OpenLayers.Layer.WMS("Limite Lote", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'CM150140:map_lote',
+                                        transparent: true
+                                    }, { isBaseLayer: false
+                                    });
+
+        var hurb = new OpenLayers.Layer.WMS("Limite Habilitacion Urbana", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'CM150140:CM150140_hurbana',
+                                        transparent: true
+                                    }, { isBaseLayer: false, visibility: false }
+                                    );
+        var zona = new OpenLayers.Layer.WMS("Limite Sectores Catastrales", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'map_sector',
+                                        transparent: true
+                                    }, { isBaseLayer: false, visibility: false }
+                                    );
+        var sc = new OpenLayers.Layer.WMS("Limite Cuadrantes", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'map_cuadrante',
+                                        transparent: true
+                                    }, { isBaseLayer: false, visibility: true }
+                                    );
+        var semaforo = new OpenLayers.Layer.WMS("Semaforos", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'map_compseg_semaforos',
+                                        transparent: true
+                                    }, { isBaseLayer: false, visibility: false }
+                                    );
+        var modulo = new OpenLayers.Layer.WMS("Modulos", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'map_compseg_modulos_v2',
+                                        transparent: true
+                                    }, { isBaseLayer: false, visibility: false }
+                                    );
+        var locales = new OpenLayers.Layer.WMS("Locales", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'map_compseg_locales_v2',
+                                        transparent: true
+                                    }, { isBaseLayer: false, visibility: false }
+                                    );
+        var camara = new OpenLayers.Layer.WMS("Camaras", vSERVER,
+                                    {
+                                        srs: 'EPSG:32718',
+                                        layers: 'map_compseg_camaras_v2',
+                                        transparent: true
+                                    }, { isBaseLayer: false, visibility: false }
+                                    );
+
+
+
+        map = new OpenLayers.Map({
+            div: "divMap",
+            layers: [wms, lote, hurb, zona, sc, semaforo, modulo, locales, camara],
+            maxExtent: new OpenLayers.Bounds(275000.000, 8645389.716, 288750.000, 8664783.095),
+            projection: new OpenLayers.Projection("EPSG:32718"),
+            displayProj: new OpenLayers.Projection("EPSG:32718"),
+            zoom: 2,
+            maxzoom: 1,
+            minzoom: 10,
+            controls: [
+                        new OpenLayers.Control.Navigation(),
+                        new OpenLayers.Control.PanZoomBar(),
+                        new OpenLayers.Control.LayerSwitcher({ 'ascending': false }),
+                        new OpenLayers.Control.MousePosition(),
+                        new OpenLayers.Control.OverviewMap(),
+                        new OpenLayers.Control.KeyboardDefaults()
+                      ],
+            center: [283430.991, 8657254.839]
+        });
+
+        mostrarGeoCallejero();
+
+        vecLayerCS = new OpenLayers.Layer.Vector("Componentes Seguridad");
+
+        map.addControl(new OpenLayers.Control.LayerSwitcher());
+        if (!map.getCenter()) {
+            map.zoomToMaxExtent();
+        }
+
+        var click = new OpenLayers.Control.Click();
+        map.addControl(click);
+        click.activate();
+        console.log(map);
+
+        if (vPtoX != "" || vPtoY != "") {
+            MapCalle(vPtoX,vPtoY);
+            MapMarker(vPtoX, vPtoY);
+        }
+
+    }
+
+    function mostrarGeoCallejero() {
+        var webMethod = "WebServiceGEO.asmx/buscarCalle";
+        var matrizCalles = [];
+        $.ajax({
+            type: "POST",
+            url: webMethod,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log("paso llamada");
+                var lista = response.d;
+                var txtHTML;
+                var txtINFO;
+                txtHTML = "";
+                $.each(lista, function (index, pan) {
+                    txtHTML += "<li><a href='javascript:MapCalle(" + pan.xGeo + "," + pan.yGeo + ")' style='text-decoration:none'>";
+                    txtHTML += "" + pan.codvia + " " + pan.nomvia + " " + pan.nrocdra + "</a></li>";
+                });
+
+
+
+                if (txtHTML != null) {
+                }
+                document.getElementById("divDataCalles").innerHTML = "<ul id='ListCalle' class='accordionC'>" + txtHTML + "</ul>";
+            },
+            error: function (XMLHttpRequest, textStatus, error) { console.log(textStatus); alert('ERROR:' + error); }
+        });      //fin llamada ajax
+    }
+
+    function MapCalle(x, y) {
+        var center = new OpenLayers.LonLat(x, y);
+        map.setCenter(center, 6);
+    }
+
+    function MapMarker(x, y) {
+        vecLayerCS.removeAllFeatures();
+        var iMarker = 'img/marker.GIF';
+        var feature = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point(x, y),
+                { description: "<h1>Componente</h1>" },
+                { externalGraphic: iMarker, graphicHeight: 24, graphicWidth: 24, graphicXOffset: -12, graphicYOffset: -24 }
+            );
+        vecLayerCS.addFeatures(feature);
+        map.addLayer(vecLayerCS);
+        document.getElementById(coorX).value = x;
+        document.getElementById(coorY).value = y;
+    }
+
+
+    function filterCalle(element) {
+        var value = $(element).val();
+        $("#ListCalle > li").each(function () {
+            if ($(this).text().search(value) > -1) {
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+    }
+
+
+</script>
+</asp:Content>
+

@@ -1,0 +1,785 @@
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="frmRegistraIncidencia.aspx.vb" Inherits="frmRegistraIncidencia" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
+    <script language="javascript" type="text/javascript">
+
+        function asignaToInc() {
+            document.getElementById('<%= txtViaInc.ClientID %>').value = document.getElementById('<%= txtViaLlam.ClientID %>').value;
+            document.getElementById('<%= hfViaInc.ClientID %>').value = document.getElementById('<%= hfViallam.ClientID %>').value;
+            document.getElementById('<%= txtUrbInc.ClientID %>').value = document.getElementById('<%= txtUrbLlam.ClientID %>').value;
+            document.getElementById('<%= hfUrbInc.ClientID %>').value = document.getElementById('<%= hfUrbLlam.ClientID %>').value;
+
+            document.getElementById('<%= txtNroInc.ClientID %>').value = document.getElementById('<%= txtNroLlam.ClientID %>').value;
+            document.getElementById('<%= txtComInc.ClientID %>').value = document.getElementById('<%= txtComLlam.ClientID %>').value;
+
+        }
+
+        function asignaToLlam() {
+            document.getElementById('<%= txtViaLlam.ClientID %>').value = document.getElementById('<%= txtViaInc.ClientID %>').value;
+            document.getElementById('<%= hfViallam.ClientID %>').value = document.getElementById('<%= hfViaInc.ClientID %>').value;
+            document.getElementById('<%= txtUrbLlam.ClientID %>').value = document.getElementById('<%= txtUrbInc.ClientID %>').value;
+            document.getElementById('<%= hfUrbLlam.ClientID %>').value = document.getElementById('<%= hfUrbInc.ClientID %>').value;
+
+            document.getElementById('<%= txtNroLlam.ClientID %>').value = document.getElementById('<%= txtNroInc.ClientID %>').value;
+            document.getElementById('<%= txtComLlam.ClientID %>').value = document.getElementById('<%= txtComInc.ClientID %>').value;
+        }
+
+
+        function KeySelInc(source, eventArgs) {
+            userValues = eventArgs.get_value();
+            var elem = userValues.split('|');
+            document.getElementById('<%= txtViaInc.ClientID %>').value = elem[0];
+            document.getElementById('<%= hfViaInc.ClientID %>').value = elem[2];
+            document.getElementById('<%= txtUrbInc.ClientID %>').value = elem[1];
+            document.getElementById('<%= hfUrbInc.ClientID %>').value = elem[3];
+        }
+
+        function KeySelInt(source, eventArgs) {
+            userValues = eventArgs.get_value();
+            var elem = userValues.split('|');
+            document.getElementById('<%= txtIntInc.ClientID %>').value = elem[0];
+            document.getElementById('<%= hfIntInc.ClientID %>').value = elem[2];
+        }
+
+        function KeySelLlam(source, eventArgs) {
+            userValues = eventArgs.get_value();
+            var elem = userValues.split('|');
+            document.getElementById('<%= txtViaLlam.ClientID %>').value = elem[0];
+            document.getElementById('<%= hfViallam.ClientID %>').value = elem[2];
+            document.getElementById('<%= txtUrbLlam.ClientID %>').value = elem[1];
+            document.getElementById('<%= hfUrbLlam.ClientID %>').value = elem[3];
+        }
+
+        function cargaMap() {
+            var pLat = document.getElementById('<%= txtLat.ClientID %>').value
+            var pLon = document.getElementById('<%= txtLon.ClientID %>').value
+            if (pLat == '' || pLon == '') {
+                var url = 'frmGeoreferIncidencia.aspx';
+            }
+            else {
+                var url = 'frmGeoreferIncidencia.aspx?pLat=' + pLat + '&pLon=' + pLon;
+            }
+
+            
+            var setting = "directories=no,height=600,left=10,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,top=0,width=860";
+            window.open(url, "Referencia Geografica Incidente", setting)
+        }
+
+
+
+        function KeySelNombre(source, eventArgs) {
+            userValues = eventArgs.get_value();
+            var elem = userValues.split('|');
+            document.getElementById('<%= txtNombre.ClientID %>').value = elem[0];
+            document.getElementById('<%= hfNombrellam.ClientID %>').value = elem[1];
+            var pText = elem[1];
+            var webMethod = "WebServiceGPS.asmx/GetAdministrado";
+            $.ajax({ type: "POST",
+                url: webMethod,
+                data: "{'pText': '" + pText + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var lista = response.d;
+                    $.each(lista, function (index, pan) {
+                        document.getElementById('<%= hfTipoDocIde.ClientID %>').value = pan.p_VCHADMTIPDOC;
+                        document.getElementById('<%= txtTipoDocIde.ClientID %>').value = pan.p_strdesvaloropc1;
+                        document.getElementById('<%= txtNumDocIde.ClientID %>').value = pan.p_VCHADMNUMDOC;
+
+
+                    });
+                },
+                error: function (XMLHttpRequest, textStatus, error) {
+                    document.getElementById('<%= hfTipoDocIde.ClientID %>').value = '';
+                    document.getElementById('<%= txtTipoDocIde.ClientID %>').value = '';
+                    document.getElementById('<%= txtNumDocIde.ClientID %>').value = '';
+                }
+            });      //fin llamada ajax
+
+        }
+
+
+        function ValidarGrabar() {
+
+            if (document.getElementById('<%= ddlOrigen.ClientID %>').value == 0) {
+                alert('Seleccione el origen.')
+                return false
+            }
+
+            if (document.getElementById('<%= txtNumero.ClientID %>').value == '') {
+                alert('Ingrese el Numero de origen.')
+                return false
+            }
+
+            if (document.getElementById('<%= ddlTipoPersona.ClientID %>').value == 0) {
+                alert('Seleccione el tipo de persona.')
+                return false
+            }
+
+            if (!document.getElementById('<%= chkAnonimo.ClientID %>').checked) {
+                if (document.getElementById('<%= txtNombre.ClientID %>').value == '') {
+                    alert('Ingrese el Nombre del Informante.')
+                    return false
+                }
+             }
+
+
+            if (document.getElementById('<%= txtRelato.ClientID %>').value == '') {
+                alert('Ingrese el Relato.')
+                return false
+            }
+
+
+            if (document.getElementById('<%= ddlTipoInc.ClientID %>').value == 0) {
+                alert('Seleccione el tipo de incidente.')
+                return false
+            }
+
+            if (document.getElementById('<%= ddlSubTipoInc.ClientID %>').value == 0) {
+                alert('Seleccione el subtipo de incidente.')
+                return false
+            }
+
+            if (document.getElementById('<%= ddlPrioridad.ClientID %>').value == 0) {
+                alert('Seleccione la prioridad.')
+                return false
+            }
+
+        }
+    </script>
+    <style type="text/css">  
+	    .black_overlay{
+		    display:none;
+		    position: absolute;
+		    top: 0%;
+		    left: 0%;
+		    width: 100%;
+		    height: 100%;
+		    background-color:black;
+		    z-index:1001;
+		    -moz-opacity: 0.7;
+		    opacity:.70;
+		    filter: alpha(opacity=70);
+	    }
+	    .white_content {
+		    display:none;
+		    position: absolute;
+		    top: 15%;
+		    left: 20%;
+		    width: 60%;
+    		
+		    padding: 0px;
+		    border: 0px solid #a6c25c;
+		    background-color: white;
+		    z-index:1002;
+		    overflow: auto;
+	    }	
+        #pnlContenedor
+        {
+         width : 100%;
+        }        
+        #pnlRecurso
+        {
+         width : 100%;
+         float:left;
+        }
+        #pnlPersonal 
+        {
+         width : 100%;
+         float:left;
+        }
+        #pnlPuestoFijo
+        {
+         width : 100%;
+         float:left;
+        }        	
+        #pnlBotones
+        {
+         width : 100%;
+         float:left;
+        }                
+
+        
+        .PromptCSS  
+        {  
+            color:black;  
+            font-size:inherit;  
+            font-style:italic;  
+            font-weight:bold;  
+            background-color:snow;  
+            font-family:Courier New;  
+            border:solid 1px Pink;  
+            height:28px;  
+            }  
+    </style>  
+
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+    <div id="pnlContenedor">
+    <asp:Panel ID="Panel3" runat="server" CssClass="busquedaFondo" Font-Bold="true">
+        <table  class="Tabla" width="98%">
+            <colgroup>
+                <col style="width: 10%" />
+                <col style="width: 15%"/>
+                <col style="width: 10%" />
+                <col style="width: 15%"/>
+                <col style="width: 10%" />
+                <col style="width: 15%"/>
+                <col style="width: 10%" />
+                <col style="width: 15%"/>
+            </colgroup>
+            <tr>
+                <td align="right"><asp:Label ID="Label38" runat="server" Text="Anexo:"></asp:Label></td>
+                <td><asp:Label ID="lblAnexo" runat="server"></asp:Label></td>
+                <td align="right">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td align="right">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td align="right"><asp:Label ID="Label1" runat="server" Text="Nº Incidencia:"></asp:Label></td>
+                <td align="center"><asp:Label ID="LblNumeroInc" runat="server"></asp:Label></td>
+            </tr>
+        </table>
+    </asp:Panel>
+    <%--<asp:Panel ID="Panel1" runat="server" CssClass="busquedaFondo" GroupingText="Identificación de Llamada" Font-Bold="true">--%>
+    <div id="Panel1" class ="ventana">
+    <h5>Identificación de Llamada</h5>
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+            </colgroup>
+            <tr>
+                <td>
+                    Origen
+                </td>
+                <td>
+                    <asp:DropDownList ID="ddlOrigen" runat="server" Width="90%" CssClass="CajaCombo">
+                    </asp:DropDownList>
+                </td>
+                <td>
+                    Número
+                </td>
+                <td>
+                    <asp:TextBox ID="txtNumero" runat="server" CssClass="CajaTexto" MaxLength="15" 
+                        placeholder="Número de dispositivo" Width="80%"></asp:TextBox>
+                </td>
+                <td>
+                    Previas
+                </td>
+                <td>
+                    
+                    <asp:TextBox ID="txtPrevias" runat="server" CssClass="CajaTextoOff" 
+                        Enabled="False" MaxLength="15" Width="80%"></asp:TextBox>
+                    
+                </td>
+                <td>
+                    Fecha</td>
+                <td>
+                    <asp:TextBox ID="txtFechaInc" runat="server" CssClass="CajaTexto"
+                        Width="70px"></asp:TextBox>
+                    <asp:Image ID="Image2" runat="server" ImageAlign="TextTop" ImageUrl="~/img/calendar.png" /><br />
+                    <asp:RegularExpressionValidator ID="revFechaInc" runat="server" ControlToValidate="txtFechaInc"
+                        ErrorMessage="Fecha inválida" ValidationExpression="(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d"
+                        Visible="False"></asp:RegularExpressionValidator>
+                    <cc1:MaskedEditExtender ID="mmeFechaInc" runat="server" 
+                        Mask="99/99/9999" MaskType="Date" TargetControlID="txtFechaInc">
+                    </cc1:MaskedEditExtender>
+                    <cc1:CalendarExtender ID="ceFechaInc" runat="server" 
+                        CssClass="calendario" Format="dd/MM/yyyy" PopupButtonID="Image1" 
+                        TargetControlID="txtFechaInc">
+                    </cc1:CalendarExtender>
+                </td>
+                <td>
+                    <asp:TextBox ID="txtHoraInc" runat="server" CssClass="CajaTexto"
+                        Width="45px"></asp:TextBox>
+                    <cc1:MaskedEditExtender ID="mmeHoraInc" runat="server" 
+                        Century="2000" ClearTextOnInvalid="True"
+                        ErrorTooltipEnabled="True" Mask="99:99" MaskType="Time" MessageValidatorTip="False"
+                        TargetControlID="txtHoraInc" AcceptAMPM="False">
+                    </cc1:MaskedEditExtender>
+                    <asp:RegularExpressionValidator ID="revHoraInc" runat="server" ErrorMessage="* Introduzca el formato correcto."
+                        Display="Dynamic" ControlToValidate="txtHoraInc" 
+                        ValidationExpression="^((([0]?[1-9]|1[0-2])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?( )?(AM|am|aM|Am|PM|pm|pM|Pm))|(([0]?[0-9]|1[0-9]|2[0-3])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?))$"></asp:RegularExpressionValidator>                
+                </td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <%--</asp:Panel>--%>
+    <asp:Panel ID="Panel2" runat="server" CssClass="busquedaFondo" GroupingText="Localización de la Llamada" Font-Bold="true">
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+            </colgroup>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+
+            </tr>
+            <tr>
+                <td>
+                    Via</td>
+                <td colspan="3">
+                    <asp:TextBox ID="txtViaLlam" runat="server" CssClass="CajaTextoUpper" 
+                        MaxLength="150" Width="80%"></asp:TextBox>
+                    <cc1:AutoCompleteExtender ID="AutoCompViasLlam" runat="server" 
+                        CompletionInterval="10" CompletionSetCount="12" EnableCaching="true" 
+                        MinimumPrefixLength="3" OnClientItemSelected="KeySelLlam" 
+                        ServiceMethod="getCallesAdminAuto" ServicePath="WebServiceGPS.asmx" 
+                        TargetControlID="TxtViaLlam">
+                    </cc1:AutoCompleteExtender>
+                    <asp:HiddenField ID="hfViaLlam" runat="server" />
+                </td>
+                <td>
+                    Nro.Via</td>
+                <td>
+                    <asp:TextBox ID="txtNroLlam" runat="server" CssClass="CajaTextoUpper" 
+                        MaxLength="10" Width="80%"></asp:TextBox>
+                </td>
+                <td>
+                    Habilitación</td>
+                <td colspan="2">
+                    <asp:TextBox ID="txtUrbLlam" runat="server" CssClass="CajaTextoUpper" 
+                        MaxLength="100" Width="80%"></asp:TextBox>
+                    <asp:HiddenField ID="hfUrbLlam" runat="server" />
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    Referencia
+                </td>
+                <td colspan="3">
+                    <asp:TextBox ID="txtComLlam" runat="server" CssClass="CajaTextoUpper" 
+                        MaxLength="200" Width="80%"></asp:TextBox>
+                </td>
+                <td colspan="2" align="center">
+                    <asp:Button ID="btnInc" runat="server" CssClass="boton_busca" Text="A Incidencia" OnClientClick="javascript:return asignaToInc();" />
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+    <asp:Panel ID="Panel4" runat="server" CssClass="busquedaFondo" GroupingText="Localización del Incidente" Font-Bold="true">
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+            </colgroup>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+
+            </tr>
+            <tr>
+                <td>
+                    Via</td>
+                <td colspan="3">
+                    <asp:TextBox ID="txtViaInc" runat="server" Width="80%" CssClass="CajaTextoUpper"
+                        MaxLength="150"></asp:TextBox>
+                    <cc1:AutoCompleteExtender ID="AutoCompViasInc" runat="server" TargetControlID="TxtViaInc"
+                        ServicePath="WebServiceGPS.asmx" ServiceMethod="getCallesAdminAuto" MinimumPrefixLength="3"
+                        CompletionInterval="10" EnableCaching="true" OnClientItemSelected="KeySelInc"
+                        CompletionSetCount="12">
+                    </cc1:AutoCompleteExtender>
+                    <asp:HiddenField ID="hfViaInc" runat="server" />
+                </td>
+                <td>
+                    Nro.Via</td>
+                <td>
+                    <asp:TextBox ID="txtNroInc" runat="server" Width="80%" CssClass="CajaTextoUpper"
+                        MaxLength="10"></asp:TextBox>
+                </td>
+                <td>
+                    Habilitación</td>
+                <td colspan="2">
+                    <asp:TextBox ID="txtUrbInc" runat="server" Width="80%" CssClass="CajaTextoUpper"
+                        MaxLength="100"></asp:TextBox>
+                    <asp:HiddenField ID="hfUrbInc" runat="server" />
+                </td>
+                <td>
+                    <asp:Button ID="btnMap" runat="server" CssClass="boton_busca" Text="Mapa" OnClientClick="javascript:return cargaMap();" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Interseccion
+                </td>
+                <td colspan="3">
+                    <asp:TextBox ID="txtIntInc" runat="server" Width="80%" CssClass="CajaTextoUpper"
+                        MaxLength="150"></asp:TextBox>
+                    <cc1:AutoCompleteExtender ID="AutoCompViasIntInc" runat="server" TargetControlID="TxtIntInc"
+                        ServicePath="WebServiceGPS.asmx" ServiceMethod="getCallesAdminAuto" MinimumPrefixLength="3"
+                        CompletionInterval="10" EnableCaching="true" OnClientItemSelected="KeySelInt"
+                        CompletionSetCount="12">
+                    </cc1:AutoCompleteExtender>
+                    <asp:HiddenField ID="hfIntInc" runat="server" />
+                </td>
+                <td>
+                    Referencia</td>
+                <td colspan="3">
+                    <asp:TextBox ID="txtComInc" runat="server" CssClass="CajaTextoUpper" 
+                        MaxLength="200" Width="80%"></asp:TextBox>
+                </td>
+                <td align="center" colspan="2">
+                    <asp:Button ID="btnLlam" runat="server" CssClass="boton_busca" Text="A Llamada" OnClientClick="javascript:return asignaToLlam();" />
+                </td>
+
+            </tr>
+        </table>
+    </asp:Panel>
+
+    <asp:Panel ID="Panel10" runat="server" Font-Bold="true" CssClass="busquedaFondo">
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="10%" />
+                <col width="20%" />
+                <col width="10%" />
+                <col width="40%" />
+                <col width="10%" />
+                <col width="10%" />
+            </colgroup>
+            <tr>
+                <td>Tipo Persona</td>
+                <td>
+                    <asp:DropDownList ID="ddlTipoPersona" runat="server" CssClass="CajaCombo" 
+                        Width="80%">
+                    </asp:DropDownList>
+                </td>
+                <td></td>
+                <td>
+                    <asp:CheckBox ID="chkAnonimo" runat="server" CssClass="CajaTexto" onchange="anonimo(this);" 
+                        Text="No se identifica" AutoPostBack="True" />
+                </td>
+
+                <td>
+                    <asp:TextBox ID="txtLat" runat="server" CssClass="CajaTextoOff" Enabled="False" 
+                        MaxLength="15" Width="80%"></asp:TextBox>
+                </td>
+                <td>
+                    <asp:TextBox ID="txtLon" runat="server" CssClass="CajaTextoOff" Enabled="False" 
+                        MaxLength="15" Width="80%"></asp:TextBox>
+                </td>
+            </tr>
+</table>
+</asp:Panel>
+    <asp:UpdatePanel ID="upAnonimo" runat="server">
+    <ContentTemplate>
+        <asp:Panel ID="pnlPersona" runat="server" CssClass="busquedaFondo" GroupingText="Datos del Informante" Font-Bold="true">
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+            </colgroup>
+            <tr>
+                <td>
+                    Nombres
+                </td>
+                <td colspan="3">
+                    <asp:TextBox ID="txtNombre" runat="server" CssClass="CajaTextoUpper" 
+                        Width="80%"></asp:TextBox>
+                    <cc1:AutoCompleteExtender ID="AutoCompNombreLlam" runat="server" 
+                        CompletionInterval="10" CompletionSetCount="12" EnableCaching="true" 
+                        MinimumPrefixLength="3" OnClientItemSelected="KeySelNombre" 
+                        ServiceMethod="getNombreAdminAuto" ServicePath="WebServiceGPS.asmx" 
+                        TargetControlID="TxtNombre">
+                    </cc1:AutoCompleteExtender>
+                    <asp:HiddenField ID="hfNombreLlam" runat="server" />
+                </td>
+                <td>
+                    Tp. Doc. </td>
+                <td>
+                    <asp:TextBox ID="txtTipoDocIde" runat="server" CssClass="CajaTextoCOff" 
+                        MaxLength="20" Width="80%"></asp:TextBox>
+                    <asp:HiddenField ID="hfTipoDocIde" runat="server" />
+                </td>
+                <td>
+                    Nº Doc. </td>
+                <td>
+                    <asp:TextBox ID="txtNumDocIde" runat="server" CssClass="CajaTextoCOff" 
+                        MaxLength="20" Width="80%"></asp:TextBox>
+                </td>
+                <td></td>
+                <td></td>
+
+            </tr>
+        </table>
+    </asp:Panel>
+    </ContentTemplate>
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="chkAnonimo" EventName="CheckedChanged" />
+        </Triggers>
+    </asp:UpdatePanel>
+    <asp:Panel ID="Panel6" runat="server" CssClass="busquedaFondo" GroupingText="Relato del Informante" Font-Bold="true">
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="10%" />
+                <col width="20%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+            </colgroup>
+            <tr>
+                <td>
+                    <asp:TextBox ID="txtRelato" runat="server" TextMode="MultiLine" Width="98%" 
+                        CssClass="CajaTextoUpper" Wrap="true"></asp:TextBox>
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+    <asp:Panel ID="upTipoInc" runat="server" class="busquedaFondo" 
+        GroupingText="Tipificación de Incidencia" Font-Bold="true">
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+            </colgroup>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    Tipo
+                </td>
+                <td colspan="3">
+                    <asp:DropDownList ID="ddlTipoInc" runat="server" Width="80%" AutoPostBack="True"
+                        CssClass="CajaCombo">
+                    </asp:DropDownList>
+                    <cc1:ListSearchExtender id="lseTipoInc" runat="server" PromptText="_" TargetControlID="ddlTipoInc" QueryPattern="Contains" PromptCssClass="PromptCSS">
+                    </cc1:ListSearchExtender>
+                </td>
+                <td>
+                    Subtipo
+                </td>
+                <td colspan="3">
+                    <asp:UpdatePanel ID="upSubTipoInc" runat="server">
+                    <ContentTemplate>
+                    <asp:DropDownList ID="ddlSubTipoInc" runat="server" Width="80%" 
+                        CssClass="CajaCombo" AutoPostBack="True">
+                    </asp:DropDownList>
+                    </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="ddlTipoInc" 
+                                EventName="SelectedIndexChanged" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+
+                </td>
+                <td>
+                    
+                    Prioridad
+                    
+                </td>
+                <td>
+                
+                    <asp:UpdatePanel ID="upPrioridad" runat="server">
+                    <ContentTemplate>
+                    <asp:DropDownList ID="ddlPrioridad" runat="server" CssClass="CajaCombo" 
+                        Width="80%">
+                    </asp:DropDownList>
+                    </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="ddlSubTipoInc" 
+                                EventName="SelectedIndexChanged" />
+                        </Triggers>
+                    </asp:UpdatePanel>    
+
+                    
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+    <asp:UpdatePanel ID="upPreguntas" runat="server">
+    <ContentTemplate>
+    <asp:Panel ID="Panel8" runat="server" CssClass="busquedaFondo" Font-Bold="true">
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="40%" />
+                <col width="60%" />
+            </colgroup>
+            <tr valign="top">
+                <td>
+                    <asp:Panel ID="Panel5" runat="server" CssClass="busquedaFondo" GroupingText="Consejos" Font-Bold="true">
+                    <asp:TextBox ID="txtConsejo" runat="server" TextMode="MultiLine" Width="95%" 
+                        CssClass="CajaTextoOff" ReadOnly="True"></asp:TextBox>
+                        </asp:Panel>
+                </td>
+                <td>
+                    <asp:Panel ID="Panel9" runat="server" CssClass="busquedaFondo" GroupingText="Preguntas" Font-Bold="true">
+                    <asp:GridView ID="gvPreguntas" runat="server" CssClass="Grid" AlternatingRowStyle-CssClass="GridAlternateRow"
+                            HeaderStyle-CssClass="GridHeader" PagerStyle-CssClass="GridFooter" RowStyle-CssClass="GridRow"
+                            AllowPaging="True" AutoGenerateColumns="False" Width="100%">
+                            <RowStyle CssClass="GridRow"></RowStyle>
+                        <Columns>
+                            <asp:TemplateField HeaderText="" Visible="False">
+                                <ItemTemplate>
+                                    <asp:label ID="lblSMLPRGCODIGO" runat="server" Text='<%# Bind("SMLPRGCODIGO") %>'></asp:label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Pregunta">
+                                <ItemTemplate>
+                                    <asp:label ID="lblVCHPRGDESCRIPCION" runat="server" Text='<%# Bind("VCHPRGDESCRIPCION") %>' CssClass="CajaTexto"></asp:label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="" Visible="False">
+                                <ItemTemplate>
+                                    <asp:label ID="lblSMLTRECODIGO" runat="server" Text='<%# Bind("SMLTRECODIGO") %>'></asp:label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="" Visible="False">
+                                <ItemTemplate>
+                                    <asp:label ID="lblVCHTREDESCRIPCION" runat="server" Text='<%# Bind("VCHTREDESCRIPCION") %>'></asp:label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+                            <asp:TemplateField HeaderText="Respuesta">
+                                <ItemTemplate>
+                                    <%--<asp:TextBox ID="txtTIPO" runat="server" Text='<%# Bind("ID_TIPO") %>' Width="2px"></asp:TextBox>--%>
+                                    <asp:Label ID="lblSMLALTCODIGO" runat="server" Text='<%# Eval("SMLALTCODIGO") %>' Visible="false"></asp:Label>
+                                    <asp:DropDownList ID="cmbRespuesta" runat="server" Visible="false" Width="70%" CssClass="CajaCombo"></asp:DropDownList>
+                                    <asp:TextBox ID="txtRespuesta" runat="server" Visible="false" Width="70%" placeholder="Respuesta aqui" CssClass="CajaTextoUpper" Text='<%# Bind("VCHPRRRESPUESTA") %>'></asp:TextBox>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="" Visible="False">
+                                <ItemTemplate>
+                                        <asp:label ID="lblINTPRRCODIGO" runat="server" Text='<%# Bind("INTPRRCODIGO") %>'></asp:label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="" Visible="False">
+                                <ItemTemplate>
+                                        <asp:label ID="lblINTINCCODIGO" runat="server" Text='<%# Bind("INTINCCODIGO") %>'></asp:label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                        <PagerStyle CssClass="GridFooter"></PagerStyle>
+                        <EmptyDataTemplate>
+                            <asp:Label ID="Label37" runat="server" Text="No existen registros para mostrar" CssClass="Tabla"></asp:Label>
+                        </EmptyDataTemplate>
+                        <HeaderStyle CssClass="GridHeader"></HeaderStyle>
+                        <AlternatingRowStyle CssClass="GridAlternateRow"></AlternatingRowStyle>
+                        <SelectedRowStyle CssClass="GridSeletedRow" />
+                    </asp:GridView>
+                    </asp:Panel> 
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+    </ContentTemplate>
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="ddlSubTipoInc" 
+                EventName="SelectedIndexChanged" />
+        </Triggers>
+    </asp:UpdatePanel>
+
+    <asp:Panel ID="pnlBotones" runat="server"  CssClass="busquedaFondo"  GroupingText="" Font-Bold="true">
+        <table width="98%" class="Tabla">
+            <colgroup>
+                <col width="20%" />
+                <col width="20%" />
+                <col width="20%" />
+                <col width="20%" />
+                <col width="20%" />
+            </colgroup>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <asp:Button ID="btnGrabar" runat="server" CssClass="boton_dialogo" 
+                        Text="Grabar" Width="80%" />
+                </td>
+                <td>
+                    <asp:Button ID="btnCancelar" runat="server" CssClass="boton_dialogo" 
+                        Text="Cancelar" Width="80%" />
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+
+</div>
+</asp:Content>
+

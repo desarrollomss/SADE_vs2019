@@ -1,0 +1,12 @@
+C:\Seguridad\Entidades\bin\Debug\Entidades.dll
+C:\Seguridad\Entidades\bin\Debug\Entidades.pdb
+C:\Seguridad\Entidades\bin\Debug\Entidades.xml
+C:\Seguridad\Entidades\bin\Debug\Framework.dll
+C:\Seguridad\Entidades\bin\Debug\IBM.Data.U2.Ucinet.dll
+C:\Seguridad\Entidades\bin\Debug\Framework.pdb
+C:\Seguridad\Entidades\obj\Debug\ResolveAssemblyReference.cache
+C:\Seguridad\Entidades\obj\Debug\Entidades.Resources.resources
+C:\Seguridad\Entidades\obj\Debug\Entidades.vbproj.GenerateResource.Cache
+C:\Seguridad\Entidades\obj\Debug\Entidades.dll
+C:\Seguridad\Entidades\obj\Debug\Entidades.xml
+C:\Seguridad\Entidades\obj\Debug\Entidades.pdb

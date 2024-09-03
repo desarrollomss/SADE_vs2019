@@ -1,0 +1,205 @@
+﻿    .redondear
+    {
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../css/borde.htc');   
+    }
+    .CajaTexto
+    {
+     border:1px;
+     border-color:#D3D3D3;
+     background-color:#ffffff;
+     border-style:solid;
+     color:#555555;
+     font-size:11px;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:18px;
+     padding-left:2px;
+     padding-right:2px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');   
+    }
+    .CajaTexto:focus{
+    background: #EEEEEE;
+    border-color:#999999;
+    color: #212121;
+	}    
+    .CajaTextoUpper
+    {
+     border:1px;
+     border-color:#D3D3D3;
+     background-color:#ffffff;
+     border-style:solid;
+     color:#555555;
+     font-size:11px;
+     text-transform:uppercase;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:18px;
+     padding-left:2px;
+     padding-right:2px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');   
+    }
+    .CajaTextoUpper:hover{
+    background: #EEEEEE;
+    border-color:#999999;
+    color: #212121;
+	}  
+    .Tabla
+    {	
+     color:#555555;
+     font-size:11px;
+     font-family:Tahoma, Sans-Serif;	
+	}  	
+	.Tabla td
+    {	
+		height:25px;
+	}  	
+	.busqueda
+	{
+	border-radius:5px; 
+	-moz-border-radius:5px; /* Firefox */ 
+	-webkit-border-radius:5px; /* Safari y Chrome */    
+	behavior:url('../borde.htc');  		
+    margin-top:10px;
+    margin-bottom:10px;
+		}
+    .busqueda table
+{
+	border-style: solid;
+	border-width: 1px;
+	color: #555555;
+	border-color: #D3D3D3;
+	font-size: 11px;
+	font-family: Tahoma, Sans-Serif;
+    margin-bottom:10px;
+}  	
+	.busqueda table td
+    {	
+		height:25px;
+		padding-left:5px;
+	}	
+	.invisible
+    {
+     border:0px;
+     border-color:#ffffff;
+     background-color:#ffffff;
+     border-style:none;
+    }
+    .CajaCombo
+    {
+     border:1px;
+     border-color:#D3D3D3;
+     background-color:#ffffff;
+     border-style:solid;
+     color:#555555;
+     font-size:11px;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:23px;
+     padding-left:2px;
+     padding-right:2px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');   
+    }
+    .CajaCombo:hover{
+    background: #EEEEEE;
+    border-color:#999999;
+    color: #212121;
+	}      
+
+    .CajaTextoOff
+    {
+     border:1px;
+     border-color:#D3D3D3;
+     background-color:#EBEBEB;
+     border-style:solid;
+     color:#555555;
+     text-align :right;
+     font-size:11px;
+     font-weight:bold;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:18px;
+     padding-left:2px;
+     padding-right:2px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');  
+    }
+    .CajaTextoCOff
+    {
+     border:1px;
+     border-color:#D3D3D3;
+     background-color:#EBEBEB;
+     border-style:solid;
+     color:#555555;
+     text-align:left;
+     font-size:11px;
+     font-weight:bold;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:18px;
+     padding-left:2px;
+     padding-right:2px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');  
+    }
+    .CajaTextoObligatorio
+    {
+     border:1px;
+     border-left :2px;
+     border-left-color:#bb4c5f;
+     border-bottom-color :#D3D3D3;
+     border-top-color :#D3D3D3;
+     border-right-color:#D3D3D3;
+     background-color:#ffffff;
+     border-style:solid;
+     color:#555555;
+     font-size:11px;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:18px;
+     padding-left:2px;
+     padding-right:2px;     
+     border-radius:3px; 
+     -moz-border-radius:3px; /* Firefox */ 
+     -webkit-border-radius:3px; /* Safari y Chrome */    
+     behavior:url('../borde.htc');   
+    }    
+    .CajaTextoObligatorio:hover
+    {
+     border-left :2px;
+     border-left-color:#bb4c5f;
+     border-bottom-color :#999999;
+     border-top-color :#999999;
+     border-right-color:#999999;    	
+     background: #EEEEEE;
+     color: #212121;
+	}
+	.EtiquetaObligatorio
+    {
+     border-left :2px;
+     border-left-color:#bb4c5f;
+     border-style:solid;
+     color:#555555;
+     font-size:8pt;
+     font-family:Tahoma, Sans-Serif;
+     width:auto;
+     height:12px;
+     padding-left:2px;
+    }
+
+	     

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ExportSADE" targetNamespace="http://tempuri.org/BusTI.xsd" elementFormDefault="qualified" xmlns="http://tempuri.org/BusTI.xsd" xmlns:mstns="http://tempuri.org/BusTI.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ExportSADE">
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element name="INTINCCODIGO" type="xs:string" />
+        <xs:element name="FECHA_APERTURA" type="xs:string" />
+        <xs:element name="HORA_APERTURA" type="xs:string" />
+        <xs:element name="USUARIO_APERTURA" type="xs:string" />
+        <xs:element name="ORIGEN" type="xs:string" />
+        <xs:element name="NUM_TELEFONICO" type="xs:string" />
+        <xs:element name="INFORMANTE" type="xs:string" />
+        <xs:element name="TIPO_DOCUMENTO" type="xs:string" />
+        <xs:element name="NRO_DOCUMENTO" type="xs:string" />
+        <xs:element name="NOMB_VIA1" type="xs:string" />
+        <xs:element name="NOMB_VIA2" type="xs:string" />
+        <xs:element name="NRO_CUADRA" type="xs:string" />
+        <xs:element name="NUMERAL" type="xs:string" />
+        <xs:element name="DPTO_INT" type="xs:string" />
+        <xs:element name="MANZANA" type="xs:string" />
+        <xs:element name="LOTE" type="xs:string" />
+        <xs:element name="HAB_URBANA" type="xs:string" />
+        <xs:element name="REFERENCIA" type="xs:string" />
+        <xs:element name="CUADRANTE" type="xs:string" />
+        <xs:element name="SECTOR" type="xs:string" />
+        <xs:element name="LATITUD" type="xs:string" />
+        <xs:element name="LONGITUD" type="xs:string" />
+        <xs:element name="XGEO" type="xs:string" />
+        <xs:element name="YGEO" type="xs:string" />
+        <xs:element name="RELATO_INFORMANTE" type="xs:string" />
+        <xs:element name="PARTE_INTERNO" type="xs:string" />
+        <xs:element name="PARTE_POLICIAL" type="xs:string" />
+        <xs:element name="RELATO_INTERVENCION" type="xs:string" />
+        <xs:element name="NUM_INTERVENIDOS" type="xs:string" />
+        <xs:element name="TIPO" type="xs:string" />
+        <xs:element name="SUBTIPO" type="xs:string" />
+        <xs:element name="PRIORIDAD" type="xs:string" />
+        <xs:element name="FEC_DERIVA" type="xs:string" />
+        <xs:element name="USU_DERIVA" type="xs:string" />
+        <xs:element name="REC_HORASIGNA1" type="xs:string" />
+        <xs:element name="REC_TIPOREC1" type="xs:string" />
+        <xs:element name="REC_NUMERO1" type="xs:string" />
+        <xs:element name="REC_RESPONSABLE1" type="xs:string" />
+        <xs:element name="REC_USUARIO1" type="xs:string" />
+        <xs:element name="REC_HORALLEGA1" type="xs:string" />
+        <xs:element name="REC_HORASIGNA2" type="xs:string" />
+        <xs:element name="REC_TIPOREC2" type="xs:string" />
+        <xs:element name="REC_NUMERO2" type="xs:string" />
+        <xs:element name="REC_RESPONSABLE2" type="xs:string" />
+        <xs:element name="REC_USUARIO2" type="xs:string" />
+        <xs:element name="REC_HORALLEGA2" type="xs:string" />
+        <xs:element name="REC_HORASIGNA3" type="xs:string" />
+        <xs:element name="REC_TIPOREC3" type="xs:string" />
+        <xs:element name="REC_NUMERO3" type="xs:string" />
+        <xs:element name="REC_RESPONSABLE3" type="xs:string" />
+        <xs:element name="REC_USUARIO3" type="xs:string" />
+        <xs:element name="REC_HORALLEGA3" type="xs:string" />
+        <xs:element name="INTER_HORA1" type="xs:string" />
+        <xs:element name="INTER_RELATO1" type="xs:string" />
+        <xs:element name="INTER_USUARIO1" type="xs:string" />
+        <xs:element name="INTER_HORA2" type="xs:string" />
+        <xs:element name="INTER_RELATO2" type="xs:string" />
+        <xs:element name="INTER_USUARIO2" type="xs:string" />
+        <xs:element name="INTER_HORA3" type="xs:string" />
+        <xs:element name="INTER_RELATO3" type="xs:string" />
+        <xs:element name="INTER_USUARIO3" type="xs:string" />
+        <xs:element name="FINAL_HORA" type="xs:string" />
+        <xs:element name="FINAL_USUARIO" type="xs:string" />
+        <xs:element name="CIERRE_FECHA" type="xs:string" />
+        <xs:element name="CIERRE_HORA" type="xs:string" />
+        <xs:element name="CIERRE_USUARIO" type="xs:string" />
+        <xs:element name="CIERRE_COMENTARIO" type="xs:string" />
+        <xs:element name="ESTADO" type="xs:string" />
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,3 @@
+C:\Seguridad\Datos\obj\Debug\ResolveAssemblyReference.cache
+C:\Seguridad\Datos\obj\Debug\Datos.Resources.resources
+C:\Seguridad\Datos\obj\Debug\Datos.vbproj.GenerateResource.Cache

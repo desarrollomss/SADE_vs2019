@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectGuid>{6D78105E-BF43-45B6-B362-6A51B330C463}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SISSADE</RootNamespace>
+    <AssemblyName>DAL_SADE</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>DAL_SADE.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>DAL_SADE.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Text</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IBM.Data.DB2, Version=9.0.0.2, Culture=neutral, PublicKeyToken=7c307b91aa13d208, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_32\IBM.Data.DB2\9.0.0.2__7c307b91aa13d208\IBM.Data.DB2.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\..\Users\areyes\Desktop\SADE\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CCOALTERNATIVARESPUESTA_DL.vb" />
+    <Compile Include="CCOCARGOPERSONAL_DL.vb" />
+    <Compile Include="CCOCARGO_DL.vb" />
+    <Compile Include="CCOCLASEINCIDENCIA_DL.vb" />
+    <Compile Include="CCOCOMISARIA_DL.vb" />
+    <Compile Include="CCOCUADRANTESECTOR_DL.vb" />
+    <Compile Include="CCODETALLESECUENCIASERVICIO_DL.vb" />
+    <Compile Include="CCOENCUESTAINCIDENCIA_DL.vb" />
+    <Compile Include="GEO\TB_CAMARA_DL.vb" />
+    <Compile Include="SCUESTACION_DL.vb" />
+    <Compile Include="CCOINCIDENCIAHISTORIAL_DL.vb" />
+    <Compile Include="CCOINCIDENCIAPAQUETE_DL.vb" />
+    <Compile Include="CCOINCIDENCIAREPLICA_DL.vb" />
+    <Compile Include="CCOINCIDENCIA_DL.vb" />
+    <Compile Include="CCOMENSAJEROLUSUARIO_DL.vb" />
+    <Compile Include="CCOMENSAJE_DL.vb" />
+    <Compile Include="CCOMODALIDADFUGAINCIDENCIA_DL.vb" />
+    <Compile Include="CCOOBJETIVOINCIDENCIA_DL.vb" />
+    <Compile Include="CCOORIGENINCIDENCIA_DL.vb" />
+    <Compile Include="CCOPAQUETECUADRANTE_DL.vb" />
+    <Compile Include="CCOPAQUETEPERSONAL_DL.vb" />
+    <Compile Include="CCOPAQUETERECURSO_DL.vb" />
+    <Compile Include="CCOPAQUETE_DL.vb" />
+    <Compile Include="CCOPARAMETRO_DL.vb" />
+    <Compile Include="CCOPARTEDIARIO_DL.vb" />
+    <Compile Include="CCOPERSONALFAMILIA_DL.vb" />
+    <Compile Include="CCOPERSONAL_DL.vb" />
+    <Compile Include="CCOPREGUNTAINCIDENCIA_DL.vb" />
+    <Compile Include="CCOPRIORIDADINCIDENCIA_DL.vb" />
+    <Compile Include="CCOPUESTOFIJO_DL.vb" />
+    <Compile Include="CCORECURSO_DL.vb" />
+    <Compile Include="CCORESULTADOINCIDENCIA_DL.vb" />
+    <Compile Include="CCOROLSERVICIO_DL.vb" />
+    <Compile Include="CCOSECTOR_DL.vb" />
+    <Compile Include="CCOSECUENCIASERVICIO_DL.vb" />
+    <Compile Include="CCOSUBTIPOINCIDENCIA_DL.vb" />
+    <Compile Include="CCOTABLA_DL.vb" />
+    <Compile Include="CCOTIPODOCUMENTO_DL.vb" />
+    <Compile Include="CCOTIPOFININTERVENCION_DL.vb" />
+    <Compile Include="CCOTIPOINCIDENCIA_DL.vb" />
+    <Compile Include="CCOTIPOPAQUETERECURSO_DL.vb" />
+    <Compile Include="CCOTIPOPAQUETE_DL.vb" />
+    <Compile Include="CCOTIPOPERSONA_DL.vb" />
+    <Compile Include="CCOTIPORECURSO_DL.vb" />
+    <Compile Include="CCOTIPORESPUESTA_DL.vb" />
+    <Compile Include="CCOTIPOTURNO_DL.vb" />
+    <Compile Include="CCOTURNO_DL.vb" />
+    <Compile Include="CCOMODALIDADINCIDENCIA_DL.vb" />
+    <Compile Include="CCOINCIDENCIARECURSO_DL.vb" />
+    <Compile Include="CCOINCIDENCIAINTERACCION_DL.vb" />
+    <Compile Include="CCOUSUARIOSESION_DL.vb" />
+    <Compile Include="GEO\GPSPOSICION_DL.vb" />
+    <Compile Include="GEO\LUGAR_DL.vb" />
+    <Compile Include="GEO\TB_COMPSEG_DL.vb" />
+    <Compile Include="GPSTETRA_DL.vb" />
+    <Compile Include="SYS\SYSDNI_DL.vb" />
+    <Compile Include="GPSPOSITION_DL.vb" />
+    <Compile Include="GPSREGISTRO_DL.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SCUROL_DL.vb" />
+    <Compile Include="SYS\SYSCATASTRO_DL.vb" />
+    <Compile Include="SYS\SYSESTACION_DL.vb" />
+    <Compile Include="SYS\SYSPERSONA_DL.vb" />
+    <Compile Include="SYS\SYSSATTI_DL.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AccesoDatosGEO\AccesoDatosGEO.csproj">
+      <Project>{79487117-9158-4D54-B984-760C9B2AEDDA}</Project>
+      <Name>AccesoDatosGEO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AccesoDatos\AccesoDatos.vbproj">
+      <Project>{5333E385-1866-4097-BD9B-8C2F424AFE94}</Project>
+      <Name>AccesoDatos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BE\BE.vbproj">
+      <Project>{E094D14A-19DC-4060-8B6A-0447663EB71F}</Project>
+      <Name>BE</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,68 @@
+C:\SSF_SADE\AccesoDatos\bin\Debug\AccesoDatos.dll
+C:\SSF_SADE\AccesoDatos\bin\Debug\AccesoDatos.pdb
+C:\SSF_SADE\AccesoDatos\bin\Debug\AccesoDatos.xml
+C:\SSF_SADE\AccesoDatos\obj\Debug\AccesoDatos.vbprojResolveAssemblyReference.cache
+C:\SSF_SADE\AccesoDatos\obj\Debug\SISSADE.Resources.resources
+C:\SSF_SADE\AccesoDatos\obj\Debug\AccesoDatos.vbproj.GenerateResource.Cache
+C:\SSF_SADE\AccesoDatos\obj\Debug\AccesoDatos.dll
+C:\SSF_SADE\AccesoDatos\obj\Debug\AccesoDatos.xml
+C:\SSF_SADE\AccesoDatos\obj\Debug\AccesoDatos.pdb
+C:\SSF_SADE_Ultimo\AccesoDatos\bin\Debug\AccesoDatos.dll
+C:\SSF_SADE_Ultimo\AccesoDatos\bin\Debug\AccesoDatos.pdb
+C:\SSF_SADE_Ultimo\AccesoDatos\bin\Debug\AccesoDatos.xml
+C:\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.vbprojResolveAssemblyReference.cache
+C:\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\SISSADE.Resources.resources
+C:\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.vbproj.GenerateResource.Cache
+C:\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.dll
+C:\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.xml
+C:\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.pdb
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\bin\Debug\AccesoDatos.dll
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\bin\Debug\AccesoDatos.pdb
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\bin\Debug\AccesoDatos.xml
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.vbprojResolveAssemblyReference.cache
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\SISSADE.Resources.resources
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.vbproj.GenerateResource.Cache
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.dll
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.xml
+D:\Fuente\Sade\SSF_SADE_Ultimo\AccesoDatos\obj\Debug\AccesoDatos.pdb
+D:\Fuente\Sade\AccesoDatos\bin\Debug\AccesoDatos.dll
+D:\Fuente\Sade\AccesoDatos\bin\Debug\AccesoDatos.pdb
+D:\Fuente\Sade\AccesoDatos\bin\Debug\AccesoDatos.xml
+D:\Fuente\Sade\AccesoDatos\obj\Debug\AccesoDatos.vbprojResolveAssemblyReference.cache
+D:\Fuente\Sade\AccesoDatos\obj\Debug\SISSADE.Resources.resources
+D:\Fuente\Sade\AccesoDatos\obj\Debug\AccesoDatos.vbproj.GenerateResource.Cache
+D:\Fuente\Sade\AccesoDatos\obj\Debug\AccesoDatos.dll
+D:\Fuente\Sade\AccesoDatos\obj\Debug\AccesoDatos.xml
+D:\Fuente\Sade\AccesoDatos\obj\Debug\AccesoDatos.pdb
+D:\Codigo Fuente\SADE\AccesoDatos\bin\Debug\AccesoDatos.dll
+D:\Codigo Fuente\SADE\AccesoDatos\bin\Debug\AccesoDatos.pdb
+D:\Codigo Fuente\SADE\AccesoDatos\bin\Debug\AccesoDatos.xml
+D:\Codigo Fuente\SADE\AccesoDatos\bin\Debug\IBM.Data.DB2.dll
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Debug\AccesoDatos.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Debug\SISSADE.Resources.resources
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Debug\AccesoDatos.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Debug\AccesoDatos.dll
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Debug\AccesoDatos.xml
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Debug\AccesoDatos.pdb
+D:\CodeSource\SADE\AccesoDatos\bin\Debug\AccesoDatos.dll
+D:\CodeSource\SADE\AccesoDatos\bin\Debug\AccesoDatos.pdb
+D:\CodeSource\SADE\AccesoDatos\bin\Debug\AccesoDatos.xml
+D:\CodeSource\SADE\AccesoDatos\bin\Debug\IBM.Data.DB2.dll
+D:\CodeSource\SADE\AccesoDatos\obj\Debug\AccesoDatos.vbprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\AccesoDatos\obj\Debug\SISSADE.Resources.resources
+D:\CodeSource\SADE\AccesoDatos\obj\Debug\AccesoDatos.vbproj.GenerateResource.Cache
+D:\CodeSource\SADE\AccesoDatos\obj\Debug\AccesoDatos.dll
+D:\CodeSource\SADE\AccesoDatos\obj\Debug\AccesoDatos.xml
+D:\CodeSource\SADE\AccesoDatos\obj\Debug\AccesoDatos.pdb
+D:\CodeSource\SADE 2019\AccesoDatos\bin\Debug\AccesoDatos.dll
+D:\CodeSource\SADE 2019\AccesoDatos\bin\Debug\AccesoDatos.pdb
+D:\CodeSource\SADE 2019\AccesoDatos\bin\Debug\AccesoDatos.xml
+D:\CodeSource\SADE 2019\AccesoDatos\bin\Debug\IBM.Data.DB2.dll
+D:\CodeSource\SADE 2019\AccesoDatos\obj\Debug\AccesoDatos.vbproj.AssemblyReference.cache
+D:\CodeSource\SADE 2019\AccesoDatos\obj\Debug\SISSADE.Resources.resources
+D:\CodeSource\SADE 2019\AccesoDatos\obj\Debug\AccesoDatos.vbproj.GenerateResource.cache
+D:\CodeSource\SADE 2019\AccesoDatos\obj\Debug\AccesoDatos.vbproj.CoreCompileInputs.cache
+D:\CodeSource\SADE 2019\AccesoDatos\obj\Debug\AccesoDatos.vbproj.CopyComplete
+D:\CodeSource\SADE 2019\AccesoDatos\obj\Debug\AccesoDatos.dll
+D:\CodeSource\SADE 2019\AccesoDatos\obj\Debug\AccesoDatos.xml
+D:\CodeSource\SADE 2019\AccesoDatos\obj\Debug\AccesoDatos.pdb

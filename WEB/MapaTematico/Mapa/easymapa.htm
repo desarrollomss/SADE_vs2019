@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN"  
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Google Maps JavaScript API Example</title>
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true&amp;key=ABQIAAAA3e9bpW5mHEGS7LVaB4R-3BQx6TWrfC8bNfnC-vtzzHJYkwhD6xTwJS9V3UI-UBnyi98SwuzCxumFSw"
+        type="text/javascript"></script>
+    <script src="jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (GBrowserIsCompatible()) {
+                var map = new GMap2(document.getElementById("map_canvas"));
+                map.setCenter(new GLatLng(-12.11075, -77.01944), 18);
+                map.setUIToDefault();
+
+                var baseIcon = new GIcon(G_DEFAULT_ICON);
+                baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
+                baseIcon.iconSize = new GSize(20, 34);
+                baseIcon.shadowSize = new GSize(37, 34);
+                baseIcon.iconAnchor = new GPoint(9, 34);
+                baseIcon.infoWindowAnchor = new GPoint(9, 2);
+                getMarkersWS(map);
+
+            }
+
+            function createMarker(point, htmlVentana) {
+                var Icon = new GIcon(baseIcon);
+                Icon.image = "police.png";
+                markerOptions = { icon: Icon };
+                var marker = new GMarker(point, markerOptions);
+                GEvent.addListener(marker, "click", function () {
+                    marker.openInfoWindowHtml(htmlVentana);
+                });
+                return marker;
+            }
+
+            var webMethod = "http://192.0.0.102/WS_GPS/ServiceGPS.asmx/GetPosition";
+            function getMarkersWS(map) {
+                $.ajax({
+                    type: "POST",
+                    url: webMethod ,
+                    data: "{}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                          alert("paso por servicio");
+//                        var panaderias = response.d;
+//                        $.each(panaderias, function (index, pan) {
+//                            var point = new GLatLng(pan.lat, pan.lng);
+//                            var htmlVentana = "<img src='fotos/" + pan.foto + "'><br> Panadería:" + pan.nombre + "</b><br><i>Precio:" + pan.precio + "</i><br>Direccion:" + pan.direccion;
+//                            var marker = createMarker(point, htmlVentana);
+//                            map.addOverlay(marker);
+//                            $("<li />").html(pan.nombre + "  " + pan.direccion + " <b>" + pan.precio + "</b>").click(function () {
+//                                marker.openInfoWindowHtml(htmlVentana);
+//                            }).appendTo("#list");
+//                        });
+                    },
+                    error: function(XMLHttpRequest, textStatus, error) { alert("Error"); }                     
+
+                }); //fin llamada ajax
+            } //fin funcion getMarkersWS
+
+
+            function AjaxError(result) {
+                alert("ERROR " + result.status + ' ' + result.statusText);
+            }
+
+        });      //fin de Ready
+
+
+    </script>
+</head>
+<body>
+    <div id="map_canvas" style="width: 1200px; height: 800px">
+    </div>
+    <ul id="list">
+    </ul>
+</body>
+</html>

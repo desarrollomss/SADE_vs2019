@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<widget xmlns = "http://www.w3.org/ns/widgets"
+		xmlns:gap = "http://phonegap.com/ns/1.0"
+		id        = "com.mss.SurcoAlerta"
+		versionCode="1.0"
+		version   = "1.0.1">
+		<name>SurcoAlerta</name>
+		<description>
+		</description>
+		<author href="" email="">
+
+		</author>
+		<preference name="phonegap-version" value="2.9.0" />
+		<preference name="orientation" value="default" />
+		<preference name="target-device" value="universal" />
+		<preference name="fullscreen" value="true" />
+		<preference name="webviewbounce" value="true" />
+		<preference name="prerendered-icon" value="true" />
+		<preference name="stay-in-webview" value="true" />
+		<preference name="ios-statusbarstyle" value="default" />
+		<preference name="detect-data-types" value="true" />
+		<preference name="exit-on-suspend" value="true" />
+		<preference name="show-splash-screen-spinner" value="true" />
+		<preference name="auto-hide-splash-screen" value="true" />
+		<preference name="disable-cursor" value="true" />
+		<preference name="android-minSdkVersion" value="7" />
+		<preference name="android-maxSdkVersion" value="17" />
+		<preference name="android-installLocation" value="auto" />
+		<preference name="splash-screen-duration" value="5000" />
+		<preference name="load-url-timeout" value="20000" />
+		<feature name="http://api.phonegap.com/1.0/contacts"/>
+		<feature name="http://api.phonegap.com/1.0/file"/>
+		<feature name="http://api.phonegap.com/1.0/media"/>
+		<feature name="http://api.phonegap.com/1.0/network"/>
+		<feature name="http://api.phonegap.com/1.0/notification"/>
+		<icon src="Boton2.png" gap:platform="android" gap:density="ldpi" />
+		<icon src="Boton2.png" gap:platform="android" gap:density="mdpi" />
+		<icon src="Boton2.png" gap:platform="android" gap:density="hdpi" />
+		<icon src="Boton2.png" gap:platform="android" gap:density="xhdpi" />
+		<gap:splash src="Boton2.png" gap:platform="android" gap:density="ldpi" />
+		<gap:splash src="Boton2.png" gap:platform="android" gap:density="mdpi" />
+		<gap:splash src="Boton2.png" gap:platform="android" gap:density="hdpi" />
+		<gap:splash src="Boton2.png" gap:platform="android" gap:density="xhdpi" />
+		<access origin="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<access origin="http://code.jquery.com/jquery-1.8.2.min.js" />
+		<access origin="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js" />
+	</widget>
+	

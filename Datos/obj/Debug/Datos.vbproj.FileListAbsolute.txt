@@ -1,0 +1,64 @@
+D:\Codigo Fuente\Seguridad\Datos\obj\Debug\Datos.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\Seguridad\Datos\obj\Debug\Datos.Resources.resources
+D:\Codigo Fuente\Seguridad\Datos\obj\Debug\Datos.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Datos.dll
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Datos.pdb
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Datos.xml
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Entidades.dll
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Framework.dll
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Recurso.Encriptador.dll
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Entidades.pdb
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Entidades.xml
+D:\Codigo Fuente\Seguridad\Datos\bin\Debug\Framework.pdb
+D:\Codigo Fuente\Seguridad\Datos\obj\Debug\Datos.dll
+D:\Codigo Fuente\Seguridad\Datos\obj\Debug\Datos.xml
+D:\Codigo Fuente\Seguridad\Datos\obj\Debug\Datos.pdb
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Datos.dll
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Datos.pdb
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Datos.xml
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Entidades.dll
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Framework.dll
+D:\Codigo Fuente\SADE\Datos\bin\Debug\IBM.Data.DB2.dll
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Recurso.Encriptador.dll
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Entidades.pdb
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Entidades.xml
+D:\Codigo Fuente\SADE\Datos\bin\Debug\Framework.pdb
+D:\Codigo Fuente\SADE\Datos\obj\Debug\Datos.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\Datos\obj\Debug\Datos.Resources.resources
+D:\Codigo Fuente\SADE\Datos\obj\Debug\Datos.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\SADE\Datos\obj\Debug\Datos.dll
+D:\Codigo Fuente\SADE\Datos\obj\Debug\Datos.xml
+D:\Codigo Fuente\SADE\Datos\obj\Debug\Datos.pdb
+D:\CodeSource\SADE\Datos\bin\Debug\Datos.dll
+D:\CodeSource\SADE\Datos\bin\Debug\Datos.pdb
+D:\CodeSource\SADE\Datos\bin\Debug\Datos.xml
+D:\CodeSource\SADE\Datos\bin\Debug\Entidades.dll
+D:\CodeSource\SADE\Datos\bin\Debug\Framework.dll
+D:\CodeSource\SADE\Datos\bin\Debug\IBM.Data.DB2.dll
+D:\CodeSource\SADE\Datos\bin\Debug\Recurso.Encriptador.dll
+D:\CodeSource\SADE\Datos\bin\Debug\Entidades.pdb
+D:\CodeSource\SADE\Datos\bin\Debug\Entidades.xml
+D:\CodeSource\SADE\Datos\bin\Debug\Framework.pdb
+D:\CodeSource\SADE\Datos\obj\Debug\Datos.vbprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\Datos\obj\Debug\Datos.Resources.resources
+D:\CodeSource\SADE\Datos\obj\Debug\Datos.vbproj.GenerateResource.Cache
+D:\CodeSource\SADE\Datos\obj\Debug\Datos.dll
+D:\CodeSource\SADE\Datos\obj\Debug\Datos.xml
+D:\CodeSource\SADE\Datos\obj\Debug\Datos.pdb
+D:\CodeSource\SADE 2019\Datos\bin\Debug\Datos.dll
+D:\CodeSource\SADE 2019\Datos\bin\Debug\Datos.pdb
+D:\CodeSource\SADE 2019\Datos\bin\Debug\Datos.xml
+D:\CodeSource\SADE 2019\Datos\bin\Debug\Entidades.dll
+D:\CodeSource\SADE 2019\Datos\bin\Debug\Framework.dll
+D:\CodeSource\SADE 2019\Datos\bin\Debug\IBM.Data.DB2.dll
+D:\CodeSource\SADE 2019\Datos\bin\Debug\Entidades.pdb
+D:\CodeSource\SADE 2019\Datos\bin\Debug\Entidades.xml
+D:\CodeSource\SADE 2019\Datos\bin\Debug\Framework.pdb
+D:\CodeSource\SADE 2019\Datos\obj\Debug\Datos.vbproj.AssemblyReference.cache
+D:\CodeSource\SADE 2019\Datos\obj\Debug\Datos.Resources.resources
+D:\CodeSource\SADE 2019\Datos\obj\Debug\Datos.vbproj.GenerateResource.cache
+D:\CodeSource\SADE 2019\Datos\obj\Debug\Datos.vbproj.CoreCompileInputs.cache
+D:\CodeSource\SADE 2019\Datos\obj\Debug\Datos.vbproj.CopyComplete
+D:\CodeSource\SADE 2019\Datos\obj\Debug\Datos.dll
+D:\CodeSource\SADE 2019\Datos\obj\Debug\Datos.xml
+D:\CodeSource\SADE 2019\Datos\obj\Debug\Datos.pdb

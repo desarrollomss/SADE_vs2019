@@ -1,0 +1,97 @@
+/*!
+ * jQuery UI Accordion 1.10.2
+ * http://jqueryui.com
+ *
+ * Copyright 2013 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Accordion#theming
+ */
+.ui-accordion .ui-accordion-header {
+	display: block;
+	cursor: pointer;
+	position: relative;
+	padding: .5em .5em .5em .7em;
+	min-height: 0; /* support: IE7 */
+}
+.ui-accordion .ui-accordion-icons {
+	/*padding-left: 2.2em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	color: #A9A4A4;*/
+	padding-left: 2.2em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	color: #FFA500;
+	font-size: 14px;
+	letter-spacing: 2PX;
+	font-family: 'open Sans';	
+}
+.ui-accordion .ui-accordion-noicons {
+	padding-left: .7em;
+}
+.ui-accordion .ui-accordion-icons .ui-accordion-icons {
+	padding-left: 2.2em;
+}
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+	position: absolute;
+	left: .5em;
+	top: 50%;
+	margin-top: -8px;
+}
+.ui-accordion .ui-accordion-content {
+
+	border-top: 0;
+	overflow: auto;
+	height:100%!important;
+}
+/*!
+ * jQuery UI Accordion 1.10.2
+ * http://jqueryui.com
+ *
+ * Copyright 2013 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Accordion#theming
+ */
+.ui-accordion .ui-accordion-header {
+	display: block;
+	cursor: pointer;
+	position: relative;
+	padding: .5em .5em .5em .7em;
+	min-height: 0; /* support: IE7 */
+}
+.ui-accordion .ui-accordion-icons {
+	/*padding-left: 2.2em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	color: #A9A4A4;*/
+	padding-left: 2.2em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	color: #FFA500;
+	font-size: 14px;
+	letter-spacing: 2PX;
+	font-family: 'open Sans';
+}
+.ui-accordion .ui-accordion-noicons {
+	padding-left: .7em;
+}
+.ui-accordion .ui-accordion-icons .ui-accordion-icons {
+	padding-left: 2.2em;
+}
+.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+	position: absolute;
+	left: .5em;
+	top: 50%;
+	margin-top: -8px;
+}
+.ui-accordion .ui-accordion-content {
+	border-top: 0;
+	overflow: auto;
+}
+div#ui-accordion-accordion-panel-0 {
+    height: 100%;
+}

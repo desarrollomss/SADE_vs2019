@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FormatoSADE" targetNamespace="http://tempuri.org/BusTI.xsd" elementFormDefault="qualified" xmlns="http://tempuri.org/BusTI.xsd" xmlns:mstns="http://tempuri.org/BusTI.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="FormatoSADE">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="INTINCCODIGO" type="xs:integer" />
+        <xs:element name="DTMINCFECHA" type="xs:integer" />
+        <xs:element name="VCHINCFECHA" type="xs:string" />
+        <xs:element name="VCHINCHORA" type="xs:string" />
+        <xs:element name="SMLORICODIGO" type="xs:integer" />
+        <xs:element name="VCHORIDESCRIPCION" type="xs:string" />
+        <xs:element name="VCHINCNUMEROORIGEN" type="xs:string" />
+        <xs:element name="SMLTINCODIGO" type="xs:integer" />
+        <xs:element name="VCHTINDESCRIPCION" type="xs:string" />
+        <xs:element name="SMLSTICODIGO" type="xs:integer" />
+        <xs:element name="VCHSTIDESCRIPCION" type="xs:string" />
+        <xs:element name="SMLPRICODIGO" type="xs:integer" />
+        <xs:element name="VCHPRIDESCRIPCION" type="xs:string" />
+        <xs:element name="INTINCACODIGO" type="xs:integer" />
+        <xs:element name="INTINCANUMERO" type="xs:integer" />
+        <xs:element name="VCHINCLOCVIACODIGO1" type="xs:string" />
+        <xs:element name="VCHINCLOCVIANOMBRE1" type="xs:string" />
+        <xs:element name="VCHINCLOCVIACODIGO2" type="xs:string" />
+        <xs:element name="VCHINCLOCVIANOMBRE2" type="xs:string" />
+        <xs:element name="VCHINCLOCNUMERO" type="xs:string" />
+        <xs:element name="VCHINCLOCCUADRA" type="xs:string" />
+        <xs:element name="VCHINCLOCMANZANA" type="xs:string" />
+        <xs:element name="VCHINCLOCLOTE" type="xs:string" />
+        <xs:element name="VCHINCLOCDPTO" type="xs:string" />
+        <xs:element name="VCHINCLOCBLOCK" type="xs:string" />
+        <xs:element name="CHRINCLOCHABCODIGO" type="xs:string" />
+        <xs:element name="VCHINCLOCHABNOMBRE" type="xs:string" />
+        <xs:element name="VCHINCLOCCOMENTARIO" type="xs:string" />
+        <xs:element name="VCHINCRELATO" type="xs:string" />
+        <xs:element name="SMLINCANONIMO" type="xs:integer" />
+        <xs:element name="VCHINCNOMBRECOMP" type="xs:string" />
+        <xs:element name="SMLTPECODIGO" type="xs:integer" />
+        <xs:element name="VCHTIDCODIGO" type="xs:string" />
+        <xs:element name="VCHINCDOCUMENTO" type="xs:string" />
+        <xs:element name="VCHINCRESULTADO" type="xs:string" />
+        <xs:element name="SMLINCESTADO" type="xs:integer" />
+        <xs:element name="VCHINCESTADO" type="xs:string" />
+        <xs:element name="VCHPARTEINT" type="xs:string" />
+        <xs:element name="VCHPARTEPOL" type="xs:string" />
+        <xs:element name="SMLINCINTERVENIDOS" type="xs:integer" />
+        <xs:element name="SMLRESCODIGO" type="xs:integer" />
+        <xs:element name="VCHINCLOCCUADRANTE" type="xs:string" />
+        <xs:element name="VCHINCLOCSECTOR" type="xs:string" />
+        <xs:element name="VCHAUDUSUCREACION" type="xs:string" />
+        <xs:element name="VCHAUDPRGCREACION" type="xs:string" />
+        <xs:element name="DTMAUDFECCREACION" type="xs:integer" />
+        <xs:element name="VCHAUDEQPCREACION" type="xs:string" />
+        <xs:element name="VCHAUDUSUMODIF" type="xs:string" />
+        <xs:element name="VCHAUDPRGMODIF" type="xs:string" />
+        <xs:element name="DTMAUDFECMODIF" type="xs:integer" />
+        <xs:element name="VCHAUDEQPMODIF" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

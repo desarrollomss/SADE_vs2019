@@ -1,0 +1,244 @@
+﻿Imports SISSADE.BE
+Imports SISSADE.BL
+Imports System.Data
+Imports System.ServiceModel
+
+Imports System.Net
+Imports System.IO
+Imports WebServiceGPS
+Partial Class frmRegistro
+    Inherits System.Web.UI.Page
+
+    Protected Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+        If Session("DatosUsuarioActivo") Is Nothing Then
+            Session.Clear()
+            Session.Abandon()
+            Response.Redirect(Request.ApplicationPath & "/frmLogin.aspx")
+        End If
+    End Sub
+
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        If Not Page.IsPostBack Then
+            Dim mp As MasterPage = Me.Master
+            Dim tit As Label = CType(mp.FindControl("lblTitulo"), Label)
+            tit.Text = ":: MANTENIMIENTO DE USUARIOS ALERTA SURCO"
+            CargaGrilla()
+        End If
+    End Sub
+#Region "FDU"
+    Private Sub CargaGrilla()
+        Dim oBE As GPSREGISTRO_BE = New GPSREGISTRO_BE
+        Dim oBL As GPSREGISTRO_BL = New GPSREGISTRO_BL
+        Dim dt As DataTable = New DataTable
+
+        With oBE
+            .PropREGNUMERO = txtTelefonoBusca.Text
+            .PropREGNOMBRE = txtNombreBusca.Text
+            .PropREGDCMNTO = txtDocidentidadBusca.Text
+            .PropREGEMAIL = txtCorreoBusca.Text
+            .PropREGACTIVO = ddlEstadoBusca.SelectedValue
+        End With
+        dt = oBL.Listar(oBE)
+        ViewState("dt") = dt
+        gvDatos.DataSource = dt
+        gvDatos.DataBind()
+    End Sub
+    Private Sub MostrarPopup(ByVal pdiv As String)
+        Dim sb As New StringBuilder
+        sb.AppendLine("javascript:void(0);")
+        sb.AppendLine("document.getElementById('" & pdiv & "').style.display='block';document.getElementById('fade').style.display='block';")
+        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "alert0001", sb.ToString(), True)
+    End Sub
+    Private Sub CerrarPopup(ByVal pdiv As String)
+        Dim sb As New StringBuilder
+        sb.AppendLine("javascript:void(0);")
+        sb.AppendLine("document.getElementById('" & pdiv & "').style.display='none';document.getElementById('fade').style.display='none';")
+        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "alert0001", sb.ToString(), True)
+    End Sub
+#End Region
+
+    Protected Sub btnBuscar_Click(sender As Object, e As System.EventArgs) Handles btnBuscar.Click
+        CargaGrilla()
+    End Sub
+
+    Protected Sub gvDatos_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvDatos.RowDataBound
+
+        If e.Row.RowType = DataControlRowType.DataRow Then
+            If e.Row.RowState = DataControlRowState.Edit Then
+                Dim dcfc As DataControlFieldCell = CType(e.Row.Controls(5), DataControlFieldCell)
+                dcfc.ControlStyle.CssClass = "boton"
+            End If
+        End If
+    End Sub
+
+    Protected Sub gvDatos_RowEditing(sender As Object, e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles gvDatos.RowEditing
+
+        gvDatos.EditIndex = e.NewEditIndex
+        gvDatos.DataSource = ViewState("dt")
+        ViewState("index") = e.NewEditIndex
+        gvDatos.DataBind()
+
+        Dim txtTelefonoUpd As TextBox = CType(gvDatos.Rows(e.NewEditIndex).FindControl("txtTelefonoUpd"), TextBox)
+        Dim txtNombreUpd As TextBox = CType(gvDatos.Rows(e.NewEditIndex).FindControl("txtNombreUpd"), TextBox)
+        Dim txtDocIdentidadUpd As TextBox = CType(gvDatos.Rows(e.NewEditIndex).FindControl("txtDocIdentidadUpd"), TextBox)
+        Dim txtCorreoUpd As TextBox = CType(gvDatos.Rows(e.NewEditIndex).FindControl("txtCorreoUpd"), TextBox)
+        Dim ddlEstadoUpd As DropDownList = CType(gvDatos.Rows(e.NewEditIndex).FindControl("ddlEstadoUpd"), DropDownList)
+
+        Dim dt As DataTable = CType(ViewState("dt"), DataTable)
+        dt = ViewState("dt")
+        Dim oUtil As Util = New Util
+        txtTelefonoUpd.Text = oUtil.cNulo(dt.Rows((e.NewEditIndex + (gvDatos.PageIndex * gvDatos.PageSize))).Item("VCHREGNUMERO"))
+        txtNombreUpd.Text = oUtil.cNulo(dt.Rows((e.NewEditIndex + (gvDatos.PageIndex * gvDatos.PageSize))).Item("VCHREGNOMBRE"))
+        txtDocIdentidadUpd.Text = oUtil.cNulo(dt.Rows((e.NewEditIndex + (gvDatos.PageIndex * gvDatos.PageSize))).Item("VCHREGDCMNTO"))
+        txtCorreoUpd.Text = oUtil.cNulo(dt.Rows((e.NewEditIndex + (gvDatos.PageIndex * gvDatos.PageSize))).Item("VCHREGEMAIL"))
+        ddlEstadoUpd.SelectedValue = dt.Rows((e.NewEditIndex + (gvDatos.PageIndex * gvDatos.PageSize))).Item("ESTADO")
+
+    End Sub
+
+    Protected Sub gvDatos_RowCancelingEdit(sender As Object, e As System.Web.UI.WebControls.GridViewCancelEditEventArgs) Handles gvDatos.RowCancelingEdit
+        gvDatos.EditIndex = -1
+        gvDatos.DataSource = ViewState("dt")
+        gvDatos.DataBind()
+    End Sub
+
+    Protected Sub gvDatos_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvDatos.PageIndexChanging
+        gvDatos.PageIndex = e.NewPageIndex
+        CargaGrilla()
+    End Sub
+
+    Protected Sub gvDatos_RowUpdating(sender As Object, e As System.Web.UI.WebControls.GridViewUpdateEventArgs) Handles gvDatos.RowUpdating
+
+        Dim txtTelefonoUpd As TextBox = CType(gvDatos.Rows(e.RowIndex).FindControl("txtTelefonoUpd"), TextBox)
+        Dim txtNombreUpd As TextBox = CType(gvDatos.Rows(e.RowIndex).FindControl("txtNombreUpd"), TextBox)
+        Dim txtDocIdentidadUpd As TextBox = CType(gvDatos.Rows(e.RowIndex).FindControl("txtDocIdentidadUpd"), TextBox)
+        Dim txtCorreoUpd As TextBox = CType(gvDatos.Rows(e.RowIndex).FindControl("txtCorreoUpd"), TextBox)
+        Dim ddlEstadoUpd As DropDownList = CType(gvDatos.Rows(e.RowIndex).FindControl("ddlEstadoUpd"), DropDownList)
+
+        '***************************
+        If ddlEstadoUpd.SelectedValue = 2 Then
+            Exit Sub
+        End If
+        '***************************
+        Dim dt As DataTable = CType(ViewState("dt"), DataTable)
+        Dim oBE As GPSREGISTRO_BE = New GPSREGISTRO_BE
+        Dim oBL As GPSREGISTRO_BL = New GPSREGISTRO_BL
+        With oBE
+            .PropREGCODIGO = dt.Rows((e.RowIndex + (gvDatos.PageIndex * gvDatos.PageSize))).Item("INTREGCODIGO")
+            .PropREGNUMERO = txtTelefonoUpd.Text
+            .PropREGNOMBRE = txtNombreUpd.Text
+            .PropREGDCMNTO = txtDocIdentidadUpd.Text
+            .PropREGEMAIL = txtCorreoUpd.Text
+            .PropREGACTIVO = ddlEstadoUpd.SelectedValue
+        End With
+
+        Try
+            oBL.Actualizar(oBE)
+        Catch ex As Exception
+            lblMensaje.Text = ex.Message
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+        End Try
+        gvDatos.EditIndex = -1
+        CargaGrilla()
+    End Sub
+
+    Protected Sub gvDatos_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles gvDatos.SelectedIndexChanged
+        Try
+
+            Dim msg As String = ""
+            Dim oPara As String = ""
+            Dim oAsunto As String = "ACTUALIZACION DE CUENTA - SISTEMA DE ATENCION DE DENUNCIAS Y EMERGENCIAS"
+            Dim oHost As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_HOST")
+            Dim oPuerto As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_PUERTO")
+            Dim oCorreoOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_SALIENTE")
+            Dim oAuthorOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_AUTHOR")
+            Dim oPassOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_CLAVE")
+            Dim oEnlace As String = System.Configuration.ConfigurationManager.AppSettings("ACTIVA_ENLACE")
+
+
+            Dim dt As DataTable = CType(ViewState("dt"), DataTable)
+            Dim pClave As String = dt.Rows(gvDatos.SelectedIndex).Item("VCHREGNUMERO")
+            Dim pNombre As String = dt.Rows(gvDatos.SelectedIndex).Item("VCHREGNOMBRE")
+            Dim pCorreo As String = dt.Rows(gvDatos.SelectedIndex).Item("VCHREGEMAIL")
+
+
+
+            Dim oCadena As String
+            oCadena = oEnlace & "pId=" & pClave
+
+
+            Dim oMensaje As StringBuilder = New StringBuilder()
+            oMensaje.Append("<table width = '100%' align='center' ")
+            oMensaje.Append("<table width = '50%' >")
+
+            oMensaje.Append("<tr>")
+            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Estimado(a) " + pNombre + ",</td>")
+            oMensaje.Append("</tr>")
+
+            oMensaje.Append("<tr>")
+            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Los datos de su cuenta han sido actualizados correctamente.</td>")
+            oMensaje.Append("</tr>")
+
+            oMensaje.Append("<tr>")
+            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/><BR/> Municipalidad de Santiago de Surco.</td>")
+            oMensaje.Append("</tr>")
+            oMensaje.Append("</table>")
+            oMensaje.Append("</table>")
+            msg = ""
+            oPara = pCorreo
+            Dim oCorreo As Correo = New Correo()
+            If (oCorreo.PuertoAbierto(oHost, Integer.Parse(oPuerto))) Then
+                Dim rpta As Boolean = oCorreo.enviarcorreo(oPara, oAsunto.ToString(), oMensaje.ToString(), msg, " ", oCorreoOUT, oAuthorOUT, oPassOUT, oHost, oPuerto)
+            Else
+                Util.MSG_ALERTA("El puerto de comunicación se encuentra cerrado", Me)
+            End If
+            lblMensajeSistema.Text = "El correo ha sido enviado"
+            MostrarPopup("mensaje")
+        Catch ex As Exception
+            lblMensaje.Text = ex.Message
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+        End Try
+    End Sub
+
+    Protected Sub btnRegresar_Click(sender As Object, e As System.EventArgs) Handles btnRegresar.Click
+        Response.Redirect("frmPrincipal.aspx")
+    End Sub
+
+    'Protected Sub btnEnviarSMS_Click(sender As Object, e As System.EventArgs)
+    '    Dim tabla As New Tabla
+    '    tabla.Datos = CType(ViewState("dt"), DataTable)
+    '    Dim gwrow As GridViewRow = CType(CType(sender, Button).NamingContainer, GridViewRow)
+    '    Dim pNumero As String = tabla.Datos.Rows(gwrow.DataItemIndex).Item("VCHREGNUMERO")
+
+    '    Dim url As String = String.Empty
+    '    url = "http://190.116.44.5/sade/confirmaRegistro.aspx?pId=" & pNumero
+
+    '    Dim ShortUrl As String = GetHTMLFromURL("http://tinyurl.com/api-create.php?url=" & url)
+
+    '    Dim pMensaje As String = "Activa tu App ALERTA SURCO en " & ShortUrl
+
+    '    Dim address As EndpointAddress = New EndpointAddress("http://190.116.44.9:7777/servicesMSS/SMSenvioService")
+    '    Dim binding As New BasicHttpBinding()
+    '    ServicePointManager.Expect100Continue = False
+    '    Dim cliente As SMSServicioWCF.SMSenvioClient = New SMSServicioWCF.SMSenvioClient(binding, address)
+    '    Dim cadena As String = cliente.enviaSMS(pMensaje, pNumero)
+    '    lblMensajeSistema.Text = "El SMS ha sido enviado"
+    '    MostrarPopup("mensaje")
+    'End Sub
+    Public Shared Function GetHTMLFromURL(ByVal URL As String) As String
+        Dim ASCII As New System.Text.ASCIIEncoding
+        Dim netWeb As New System.Net.WebClient
+        Dim lsWeb As String
+        Dim laWeb As Byte()
+
+        Try
+            laWeb = netWeb.DownloadData(URL)
+            lsWeb = ASCII.GetString(laWeb)
+        Catch ex As Exception
+            Bitacora.Escribir(ex.Message, LogMsg.ERROR)
+            Throw New Exception(ex.Message.ToString + ex.ToString)
+        End Try
+
+        Return lsWeb
+
+    End Function
+End Class

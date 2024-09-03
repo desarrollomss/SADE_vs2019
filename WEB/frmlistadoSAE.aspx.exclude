@@ -1,0 +1,138 @@
+<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="frmListadoSAE.aspx.vb" Inherits="frmListadoSAE" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <script language="javascript" type="text/javascript">
+        function clickOnce(btn, msg) {
+            btn.value = msg;
+            btn.style.display = 'none';
+            document.getElementById('imgLoading').style.visibility = 'visible';
+            return true;
+        }
+
+        function clickPRO() {
+            document.getElementById('imgLoading').style.visibility = 'visible';
+            console.log(document.getElementById('imgLoading').style);
+            return true;
+        }
+
+        function ReiniciaControl() {
+            alert('paso por aca');
+            var btn = document.getElementById('<%= btnSAEExportar.ClientID%>');
+            btn.style.display = 'visible';
+            document.getElementById('btnSAEExportar').style.display = 'visible';
+            document.getElementById('imgLoading').style.visibility = 'none';
+            return true;
+        }
+        </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server" EnableScriptGlobalization = 'True'  EnableScriptLocalization = 'True'    >
+                </asp:ScriptManager>
+   <div id="listadoSAE911">
+        <table width="100%" class="Tabla">
+            <colgroup valign="top">
+                <col width="2%" />
+                <col width="10%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="15%" />
+                <col width="46%" />
+                <col width="2%" />
+            </colgroup>
+            <tr>
+                <td colspan="7" style="height: 50px;">
+                </td>
+            </tr>
+            <tr class="titulo">
+                <td colspan="7" style="text-align: center">
+                    <asp:Label ID="Label7" runat="server" Text="Seleccione el rango de fecha"></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+                <td>
+                    &nbsp;</td>
+            </tr>
+
+            <tr>
+                <td colspan="7" align="center">
+                    <asp:TextBox ID="txtDesde" runat="server" CssClass="CajaTexto"  
+                        Width="70px"></asp:TextBox>
+                    <asp:Image ID="imgDesde" runat="server" ImageAlign="Middle" 
+                        ImageUrl="~/img/calendario2.png" />
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtDesde"
+                        ErrorMessage="Fecha inválida" ValidationExpression="(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d"
+                        Visible="False"></asp:RegularExpressionValidator>   
+                    <cc1:maskededitextender ID="MaskedEditExtender6" runat="server" Mask="99/99/9999"
+                        MaskType="Date" TargetControlID="txtDesde" >
+                    </cc1:maskededitextender>
+                    <cc1:calendarextender ID="CalendarExtender5" runat="server" 
+                        CssClass="calendario" Format="dd/MM/yyyy" PopupButtonID="imgDesde"
+                        TargetControlID="txtDesde">
+                    </cc1:calendarextender>  
+                     &nbsp;&nbsp;&nbsp;AL&nbsp;&nbsp;&nbsp;  
+                    <asp:TextBox ID="txtHasta" runat="server" CssClass="CajaTexto"  
+                        Width="70px"></asp:TextBox>
+                    <asp:Image ID="imgHasta" runat="server" ImageAlign="Middle" 
+                        ImageUrl="~/img/calendario2.png" />
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtHasta"
+                        ErrorMessage="Fecha inválida" ValidationExpression="(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d"
+                        Visible="False"></asp:RegularExpressionValidator>   
+                    <cc1:maskededitextender ID="MaskedEditExtender1" runat="server" Mask="99/99/9999"
+                        MaskType="Date" TargetControlID="txtHasta" >
+                    </cc1:maskededitextender>
+                    <cc1:calendarextender ID="CalendarExtender1" runat="server" 
+                        CssClass="calendario" Format="dd/MM/yyyy" PopupButtonID="imgHasta"
+                        TargetControlID="txtHasta">
+                    </cc1:calendarextender> 
+                </td>
+
+            </tr>
+
+
+            <tr>
+                <td colspan="7" style="height: 30px;">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" style="height: 30px; vertical-align: middle; text-align: center;">
+                    <asp:Button ID="btnSAEExportar"  runat="server"  OnClientClick="cambiarvalor()" CssClass="boton_busca" Text="    Generar    " />
+                &nbsp;
+                    <asp:Button ID="btnSAEMigracion"  runat="server" CssClass="boton_regresar" 
+                        Text="    Procesar Migracion    " 
+                        
+                        onclientclick="{cambiarvalor();javascript:return confirm('Estas seguro(a) MIGRAR INFORMACION SAE 911 A SADE?','SADE'); clickPRO(); }" />
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="7" style="height: 100px;" align="center">
+                    <img id="imgLoading" Style="visibility:hidden; text-align:center" 
+                        src="img/loading1.gif"  />
+    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" align="center">
+                    <asp:Label ID="lblMensaje" runat="server" Text="" ForeColor="#CC0000"></asp:Label>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+</asp:Content>
+

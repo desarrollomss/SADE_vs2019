@@ -1,0 +1,20 @@
+D:\Codigo Fuente\SADE\AccesoDatos\bin\Release\AccesoDatos.dll
+D:\Codigo Fuente\SADE\AccesoDatos\bin\Release\AccesoDatos.pdb
+D:\Codigo Fuente\SADE\AccesoDatos\bin\Release\AccesoDatos.xml
+D:\Codigo Fuente\SADE\AccesoDatos\bin\Release\IBM.Data.DB2.dll
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Release\AccesoDatos.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Release\SISSADE.Resources.resources
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Release\AccesoDatos.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Release\AccesoDatos.dll
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Release\AccesoDatos.xml
+D:\Codigo Fuente\SADE\AccesoDatos\obj\Release\AccesoDatos.pdb
+D:\CodeSource\SADE\AccesoDatos\bin\Release\AccesoDatos.dll
+D:\CodeSource\SADE\AccesoDatos\bin\Release\AccesoDatos.pdb
+D:\CodeSource\SADE\AccesoDatos\bin\Release\AccesoDatos.xml
+D:\CodeSource\SADE\AccesoDatos\bin\Release\IBM.Data.DB2.dll
+D:\CodeSource\SADE\AccesoDatos\obj\Release\AccesoDatos.vbprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\AccesoDatos\obj\Release\SISSADE.Resources.resources
+D:\CodeSource\SADE\AccesoDatos\obj\Release\AccesoDatos.vbproj.GenerateResource.Cache
+D:\CodeSource\SADE\AccesoDatos\obj\Release\AccesoDatos.dll
+D:\CodeSource\SADE\AccesoDatos\obj\Release\AccesoDatos.xml
+D:\CodeSource\SADE\AccesoDatos\obj\Release\AccesoDatos.pdb

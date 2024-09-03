@@ -1,0 +1,20 @@
+D:\Codigo Fuente\SADE\ServiceApp\bin\ServiceApp.dll.config
+D:\Codigo Fuente\SADE\ServiceApp\bin\ServiceApp.dll
+D:\Codigo Fuente\SADE\ServiceApp\bin\ServiceApp.pdb
+D:\Codigo Fuente\SADE\ServiceApp\bin\ServiceApp.xml
+D:\Codigo Fuente\SADE\ServiceApp\obj\Debug\ServiceApp.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\ServiceApp\obj\Debug\ServiceApp.Resources.resources
+D:\Codigo Fuente\SADE\ServiceApp\obj\Debug\ServiceApp.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\SADE\ServiceApp\obj\Debug\ServiceApp.dll
+D:\Codigo Fuente\SADE\ServiceApp\obj\Debug\ServiceApp.xml
+D:\Codigo Fuente\SADE\ServiceApp\obj\Debug\ServiceApp.pdb
+D:\CodeSource\SADE\ServiceApp\bin\ServiceApp.dll.config
+D:\CodeSource\SADE\ServiceApp\bin\ServiceApp.dll
+D:\CodeSource\SADE\ServiceApp\bin\ServiceApp.pdb
+D:\CodeSource\SADE\ServiceApp\bin\ServiceApp.xml
+D:\CodeSource\SADE\ServiceApp\obj\Debug\ServiceApp.vbprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\ServiceApp\obj\Debug\ServiceApp.Resources.resources
+D:\CodeSource\SADE\ServiceApp\obj\Debug\ServiceApp.vbproj.GenerateResource.Cache
+D:\CodeSource\SADE\ServiceApp\obj\Debug\ServiceApp.dll
+D:\CodeSource\SADE\ServiceApp\obj\Debug\ServiceApp.xml
+D:\CodeSource\SADE\ServiceApp\obj\Debug\ServiceApp.pdb

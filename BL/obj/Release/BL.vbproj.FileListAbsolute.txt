@@ -1,0 +1,6 @@
+D:\Codigo Fuente\SADE\BL\obj\Release\BL.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\BL\obj\Release\SISSADE.Resources.resources
+D:\Codigo Fuente\SADE\BL\obj\Release\BL.vbproj.GenerateResource.Cache
+D:\CodeSource\SADE\BL\obj\Release\BL.vbprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\BL\obj\Release\SISSADE.Resources.resources
+D:\CodeSource\SADE\BL\obj\Release\BL.vbproj.GenerateResource.Cache

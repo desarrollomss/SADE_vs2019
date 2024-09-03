@@ -1,0 +1,44 @@
+﻿Imports Microsoft.VisualBasic
+Imports System.Data
+
+Public Class SAE
+
+    Public Function ListadoSAE(ByVal pdesde As DateTime, ByVal phasta As DateTime) As DataTable
+
+        Dim strCn As String
+        strCn = System.Configuration.ConfigurationManager.ConnectionStrings("cadSAE").ConnectionString
+        Dim cn As New System.Data.SqlClient.SqlConnection
+        cn.ConnectionString = strCn
+        Dim reader As IDataReader
+        Dim lstGeneral As New DataTable
+        Try
+            Dim cmd As New System.Data.SqlClient.SqlCommand
+            Dim procCall As String = "R99_incidencia_SAE911"
+            cmd.CommandType = CommandType.StoredProcedure
+            cmd.Parameters.Add("@fechadd", SqlDbType.DateTime).Value = pdesde
+            cmd.Parameters.Add("@fechahh", SqlDbType.DateTime).Value = phasta
+
+            cmd.CommandText = procCall
+            cmd.Connection = cn
+            cmd.CommandTimeout = 0
+            cn.Open()
+            reader = cmd.ExecuteReader
+            Using reader
+                lstGeneral.Load(reader)
+                reader.Close()
+            End Using
+            cn.Close()
+            reader.Dispose()
+            cmd.Dispose()
+            Return lstGeneral
+        Catch ex As Exception
+            Return lstGeneral
+        End Try
+        Return lstGeneral
+
+    End Function
+
+
+
+
+End Class

@@ -1,0 +1,77 @@
+﻿.Grid
+{
+ border:0px none #BDBDBB;
+ background-color:#ffffff;
+ font-size:11;
+ font-family:Tahoma, Sans-Serif;
+ margin-right: 0px;
+    }  
+.Grid td
+{
+ border:0px none #BDBDBB;
+    }  
+.GridHeader
+{
+     height:30px;
+     color:#ffffff;
+     background-color:#1E436E;
+     border:0;
+}
+.GridHeader th
+{
+ border:0px none #1E436E;
+ text-align:left;
+ padding-left:10px;
+ font-weight:bold;
+ vertical-align:middle;
+}
+.GridRow
+{
+	color: #555555;
+	height:30px;
+	background-color: #FFFFFF;
+    text-transform :capitalize;	
+}
+.GridRow td
+{
+	padding-left:10px;
+	vertical-align:middle;
+}
+
+.GridAlternateRow
+{
+	color: #555555;
+	height: 25px;
+	background-color: #F7F7F7;
+	text-transform: capitalize;
+}    
+.GridAlternateRow td
+{
+	padding-left:10px;
+	vertical-align:middle;
+}
+.GridFooter
+{
+	color: #212121;
+	height:40px;
+	background-color: #EBEBEB;
+	font-size:12px;
+} 
+.GridFooter td
+{
+	 border-width: 0; 
+	 padding: 0 6px; 
+	 font-weight: bold; 
+	 color: #A40034; 
+	 vertical-align:middle;
+}
+.GridFooter td a
+{
+    color: #666; 
+    text-decoration: none;
+}
+.GridFooter td a:hover
+{
+    color: #000000; 
+    text-decoration: none;
+}

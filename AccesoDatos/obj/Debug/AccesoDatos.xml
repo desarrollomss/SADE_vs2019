@@ -1,0 +1,59 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+AccesoDatos
+</name>
+</assembly>
+<members>
+<member name="T:SISSADE.My.Resources.Resources">
+<summary>
+  Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
+</summary>
+</member>
+<member name="P:SISSADE.My.Resources.Resources.ResourceManager">
+<summary>
+  Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
+</summary>
+</member>
+<member name="P:SISSADE.My.Resources.Resources.Culture">
+<summary>
+  Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
+  búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
+</summary>
+</member>
+<member name="P:SISSADE.Framework.Datos.DAOBase.NombreDeEsquema">
+ <summary>
+ Propiedad solo de lectura que permite acceder al nombre del esquema
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="F:SISSADE.Framework.Datos.DAOBase._NombreDeTabla">
+ <summary>
+ Nombre de la tabla relacionada con el dao
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:SISSADE.Framework.Datos.DAOBase.NombreDeTabla">
+ <summary>
+ Propiedad solo de lectura que permite acceder al nombre de la tabla
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="F:SISSADE.Framework.Datos.DAOBase._NombreDeConexion">
+ <summary>
+ Nombre de la conexion por defecto que empleara el dao
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:SISSADE.Framework.Datos.DAOBase.NombreDeConexion">
+ <summary>
+ Propiedad solo de lectura que permite acceder al nombre de la conexion por defecto para el dao
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+</members>
+</doc>

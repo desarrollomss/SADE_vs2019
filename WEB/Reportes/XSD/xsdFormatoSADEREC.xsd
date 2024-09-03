@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FormatoSADEREC" targetNamespace="http://tempuri.org/BusTI.xsd" elementFormDefault="qualified" xmlns="http://tempuri.org/BusTI.xsd" xmlns:mstns="http://tempuri.org/BusTI.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="FormatoSADEREC">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="INTINCRCODIGO" type="xs:integer" />
+        <xs:element name="INTINCCODIGO" type="xs:integer" />
+        <xs:element name="DTMINCRASIGNA" type="xs:string" />
+        <xs:element name="SMLTRECODIGO" type="xs:integer" />
+        <xs:element name="VCHTREDESCRIPCION" type="xs:string" />
+        <xs:element name="INTRECCODIGO" type="xs:integer" />
+        <xs:element name="VCHRECCODIGOALTERNO" type="xs:string" />
+        <xs:element name="VCHRECPERSONAL" type="xs:string" />
+        <xs:element name="DTMINCRLLEGA" type="xs:string" />
+        <xs:element name="VCHAUDPRGCREACION" type="xs:string" />
+        <xs:element name="VCHAUDEQPCREACION" type="xs:string" />
+        <xs:element name="DTMAUDFECCREACION" type="xs:string" />
+        <xs:element name="VCHAUDUSUCREACION" type="xs:string" />
+        <xs:element name="INTAUDROLCREACION" type="xs:string" />
+        <xs:element name="DTMAUDFECMODIF" type="xs:string" />
+        <xs:element name="INTAUDROLMODIF" type="xs:integer" />
+        <xs:element name="VCHAUDEQPMODIF" type="xs:string" />
+        <xs:element name="VCHAUDPRGMODIF" type="xs:string" />
+        <xs:element name="VCHAUDUSUMODIF" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

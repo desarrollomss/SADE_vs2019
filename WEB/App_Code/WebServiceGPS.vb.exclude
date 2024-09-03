@@ -1,0 +1,1275 @@
+﻿Imports System
+Imports System.Collections
+Imports System.ComponentModel
+Imports System.Data
+Imports SISSADE.BL
+Imports SISSADE.BE
+Imports System.Web
+Imports System.Web.Services
+Imports System.Web.Services.Protocols
+Imports Newtonsoft.Json
+Imports System.Collections.Generic
+Imports System.Web.Script.Services
+Imports System.ServiceModel
+Imports System.Net
+Imports System.IO
+Imports System.Drawing
+Imports System.IO.Stream
+Imports System.Drawing.Drawing2D
+Imports AccesoDatosGEO
+
+' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
+<System.Web.Script.Services.ScriptService()> _
+<WebService(Namespace:="http://tempuri.org/")> _
+<WebServiceBinding(ConformsTo:=WsiProfiles.None)> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Public Class WebServiceGPS
+    Inherits System.Web.Services.WebService
+    Dim oGPSPOSITION_BL As New GPSPOSITION_BL
+    Dim oGPSREGISTRO_BL As New GPSREGISTRO_BL
+    Dim oSYSPERSONA_BL As New SYSPERSONA_BL
+    Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    Public jsoncallback As String
+
+#Region "Numerador"
+    Public Enum EstadoINC
+        ABIERTO = 7
+        DESPACHO = 8
+        DESPACHADO = 9
+        ATENDIENDO = 10
+        FINALIZADO = 11
+        CERRADO = 12
+    End Enum
+
+    Public Enum OrigenINC
+        TELEFONO = 1
+        RADIO = 2
+        NEXTEL = 3
+        SURCOALERTA = 4
+        VECINOALERTA = 5
+        ANALITICA = 6
+    End Enum
+
+    Public Enum TipoAlerta
+        Serenazgo = 1
+        Ambulancia = 2
+        Bomberos = 3
+    End Enum
+#End Region
+
+
+#Region "Cpomentado x No Utiliza"
+    '    <WebMethod()> _
+    '    Public Function listarPosicionGPS() As List(Of Posicion)
+    '        Dim MiCnx As ConnectionStringSettings = Nothing
+    '        'MiCnx = ConfigurationManager.ConnectionStrings["PgDOLPHIN"];
+    '        MiCnx = ConfigurationManager.ConnectionStrings("PgMSS")
+    '        Dim cadena As String = MiCnx.ConnectionString
+
+    '        Dim pgsql As String = " SELECT p.intposid, p.intissi, p.decposlon, p.decposlat, p.datposfreg, p.intpospres,   "
+    '        pgsql += "  p.decposvel, p.vchcarcod, p.vchestcod, p.intsdsbuffid, coalesce(p.hucod,'') AS hucod, coalesce(p.hudenom,'') AS hudenom, "
+    '        pgsql += "  coalesce(p.nrocdte,'') AS nrocdte, coalesce(p.nomvia,'') AS nomvia, p.geom,  "
+    '        pgsql += "  st_x(st_astext(p.geom)) as _xgeo,  "
+    '        pgsql += "  st_y(st_astext(p.geom)) as _ygeo  "
+    '        pgsql += "  FROM sade.gpsposicion p  "
+    '        pgsql += "  where p.vchestcod in ('820','810')  "
+
+    '        Dim dtP As New DataTable()
+    '        dtP = NpgsqlHelper.ExecuteDataset(cadena, CommandType.Text, pgsql).Tables(0)
+
+    '        Dim oPosicion As New List(Of Posicion)()
+    '        For Each row As DataRow In dtP.Rows
+    '            Dim oP As New Posicion()
+
+    '            oP.nId = row("intposid").ToString()
+    '            oP.nISSI = row("intissi").ToString()
+    '            oP.nLat = row("decposlat").ToString()
+    '            oP.nLon = row("decposlon").ToString()
+    '            oP.xGeo = row("_xgeo").ToString()
+    '            oP.yGeo = row("_ygeo").ToString()
+    '            oP.nVia = row("nomvia").ToString()
+    '            oP.nCdte = row("nrocdte").ToString()
+    '            oP.nHU = row("hudenom").ToString()
+    '            oPosicion.Add(oP)
+    '        Next
+    '        Return oPosicion
+    '    End Function
+
+    '    <WebMethod()> _
+    '<ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub LoteDetalleGIS(ByVal pCODLOTE As String)
+
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Dim json As String = ""
+    '        Dim ds As New DataSet
+
+    '        Dim oSYSCATASTRO_BL As New SYSCATASTRO_BL
+    '        Try
+    '            ds = oSYSCATASTRO_BL.ListarLoteGIS(pCODLOTE)
+    '            json = JsonConvert.SerializeObject(ds, Formatting.Indented)
+    '            strMensaje = "Listado completo!!!"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = ex.Message
+    '            strEstado = "8"
+    '        End Try
+
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & json & ");")
+    '    End Sub
+
+    '    <WebMethod()> _
+    '<ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub listarTematicoGEO(ByVal pMOTIVO As String, ByVal pESTADO As String, ByVal pPERIODO As String)
+
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Dim dt As New DataTable
+    '        Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '        Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '        Try
+    '            oCCOINCIDENCIA_BE.PropVCHMOTIVOALERTA = pMOTIVO
+    '            oCCOINCIDENCIA_BE.PropINCESTADO = pESTADO
+    '            oCCOINCIDENCIA_BE.PropTPECODIGO = pPERIODO
+
+    '            dt = oCCOINCIDENCIA_BL.ListarTematico(oCCOINCIDENCIA_BE)
+    '            strMensaje = "Listado completo!!!"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = ex.Message
+    '            strEstado = "8"
+    '        End Try
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            jw.WriteStartObject()
+    '            jw.WritePropertyName("Tematico")
+    '            jw.WriteStartArray()
+    '            For i As Integer = 0 To dt.Rows.Count - 1
+    '                jw.WriteStartObject()
+
+
+    '                jw.WritePropertyName("INTINCCODIGO")
+    '                jw.WriteValue(dt.Rows(i).Item("INTINCCODIGO"))
+    '                jw.WritePropertyName("VCHINCNUMEROORIGEN")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCNUMEROORIGEN"))
+    '                jw.WritePropertyName("VCHINCRELATO")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCRELATO"))
+    '                jw.WritePropertyName("VCHINCNOMBRECOMP")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCNOMBRECOMP"))
+    '                jw.WritePropertyName("SMLINCESTADO")
+    '                jw.WriteValue(dt.Rows(i).Item("SMLINCESTADO"))
+    '                jw.WritePropertyName("VCHTABDESCRIPCION")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHTABDESCRIPCION"))
+    '                jw.WritePropertyName("VCHINCIDLATITUDE")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCIDLATITUDE"))
+    '                jw.WritePropertyName("VCHINCIDLONGITUDE")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCIDLONGITUDE"))
+    '                jw.WritePropertyName("SMLORICODIGO")
+    '                jw.WriteValue(dt.Rows(i).Item("SMLORICODIGO"))
+    '                jw.WritePropertyName("VCHORIDESCRIPCION")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHORIDESCRIPCION"))
+    '                jw.WritePropertyName("SMLTINCODIGO")
+    '                jw.WriteValue(dt.Rows(i).Item("SMLTINCODIGO"))
+    '                jw.WritePropertyName("VCHTINDESCRIPCION")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHTINDESCRIPCION"))
+    '                jw.WritePropertyName("SMLSTICODIGO")
+    '                jw.WriteValue(dt.Rows(i).Item("SMLSTICODIGO"))
+    '                jw.WritePropertyName("VCHSTIDESCRIPCION")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHSTIDESCRIPCION"))
+    '                jw.WritePropertyName("SMLPRICODIGO")
+    '                jw.WriteValue(dt.Rows(i).Item("SMLPRICODIGO"))
+    '                jw.WritePropertyName("VCHPRIDESCRIPCION")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHPRIDESCRIPCION"))
+    '                jw.WritePropertyName("DTMINCFECHA")
+    '                jw.WriteValue(dt.Rows(i).Item("DTMINCFECHA"))
+    '                jw.WritePropertyName("VCHMOTIVOALERTA")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHMOTIVOALERTA"))
+    '                jw.WritePropertyName("VCHDESMOTIVOALERTA")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHDESMOTIVOALERTA"))
+    '                jw.WritePropertyName("VCHCODQUEJA")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHCODQUEJA"))
+
+    '                jw.WriteEndObject()
+    '            Next
+    '            jw.WriteEndArray()
+    '            jw.WriteEndObject()
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+
+    '    <WebMethod()> _
+    '    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub insertar(ByVal pNUMERO As String, _
+    '                                    ByVal pNOMBRE As String, _
+    '                                    ByVal pDCMNTO As String, _
+    '                                    ByVal pEMAIL As String, _
+    '                                    ByVal pACTIVO As Integer)
+    '        Dim obj As GPSREGISTRO_BE
+    '        Dim lista As New List(Of GPSREGISTRO_BE)
+    '        obj = New GPSREGISTRO_BE
+    '        obj.PropREGCODIGO = 0
+    '        obj.PropREGNUMERO = pNUMERO
+    '        obj.PropREGNOMBRE = pNOMBRE
+    '        obj.PropREGDCMNTO = pDCMNTO
+    '        obj.PropREGEMAIL = pEMAIL
+    '        obj.PropREGACTIVO = pACTIVO
+    '        obj.PropAUDPRGCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '        obj.PropAUDEQPCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '        Dim objPro As GPSREGISTRO_BL
+    '        objPro = New GPSREGISTRO_BL
+    '        lista = objPro.Insertar(obj)
+
+    '        If (pACTIVO = 1) Then
+    '            'EnviarCorreoActualiza(obj.PropREGNOMBRE, obj.PropREGNUMERO, obj.PropREGEMAIL)
+    '        Else
+    '            'EnviarCorreoActiva(obj.PropREGNOMBRE, obj.PropREGNUMERO, obj.PropREGEMAIL)
+    '        End If
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("numero")
+    '                .WriteValue(obj.PropREGNUMERO)
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(lista.Item(0).PropPRODESCRI)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(lista.Item(0).PropREGACTIVO)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+
+    '<WebMethod(EnableSession:=True)> _
+    'Public Sub InsertFromSIP(ByVal pNUMERO As String, _
+    '                         ByVal pANEXO As String, _
+    '                         ByVal pID As String)
+    '    Dim obj As New CCOINCIDENCIA_BE
+    '    obj.PropORICODIGO = OrigenINC.TELEFONO
+    '    obj.PropINCIDLLAMADA = pID
+    '    obj.PropINCNUMEROORIGEN = pNUMERO
+    '    obj.PropINCIDANEXO = pANEXO
+    '    obj.PropINCESTADO = EstadoINC.ABIERTO
+    '    obj.PropAUDFECCREACION = Nothing
+    '    obj.PropAUDUSUCREACION = Nothing
+    '    obj.PropAUDPRGCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '    obj.PropAUDEQPCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '    Dim objPro As New CCOINCIDENCIA_BL
+    '    objPro.InsertFromSIP(obj)
+    'End Sub
+
+    'Private Sub EnviarCorreoActiva(ByVal pNombre As String, ByVal pClave As String, ByVal pCorreo As String)
+    '    Try
+
+    '        Dim msg As String = ""
+    '        Dim oPara As String = ""
+    '        Dim oAsunto As String = "ACTIVACION DE CUENTA - SISTEMA DE ATENCION DE DENUNCIAS Y EMERGENCIAS"
+    '        Dim oHost As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_HOST")
+    '        Dim oPuerto As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_PUERTO")
+    '        Dim oCorreoOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_SALIENTE")
+    '        Dim oAuthorOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_AUTHOR")
+    '        Dim oPassOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_CLAVE")
+    '        Dim oEnlace As String = System.Configuration.ConfigurationManager.AppSettings("ACTIVA_ENLACE")
+
+    '        Dim oCadena As String
+    '        oCadena = oEnlace & "pId=" & pClave
+
+
+    '        Dim oMensaje As StringBuilder = New StringBuilder()
+    '        'oMensaje.Append("<table width = '50%' >")
+    '        'oMensaje.Append("<tr>")
+    '        'oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Estimado(a) " + pNombre + ",</td>")
+    '        'oMensaje.Append("</tr>")
+    '        'oMensaje.Append("<tr>")
+    '        ''oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/> <a href='" & oCadena & "'>http:/www.munisurco.gob.pe/ActivarCuenta/id=ASXSDSdsadAeeeaEEE</a> <BR/> </td>")
+    '        'oMensaje.Append("<td colspan = '2'><BR/>")
+    '        'oMensaje.Append("<a href='" & oCadena & "' style=""color:#ffffff;display:inline-block;font-family:'Helvetica',Arial,sans-serif;width:auto;white-space:nowrap;min-height:32px;margin:5px 5px 0 0;padding:0 22px;text-decoration:none;text-align:center;font-weight:bold;font-style:normal;font-size:15px;line-height:32px;border:0;border-radius:4px;vertical-align:top;background-color:#336699' target='_blank'><span style='display:inline;font-family:'Helvetica',Arial,sans-serif;text-decoration:none;font-weight:bold;font-style:normal;font-size:15px;line-height:32px;border:none;background-color:#336699;color:#ffffff"">Si, confirmar suscripción a Alerta Surco.</span></a><BR/></td>")
+    '        'oMensaje.Append("</tr>")
+    '        'oMensaje.Append("<tr>")
+    '        'oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/><BR/> Municipalidad de Santiago de Surco.</td>")
+    '        'oMensaje.Append("</tr>")
+    '        'oMensaje.Append("</table>")
+    '        'oMensaje.Append("</table>")
+    '        oMensaje.Append("<p>Surco Alerta -  Sistema de Atención de Denuncias y Emergencias</p>")
+    '        oMensaje.Append("<BR/>")
+    '        oMensaje.Append("<BR/>")
+    '        oMensaje.Append("Estimado(a) " + pNombre + ",")
+    '        oMensaje.Append("<BR/>")
+    '        oMensaje.Append("<BR/>")
+    '        oMensaje.Append("<a href='" & oCadena & "' style=""color:#ffffff;display:inline-block;font-family:'Helvetica',Arial,sans-serif;width:auto;white-space:nowrap;min-height:32px;margin:5px 5px 0 0;padding:0 22px;text-decoration:none;text-align:center;font-weight:bold;font-style:normal;font-size:15px;line-height:32px;border:0;border-radius:4px;vertical-align:top;background-color:#336699"" target=""_blank""><span style=""display:inline;font-family:'Helvetica',Arial,sans-serif;text-decoration:none;font-weight:bold;font-style:normal;font-size:15px;line-height:32px;border:none;background-color:#336699;color:#ffffff"">Si, confirmar suscripción a Alerta Surco.</span></a>")
+    '        oMensaje.Append("<BR/>")
+    '        oMensaje.Append("<BR/>")
+    '        oMensaje.Append("Municipalidad de Santiago de Surco.")
+
+    '        msg = ""
+    '        oPara = pCorreo
+    '        Dim oCorreo As Correo = New Correo()
+    '        If (oCorreo.PuertoAbierto(oHost, Integer.Parse(oPuerto))) Then
+    '            Dim rpta As Boolean = oCorreo.enviarcorreo(oPara, oAsunto.ToString(), oMensaje.ToString(), msg, " ", oCorreoOUT, oAuthorOUT, oPassOUT, oHost, oPuerto)
+    '            '-- 
+    '            'EnviarConfirmacionSMS(pClave)
+
+    '        Else
+    '            'Util.MSG_ALERTA("El puerto de comunicación se encuentra cerrado", Me)
+    '        End If
+    '    Catch ex As Exception
+    '        'lblMsg.Text = ex.Message
+    '    End Try
+    'End Sub
+
+    'Private Sub EnviarCorreoActualiza(ByVal pNombre As String, ByVal pClave As String, ByVal pCorreo As String)
+    '    Try
+
+    '        Dim msg As String = ""
+    '        Dim oPara As String = ""
+    '        Dim oAsunto As String = "ACTUALIZACION DE CUENTA - SISTEMA DE ATENCION DE DENUNCIAS Y EMERGENCIAS"
+    '        Dim oHost As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_HOST")
+    '        Dim oPuerto As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_PUERTO")
+    '        Dim oCorreoOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_SALIENTE")
+    '        Dim oAuthorOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_AUTHOR")
+    '        Dim oPassOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_CLAVE")
+    '        Dim oEnlace As String = System.Configuration.ConfigurationManager.AppSettings("ACTIVA_ENLACE")
+
+    '        Dim oCadena As String
+    '        oCadena = oEnlace & "pId=" & pClave
+
+
+    '        Dim oMensaje As StringBuilder = New StringBuilder()
+    '        oMensaje.Append("<table width = '100%' align='center' ")
+    '        oMensaje.Append("<table width = '50%' >")
+
+    '        oMensaje.Append("<tr>")
+    '        oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Estimado(a) " + pNombre + ",</td>")
+    '        oMensaje.Append("</tr>")
+
+    '        oMensaje.Append("<tr>")
+    '        oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Los datos de su cuenta han sido actualizados correctamente.</td>")
+    '        oMensaje.Append("</tr>")
+
+    '        oMensaje.Append("<tr>")
+    '        oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/><BR/> Municipalidad de Santiago de Surco.</td>")
+    '        oMensaje.Append("</tr>")
+    '        oMensaje.Append("</table>")
+    '        oMensaje.Append("</table>")
+    '        msg = ""
+    '        oPara = pCorreo
+    '        Dim oCorreo As Correo = New Correo()
+    '        If (oCorreo.PuertoAbierto(oHost, Integer.Parse(oPuerto))) Then
+    '            Dim rpta As Boolean = oCorreo.enviarcorreo(oPara, oAsunto.ToString(), oMensaje.ToString(), msg, " ", oCorreoOUT, oAuthorOUT, oPassOUT, oHost, oPuerto)
+    '            'EnviarConfirmacionSMS(pClave)
+    '        Else
+    '            'Util.MSG_ALERTA("El puerto de comunicación se encuentra cerrado", Me)
+    '        End If
+    '    Catch ex As Exception
+    '        'lblMsg.Text = ex.Message
+    '    End Try
+    'End Sub
+
+    '    <WebMethod(Description:="Devueleve si Usuario esta Activo en DB", MessageName:="Obtener")> _
+    '    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub Obtener(ByVal pNUMERO As String)
+    '        Dim lista As New List(Of GPSREGISTRO_BE)
+    '        Dim objPro As GPSREGISTRO_BL = New GPSREGISTRO_BL
+    '        lista = objPro.Listar(pNUMERO)
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("numero")
+    '                .WriteValue(lista.Item(0).PropREGNUMERO)
+
+    '                .WritePropertyName("nombre")
+    '                .WriteValue(lista.Item(0).PropREGNOMBRE)
+
+    '                .WritePropertyName("documento")
+    '                .WriteValue(lista.Item(0).PropREGDCMNTO)
+
+    '                .WritePropertyName("email")
+    '                .WriteValue(lista.Item(0).PropREGEMAIL)
+
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(lista.Item(0).PropPRODESCRI)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(lista.Item(0).PropREGACTIVO)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod(Description:="Valida Usuario y Version de APP", MessageName:="Obtener2")> _
+    '    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub Obtener(ByVal pNUMERO As String, ByVal pVERSION As String)
+    '        Dim lista As New List(Of GPSREGISTRO_BE)
+    '        Dim objPro As GPSREGISTRO_BL = New GPSREGISTRO_BL
+
+    '        lista = objPro.ListarUsuarioApp(pNUMERO, pVERSION)
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("numero")
+    '                .WriteValue(lista.Item(0).PropREGNUMERO)
+    '                .WritePropertyName("nombre")
+    '                .WriteValue(lista.Item(0).PropREGNOMBRE)
+    '                .WritePropertyName("documento")
+    '                .WriteValue(lista.Item(0).PropREGDCMNTO)
+    '                .WritePropertyName("email")
+    '                .WriteValue(lista.Item(0).PropREGEMAIL)
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(lista.Item(0).PropPRODESCRI)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(lista.Item(0).PropREGACTIVO)
+    '                .WritePropertyName("version")
+    '                .WriteValue(lista.Item(0).PropVERNUMERO)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod()> _
+    '    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub enviaAlerta( _
+    '                          ByVal pNOMBRE As String, _
+    '                          ByVal pEMAIL As String, _
+    '                          ByVal pNUMERO As String, _
+    '                          ByVal pMOTIVO As String, _
+    '                          ByVal pLAT As String, _
+    '                          ByVal pLON As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Dim oAlertaAnexo As String = System.Configuration.ConfigurationManager.AppSettings("ALERTA_ANEXO")
+    '        Dim intIncId As Integer = 0
+
+    '        If pNUMERO.Trim Is String.Empty Then
+    '            strMensaje = "Problemas de envio, no existe informacion"
+    '            strEstado = "9"
+    '        Else
+    '            '-- Georeferencia Inversa
+    '            Dim oL_BE As New LUGAR_BE
+    '            Dim oL_BL As New Lugar_BL
+    '            Try
+    '                oL_BE = oL_BL.proj_LonLat2XY(pLON, pLAT)
+    '            Catch ex As Exception
+    '            End Try
+
+    '            '-- Registrar Incidencia
+    '            Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '            Try
+    '                Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '                Dim intInc As Integer = 0
+    '                oCCOINCIDENCIA_BE.PropORICODIGO = OrigenINC.SURCOALERTA
+    '                oCCOINCIDENCIA_BE.PropINCIDLLAMADA = pNUMERO
+    '                oCCOINCIDENCIA_BE.PropINCNUMEROORIGEN = pNUMERO
+    '                oCCOINCIDENCIA_BE.PropINCIDANEXO = oAlertaAnexo
+    '                oCCOINCIDENCIA_BE.PropINCIDLATITUDE = pLAT.ToString().Trim()
+    '                oCCOINCIDENCIA_BE.PropINCIDLONGITUDE = pLON.ToString().Trim()
+    '                oCCOINCIDENCIA_BE.PropINCNOMBRE = pNOMBRE
+    '                oCCOINCIDENCIA_BE.PropINCRELATO = pEMAIL
+    '                oCCOINCIDENCIA_BE.PropINCRELATO = pMOTIVO
+    '                oCCOINCIDENCIA_BE.PropVCHMOTIVOALERTA = pMOTIVO
+    '                oCCOINCIDENCIA_BE.PropINCESTADO = EstadoINC.ABIERTO
+    '                oCCOINCIDENCIA_BE.PropAUDFECCREACION = Nothing
+    '                oCCOINCIDENCIA_BE.PropAUDUSUCREACION = Nothing
+    '                oCCOINCIDENCIA_BE.PropAUDPRGCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '                oCCOINCIDENCIA_BE.PropAUDEQPCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '                '--- Datos Georeferencia Inversa
+    '                oCCOINCIDENCIA_BE.PropVCHINCLOCCUADRANTE = oL_BE.nCuadrante
+    '                oCCOINCIDENCIA_BE.PropVCHINCLOCSECTOR = oL_BE.nSector
+    '                oCCOINCIDENCIA_BE.PropINCLOCVIANOMBRE1 = oL_BE.nVia
+    '                oCCOINCIDENCIA_BE.PropINCLOCHABNOMBRE = oL_BE.nHabilita
+    '                oCCOINCIDENCIA_BE.PropINCLOCXGEO = oL_BE.xGeo
+    '                oCCOINCIDENCIA_BE.PropINCLOCYGEO = oL_BE.yGeo
+
+    '                '-- Registra Incidencia en BD
+    '                intIncId = oCCOINCIDENCIA_BL.InsertarAlertaSurcoV2(oCCOINCIDENCIA_BE)
+    '                'intIncId = oCCOINCIDENCIA_BL.InsertFromAlertaSurco(oCCOINCIDENCIA_BE)
+    '                '-- Asigna Id Incidencia
+    '                oCCOINCIDENCIA_BE.PropINCCODIGO = intIncId
+    '                '--ya no enviara correo
+    '                '-- Envia correo con Incidencia
+    '                'strMensaje = EnviarCorreoAlerta(oCCOINCIDENCIA_BE)
+    '                strMensaje = "Alerta enviada satisfactoriamente."
+    '                strEstado = "0"
+    '            Catch ex As Exception
+    '                strMensaje = "Problemas de conexion al enviar Alerta"
+    '                strEstado = "8"
+    '            End Try
+
+    '        End If
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("codigo")
+    '                .WriteValue(intIncId)
+    '                .WritePropertyName("numero")
+    '                .WriteValue(pNUMERO)
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(strMensaje)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(strEstado)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod()> _
+    '<ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub enviaAlertaVecino( _
+    '                          ByVal pNOMBRE As String, _
+    '                          ByVal pEMAIL As String, _
+    '                          ByVal pNUMERO As String, _
+    '                          ByVal pMOTIVO As String, _
+    '                          ByVal pDETALLE As String, _
+    '                          ByVal pLAT As String, _
+    '                          ByVal pLON As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+
+    '        Dim oAlertaAnexo As String = System.Configuration.ConfigurationManager.AppSettings("ALERTA_ANEXO")
+    '        Dim intIncId As Integer = 0
+
+    '        If pNUMERO.Trim Is String.Empty Then
+    '            strMensaje = "Problemas de envio, no existe informacion"
+    '            strEstado = "9"
+    '        Else
+    '            '-- Georeferencia Inversa
+    '            Dim oL_BE As New LUGAR_BE
+    '            Dim oL_BL As New Lugar_BL
+    '            Try
+    '                oL_BE = oL_BL.proj_LonLat2XY(pLON, pLAT)
+    '            Catch ex As Exception
+    '            End Try
+
+    '            '-- Registrar Incidencia
+    '            Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '            Try
+    '                Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '                Dim intInc As Integer = 0
+    '                oCCOINCIDENCIA_BE.PropORICODIGO = OrigenINC.VECINOALERTA
+    '                oCCOINCIDENCIA_BE.PropINCIDLLAMADA = pNUMERO
+    '                oCCOINCIDENCIA_BE.PropINCNUMEROORIGEN = pNUMERO
+    '                oCCOINCIDENCIA_BE.PropINCIDANEXO = oAlertaAnexo
+    '                oCCOINCIDENCIA_BE.PropINCIDLATITUDE = pLAT.ToString().Trim()
+    '                oCCOINCIDENCIA_BE.PropINCIDLONGITUDE = pLON.ToString().Trim()
+    '                oCCOINCIDENCIA_BE.PropINCNOMBRE = pNOMBRE
+    '                If pDETALLE.Trim = "Escribe un detalle de tu alerta" Then
+    '                    oCCOINCIDENCIA_BE.PropINCRELATO = String.Empty
+    '                Else
+    '                    oCCOINCIDENCIA_BE.PropINCRELATO = pDETALLE
+    '                End If
+    '                oCCOINCIDENCIA_BE.PropVCHMOTIVOALERTA = pMOTIVO
+    '                oCCOINCIDENCIA_BE.PropINCESTADO = EstadoINC.ABIERTO
+    '                oCCOINCIDENCIA_BE.PropAUDFECCREACION = Nothing
+    '                oCCOINCIDENCIA_BE.PropAUDUSUCREACION = Nothing
+    '                oCCOINCIDENCIA_BE.PropAUDPRGCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '                oCCOINCIDENCIA_BE.PropAUDEQPCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '                '--- Datos Georeferencia Inversa
+    '                oCCOINCIDENCIA_BE.PropVCHINCLOCCUADRANTE = oL_BE.nCuadrante
+    '                oCCOINCIDENCIA_BE.PropVCHINCLOCSECTOR = oL_BE.nSector
+    '                oCCOINCIDENCIA_BE.PropINCLOCVIANOMBRE1 = oL_BE.nVia
+    '                oCCOINCIDENCIA_BE.PropINCLOCHABNOMBRE = oL_BE.nHabilita
+    '                oCCOINCIDENCIA_BE.PropINCLOCXGEO = oL_BE.xGeo
+    '                oCCOINCIDENCIA_BE.PropINCLOCYGEO = oL_BE.yGeo
+    '                '-- Registra Incidencia en BD
+    '                intIncId = oCCOINCIDENCIA_BL.InsertarAlertaSurcoV2(oCCOINCIDENCIA_BE)
+    '                '-- Asigna Id Incidencia
+    '                oCCOINCIDENCIA_BE.PropINCCODIGO = intIncId
+    '                '-- ya no enviara correo
+    '                '-- Envia correo con Incidencia
+    '                'strMensaje = EnviarCorreoAlertaVecino(oCCOINCIDENCIA_BE)
+    '                strMensaje = "Alerta enviada satisfactoriamente."
+    '                strEstado = "0"
+
+    '            Catch ex As Exception
+    '                strMensaje = ex.Message
+    '                strEstado = "8"
+    '            End Try
+    '        End If
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("codigo")
+    '                .WriteValue(intIncId)
+    '                .WritePropertyName("numero")
+    '                .WriteValue(pNUMERO)
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(strMensaje)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(strEstado)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod(EnableSession:=True)> _
+    '    Public Sub derivaAlertaSIAVE( _
+    '                          ByVal pIntCodINC As Integer, _
+    '                          ByVal pstrComINC As String, _
+    '                          ByVal pstrUsuINC As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+
+    '        Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '        Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '        Try
+    '            oCCOINCIDENCIA_BE.PropINCCODIGO = pIntCodINC
+    '            oCCOINCIDENCIA_BE.PropINCCOMENTARIO = pstrComINC
+    '            oCCOINCIDENCIA_BE.PropAUDUSUMODIF = pstrUsuINC
+    '            oCCOINCIDENCIA_BE.PropAUDEQPMODIF = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '            '-- Registra Derivacion Incidencia en BD
+    '            oCCOINCIDENCIA_BL.DerivarSIAVE(oCCOINCIDENCIA_BE)
+    '            '-- Envia correo con Incidencia
+    '            strMensaje = "Derivacion completada!!!"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = ex.Message
+    '            strEstado = "8"
+    '        End Try
+
+    '    End Sub
+    '    <WebMethod(EnableSession:=True)> _
+    '    Public Sub cerrarAlertaSIAVE(ByVal pIntCodINC As Integer, ByVal pstrComINC As String, ByVal pstrUsuINC As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+
+    '        Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '        Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '        Try
+    '            oCCOINCIDENCIA_BE.PropINCCODIGO = pIntCodINC
+    '            oCCOINCIDENCIA_BE.PropINCCOMENTARIO = pstrComINC
+    '            oCCOINCIDENCIA_BE.PropAUDUSUMODIF = pstrUsuINC
+    '            oCCOINCIDENCIA_BE.PropAUDEQPMODIF = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '            '-- Registra Cierre Incidencia en BD
+    '            oCCOINCIDENCIA_BL.CerrarSIAVE(oCCOINCIDENCIA_BE)
+
+    '            strMensaje = "Cierre completado!!!"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = ex.Message
+    '            strEstado = "8"
+    '        End Try
+    '    End Sub
+    '    <WebMethod(EnableSession:=True)> _
+    '    Public Sub descartarAlertaSIAVE(ByVal pIntCodINC As Integer, ByVal pstrComINC As String, ByVal pstrUsuINC As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+
+    '        Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '        Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '        Try
+    '            oCCOINCIDENCIA_BE.PropINCCODIGO = pIntCodINC
+    '            oCCOINCIDENCIA_BE.PropINCCOMENTARIO = pstrComINC
+    '            oCCOINCIDENCIA_BE.PropAUDUSUMODIF = pstrUsuINC
+    '            oCCOINCIDENCIA_BE.PropAUDEQPMODIF = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '            '-- Registra Cierre Incidencia en BD
+    '            oCCOINCIDENCIA_BL.DescartarSIAVE(oCCOINCIDENCIA_BE)
+
+    '            strMensaje = "Cierre completado!!!"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = ex.Message
+    '            strEstado = "8"
+    '        End Try
+    '    End Sub
+    '    <WebMethod()> _
+    '<ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub listarBandejaAlerta(ByVal pstrNumTel As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Dim dt As New DataTable
+    '        Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '        Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '        Try
+    '            oCCOINCIDENCIA_BE.PropINCNUMEROORIGEN = pstrNumTel
+    '            '-- Registra Derivacion Incidencia en BD
+    '            dt = oCCOINCIDENCIA_BL.ListarBandejaAlerta(oCCOINCIDENCIA_BE)
+    '            strMensaje = "Listado completo!!!"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = ex.Message
+    '            strEstado = "8"
+    '        End Try
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            jw.WriteStartObject()
+    '            jw.WritePropertyName("bandeja")
+    '            jw.WriteStartArray()
+    '            For i As Integer = 0 To dt.Rows.Count - 1
+    '                jw.WriteStartObject()
+    '                jw.WritePropertyName("INTINCCODIGO")
+    '                jw.WriteValue(dt.Rows(i).Item("INTINCCODIGO"))
+    '                jw.WritePropertyName("VCHINCNUMEROORIGEN")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCNUMEROORIGEN"))
+
+    '                jw.WritePropertyName("DTMINCFECHA")
+    '                jw.WriteValue(dt.Rows(i).Item("DTMINCFECHA"))
+    '                jw.WritePropertyName("VCHINCRELATO")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCRELATO"))
+    '                jw.WritePropertyName("VCHMOTIVOALERTA")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHMOTIVOALERTA"))
+    '                jw.WritePropertyName("VCHDESMOTALERTA")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHDESMOTALERTA"))
+    '                jw.WritePropertyName("VCHCODQUEJA")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHCODQUEJA"))
+
+    '                jw.WritePropertyName("VCHINCESTADO")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCESTADO"))
+    '                jw.WritePropertyName("VCHORIDESCRIPCION")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHORIDESCRIPCION"))
+    '                jw.WritePropertyName("VCHPRIDESCRIPCION")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHPRIDESCRIPCION"))
+    '                jw.WritePropertyName("VCHINCROLDERIVADO")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCROLDERIVADO"))
+    '                jw.WritePropertyName("DTMINCFECDERIVADO")
+    '                jw.WriteValue(dt.Rows(i).Item("DTMINCFECDERIVADO"))
+
+    '                jw.WritePropertyName("VCHINCIDLATITUDE")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCIDLATITUDE"))
+    '                jw.WritePropertyName("VCHINCIDLONGITUDE")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCIDLONGITUDE"))
+    '                jw.WritePropertyName("VCHINCLOCVIANOMBRE1")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCLOCVIANOMBRE1"))
+    '                jw.WritePropertyName("VCHINCLOCHABNOMBRE")
+    '                jw.WriteValue(dt.Rows(i).Item("VCHINCLOCHABNOMBRE"))
+
+
+    '                jw.WriteEndObject()
+    '            Next
+    '            jw.WriteEndArray()
+    '            jw.WriteEndObject()
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    Private Function EnviarCorreoAlertaVecino(ByVal pCCOINCIDENCIA_BE As CCOINCIDENCIA_BE) As String
+    '        Dim oAsunto As String = "ALERTA CCO - SISTEMA DE ATENCION DE DENUNCIAS Y EMERGENCIAS"
+    '        Dim oHost As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_HOST")
+    '        Dim oPuerto As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_PUERTO")
+    '        Dim oCorreoOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_SALIENTE")
+    '        Dim oAuthorOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_AUTHOR")
+    '        Dim oPassOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_CLAVE")
+    '        Dim oCorreoIN As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_REMITENTE")
+    '        Dim oEnlace As String = System.Configuration.ConfigurationManager.AppSettings("ALERTA_ENLACE")
+    '        Dim oAlertaAnexo As String = System.Configuration.ConfigurationManager.AppSettings("ALERTA_ANEXO")
+    '        Dim msg As String = "No esta habilitado el Socket"
+    '        Dim rpta As Boolean = False
+    '        Dim oCadena As String
+    '        oCadena = oEnlace & "pLat=" & pCCOINCIDENCIA_BE.PropINCIDLATITUDE & "&" & _
+    '                            "pLon=" & pCCOINCIDENCIA_BE.PropINCIDLONGITUDE & "&" & _
+    '                            "pMot=" & pCCOINCIDENCIA_BE.PropTINCODIGO
+
+    '        Try
+    '            Dim oMensaje As StringBuilder = New StringBuilder()
+    '            oMensaje.Append("<table width = '100%' align='center' ")
+    '            oMensaje.Append("<table width = '50%' >")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <h1><BR/> Municipalidad de Santiago de Surco.</h1></td>")
+    '            oMensaje.Append("</tr>")
+
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Telefono " + pCCOINCIDENCIA_BE.PropINCNUMEROORIGEN + ",</td>")
+    '            oMensaje.Append("</tr>")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Usuario(a) " + pCCOINCIDENCIA_BE.PropINCNOMBRE + ",</td>")
+    '            oMensaje.Append("</tr>")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Detalle " + pCCOINCIDENCIA_BE.PropINCRELATO + ",</td>")
+    '            oMensaje.Append("</tr>")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Incidencia Nº  " + pCCOINCIDENCIA_BE.PropINCCODIGO.ToString + ",</td>")
+    '            oMensaje.Append("</tr>")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Ubicación <a href='" & oCadena & " 'style=""color:#ffffff;display:inline-block;font-family:'Helvetica',Arial,sans-serif;width:auto;white-space:nowrap;min-height:32px;margin:5px 5px 0 0;padding:0 22px;text-decoration:none;text-align:center;font-weight:bold;font-style:normal;font-size:15px;line-height:32px;border:0;border-radius:4px;vertical-align:top;background-color:#336699"" target=""_blank""><span style=""display:inline;font-family:'Helvetica',Arial,sans-serif;text-decoration:none;font-weight:bold;font-style:normal;font-size:15px;line-height:32px;border:none;background-color:#336699;color:#ffffff"">http:/www.munisurco.gob.pe/CCOSurcoAlerta.aspx?id=4115560</a> <BR/> </td>")
+    '            oMensaje.Append("</tr>")
+
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/><BR/> Municipalidad de Santiago de Surco.</td>")
+    '            oMensaje.Append("</tr>")
+    '            oMensaje.Append("</table>")
+    '            oMensaje.Append("</table>")
+
+    '            Dim oCorreo As Correo = New Correo()
+    '            If (oCorreo.PuertoAbierto(oHost, Integer.Parse(oPuerto))) Then
+    '                rpta = oCorreo.enviarcorreo(oCorreoIN, oAsunto.ToString(), oMensaje.ToString(), msg, " ", oCorreoOUT, oAuthorOUT, oPassOUT, oHost, oPuerto)
+    '                msg = "Correo enviado satisfactoriamente!"
+    '            End If
+    '        Catch ex As Exception
+    '            msg = ex.Message
+    '        End Try
+    '        Return msg
+    '    End Function
+    '    Private Function EnviarCorreoAlerta(ByVal pCCOINCIDENCIA_BE As CCOINCIDENCIA_BE) As String
+
+    '        Dim oAsunto As String = "ALERTA CCO - SISTEMA DE ATENCION DE DENUNCIAS Y EMERGENCIAS " + pCCOINCIDENCIA_BE.PropINCCODIGO.ToString
+    '        Dim oHost As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_HOST")
+    '        Dim oPuerto As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_PUERTO")
+    '        Dim oCorreoOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_SALIENTE")
+    '        Dim oAuthorOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_AUTHOR")
+    '        Dim oPassOUT As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_CLAVE")
+    '        Dim oCorreoIN As String = System.Configuration.ConfigurationManager.AppSettings("CORREO_REMITENTE")
+    '        Dim oEnlace As String = System.Configuration.ConfigurationManager.AppSettings("ALERTA_ENLACE")
+    '        Dim oAlertaAnexo As String = System.Configuration.ConfigurationManager.AppSettings("ALERTA_ANEXO")
+    '        Dim msg As String = "No esta habilitado el Socket"
+    '        Dim oCadena As String
+    '        oCadena = oEnlace & "pLat=" & pCCOINCIDENCIA_BE.PropINCIDLATITUDE & "&" & _
+    '                            "pLon=" & pCCOINCIDENCIA_BE.PropINCIDLONGITUDE & "&" & _
+    '                            "pMot=" & pCCOINCIDENCIA_BE.PropTINCODIGO
+    '        Try
+
+    '            Dim oMensaje As StringBuilder = New StringBuilder()
+    '            oMensaje.Append("<table width = '100%' align='center' ")
+    '            oMensaje.Append("<table width = '50%' >")
+
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Telefono " + pCCOINCIDENCIA_BE.PropINCNUMEROORIGEN + ",</td>")
+    '            oMensaje.Append("</tr>")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Usuario(a) " + pCCOINCIDENCIA_BE.PropINCNOMBRE + ",</td>")
+    '            oMensaje.Append("</tr>")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Detalle " + pCCOINCIDENCIA_BE.PropINCRELATO + ",</td>")
+    '            oMensaje.Append("</tr>")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Incidencia Nº  " + pCCOINCIDENCIA_BE.PropINCCODIGO.ToString + ",</td>")
+    '            oMensaje.Append("</tr>")
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/>Ubicación <a href='" & oCadena & "' style=""color:#ffffff;display:inline-block;font-family:'Helvetica',Arial,sans-serif;width:auto;white-space:nowrap;min-height:32px;margin:5px 5px 0 0;padding:0 22px;text-decoration:none;text-align:center;font-weight:bold;font-style:normal;font-size:15px;line-height:32px;border:0;border-radius:4px;vertical-align:top;background-color:#336699"" target=""_blank""><span style=""display:inline;font-family:'Helvetica',Arial,sans-serif;text-decoration:none;font-weight:bold;font-style:normal;font-size:15px;line-height:32px;border:none;background-color:#336699;color:#ffffff"">http:/www.munisurco.gob.pe/CCOSurcoAlerta.aspx?id=4115560</a> <BR/> </td>")
+    '            oMensaje.Append("</tr>")
+
+
+    '            oMensaje.Append("<tr>")
+    '            oMensaje.Append("<td align='left'  colspan = '2' style='font-size: 12pt; font-family: Arial;' > <BR/><BR/> Municipalidad de Santiago de Surco.</td>")
+    '            oMensaje.Append("</tr>")
+    '            oMensaje.Append("</table>")
+    '            oMensaje.Append("</table>")
+    '            msg = ""
+    '            Dim oCorreo As Correo = New Correo()
+    '            If (oCorreo.PuertoAbierto(oHost, Integer.Parse(oPuerto))) Then
+    '                Dim rpta As Boolean = oCorreo.enviarcorreo(oCorreoIN, oAsunto.ToString(), oMensaje.ToString(), msg, " ", oCorreoOUT, oAuthorOUT, oPassOUT, oHost, oPuerto)
+    '                msg = "Correo enviado satisfactoriamente!"
+    '            End If
+    '        Catch ex As Exception
+    '            msg = ex.Message
+    '        End Try
+    '        Return msg
+    '    End Function
+    '    <WebMethod()> _
+    '    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub enviaSMS(ByVal pNUMERO As String, _
+    '        ByVal pMENSAJE As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Try
+    '            Dim address As EndpointAddress = New EndpointAddress("http://192.0.0.57:7777/servicesMSS/SMSregistroService")
+    '            Dim binding As New BasicHttpBinding()
+    '            ServicePointManager.Expect100Continue = False
+    '            'Dim cliente As SMSServicioWCF.SMSenvioClient = New SMSServicioWCF.SMSenvioClient(binding, address)
+    '            Dim cliente As SMSv2.SMSregistroClient = New SMSv2.SMSregistroClient(binding, address)
+    '            Dim cadena As String = cliente.registraSMS("12", pNUMERO, pMENSAJE)
+    '            strMensaje = "SMS fue enviado al CCO Surco"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = "Problemas de conexion al enviar Alerta"
+    '            strEstado = "8"
+    '        End Try
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("numero")
+    '                .WriteValue(pNUMERO)
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(strMensaje)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(strEstado)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod()> _
+    '    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub ConsultaReniec(ByVal pNUMERO As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Dim datos As ReniecServicioWCF.datosDNI = New ReniecServicioWCF.datosDNI
+    '        Try
+    '            Dim address As EndpointAddress = New EndpointAddress("http://190.116.44.9:8899/services/ReniecDatosService")
+    '            Dim binding As New BasicHttpBinding()
+    '            ServicePointManager.Expect100Continue = False
+    '            Dim cliente As ReniecServicioWCF.ReniecDatosClient = New ReniecServicioWCF.ReniecDatosClient(binding, address)
+    '            datos = cliente.verificarDNIbean(pNUMERO)
+    '            strMensaje = "Consulta realizada"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = "Problemas de conexion"
+    '            strEstado = "8"
+    '        End Try
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("numero")
+    '                .WriteValue(datos.dni)
+    '                .WritePropertyName("apepat")
+    '                .WriteValue(datos.appat.Trim)
+    '                .WritePropertyName("apemat")
+    '                .WriteValue(datos.apmat.Trim)
+    '                .WritePropertyName("nombres")
+    '                .WriteValue(datos.nombres.Trim)
+    '                .WritePropertyName("sexo")
+    '                .WriteValue(datos.sexo.Trim)
+    '                .WritePropertyName("fecnac")
+    '                .WriteValue(datos.fenac.Trim)
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(strMensaje)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(strEstado)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod()> _
+    '    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub ConsultaDNI(ByVal pNUMERO As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Dim lista As New List(Of SYSDNI_BE)
+    '        Dim objPro As SYSDNI_BL = New SYSDNI_BL
+    '        Try
+    '            lista = objPro.dniBusqueda(pNUMERO)
+    '            strMensaje = "Consulta realizada"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = "Problemas de conexion"
+    '            strEstado = "8"
+    '        End Try
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("numero")
+    '                .WriteValue(lista.Item(0).p_VCHDNI)
+    '                .WritePropertyName("apepat")
+    '                .WriteValue(lista.Item(0).p_VCHAPEPAT)
+    '                .WritePropertyName("apemat")
+    '                .WriteValue(lista.Item(0).p_VCHAPEMAT)
+    '                .WritePropertyName("nombres")
+    '                .WriteValue(lista.Item(0).p_VCHNOMBRES)
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(strMensaje)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(strEstado)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod()> _
+    '    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub EnviaImagen(ByVal pimg As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Try
+    '            SaveByteArrayAsImage("\\192.0.0.3\archivos\", pimg)
+    '            strMensaje = "Consulta realizada"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = "Problemas de conexion"
+    '            strEstado = "8"
+    '        End Try
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(strMensaje)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(strEstado)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod()> _
+    '    Public Function EnviaImagen2(ByVal pimg As String) As String
+    '        Dim mensaje As String = ""
+
+    '        Try
+    '            SaveByteArrayAsImage("\\192.0.0.3\archivos\", pimg)
+    '            mensaje = "Imagen subida"
+    '        Catch ex As Exception
+    '            mensaje = "Error al subir la imagen"
+    '        End Try
+    '        Return mensaje
+    '    End Function
+    '    Private Sub SaveByteArrayAsImage(ByVal fullOutputPath As String, ByVal base64String As String)
+    '        Try
+    '            'Dim bytes As Byte() = Encoding.Default.GetBytes(base64String)
+    '            Dim bytes As Byte() = Convert.FromBase64String(base64String)
+
+    '            Dim imageConverter As ImageConverter = New System.Drawing.ImageConverter()
+    '            Dim image As System.Drawing.Image = TryCast(imageConverter.ConvertFrom(bytes), System.Drawing.Image)
+    '            image.Save(fullOutputPath & "prueba.jpg", System.Drawing.Imaging.ImageFormat.Jpeg)
+
+    '            'Dim image__1 As Image
+    '            'Using ms As New MemoryStream(bytes)
+    '            '    image__1 = image.FromStream(ms)
+    '            'End Using
+
+    '            'image__1.Save(fullOutputPath & "prueba.jpg", System.Drawing.Imaging.ImageFormat.Jpeg)
+
+    '            'Using ms As New MemoryStream(bytes)
+    '            '    ms.Write(bytes, 0, bytes.Length)
+
+    '            '    Using jpg As Bitmap = New Bitmap(ms)
+    '            '        jpg.Save(fullOutputPath & "prueba.jpg", Imaging.ImageFormat.Jpeg)
+    '            '    End Using
+    '            'End Using
+
+
+    '        Catch ex As Exception
+    '            Throw ex
+    '        End Try
+    '    End Sub
+    '    <WebMethod()> _
+    '    Public Function listaPersonal() As List(Of Persona)
+    '        Dim dtP As New DataTable()
+    '        Dim objProBE As CCOPERSONAL_BE = New CCOPERSONAL_BE
+    '        Dim objProBL As CCOPERSONAL_BL = New CCOPERSONAL_BL
+    '        objProBE.PropPERNOMBRE = ""
+    '        dtP = objProBL.ListarNombres(objProBE)
+
+    '        Dim oPersona As New List(Of Persona)()
+    '        For Each row As DataRow In dtP.Rows
+    '            Dim oP As New Persona()
+    '            oP.codPersona = row("INTPERCODIGO").ToString()
+    '            oP.nomPersona = row("VCHNOMBRES").ToString()
+    '            oP.crgPersona = row("VCHCRGDESCRIPCION").ToString()
+    '            oPersona.Add(oP)
+    '        Next
+    '        Return oPersona
+    '    End Function
+    '    Private Function EnviarConfirmacionSMS(ByVal num As String) As Integer
+    '        Dim respuesta As Integer = 0
+    '        Try
+
+    '            Dim url As String = String.Empty
+    '            url = "http://serviciosmss.munisurco.gob.pe/sade/confirmaRegistro.aspx?pId=" & num
+
+    '            Dim ShortUrl As String = GetHTMLFromURL("http://tinyurl.com/api-create.php?url=" & url)
+
+    '            Dim pMensaje As String = "Activa tu App ALERTA SURCO en " & ShortUrl
+    '            enviaSMS(num, pMensaje)
+    '        Catch ex As Exception
+    '            respuesta = 1
+    '        End Try
+    '        Return respuesta
+    '    End Function
+    '    Public Shared Function GetHTMLFromURL(ByVal URL As String) As String
+    '        Dim ASCII As New System.Text.ASCIIEncoding
+    '        Dim netWeb As New System.Net.WebClient
+    '        Dim lsWeb As String
+    '        Dim laWeb As Byte()
+
+    '        Try
+    '            laWeb = netWeb.DownloadData(URL)
+    '            lsWeb = ASCII.GetString(laWeb)
+    '        Catch ex As Exception
+    '            Throw New Exception(ex.Message.ToString + ex.ToString)
+    '        End Try
+
+    '        Return lsWeb
+
+    '    End Function
+    '    <WebMethod()> _
+    '<ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub listarBandejaAlertaV3(ByVal pstrNumTel As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+    '        Dim json As String = ""
+    '        Dim dt As New DataTable
+    '        Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '        Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '        Try
+    '            oCCOINCIDENCIA_BE.PropINCNUMEROORIGEN = pstrNumTel
+    '            '-- Registra Derivacion Incidencia en BD
+    '            dt = oCCOINCIDENCIA_BL.ListarBandejaAlerta(oCCOINCIDENCIA_BE)
+
+    '            json = JsonConvert.SerializeObject(dt, Formatting.Indented)
+    '            strMensaje = "Listado completo!!!"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = ex.Message
+    '            strEstado = "8"
+    '        End Try
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & json & ");")
+
+    '    End Sub
+    '    <WebMethod()> _
+    '       <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    '    Public Sub registrar(ByVal pNUMERO As String, _
+    '                        ByVal pNOMBRE As String, _
+    '                        ByVal pDCMNTO As String, _
+    '                        ByVal pEMAIL As String, _
+    '                        ByVal pACTIVO As Integer, _
+    '                        ByVal pSDK As String, _
+    '                        ByVal pMODEL As String, _
+    '                        ByVal pDEVICE As String, _
+    '                        ByVal pHOST As String, _
+    '                        ByVal pID As String, _
+    '                        ByVal pDISPLAY As String, _
+    '                        ByVal pMANUFAC As String, _
+    '                        ByVal pUSER As String)
+
+    '        Dim obj As GPSREGISTRO_BE
+    '        Dim lista As New List(Of GPSREGISTRO_BE)
+    '        obj = New GPSREGISTRO_BE
+    '        obj.PropREGCODIGO = 0
+    '        obj.PropREGNUMERO = pNUMERO
+    '        obj.PropREGNOMBRE = pNOMBRE
+    '        obj.PropREGDCMNTO = pDCMNTO
+    '        obj.PropREGEMAIL = pEMAIL
+    '        obj.PropREGACTIVO = pACTIVO
+    '        obj.PropINCDEVSDK = pSDK
+    '        obj.PropINCDEVMODEL = pMODEL
+    '        obj.PropINCDEVDEVICE = pDEVICE
+    '        obj.PropINCDEVHOST = pHOST
+    '        obj.PropINCDEVID = pID
+    '        obj.PropINCDEVDISPLAY = pDISPLAY
+    '        obj.PropINCDEVMANUFAC = pMANUFAC
+    '        obj.PropINCDEVUSER = pUSER
+
+    '        obj.PropAUDPRGCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '        obj.PropAUDEQPCREACION = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '        Dim objPro As GPSREGISTRO_BL
+    '        objPro = New GPSREGISTRO_BL
+    '        lista = objPro.Registrar(obj)
+
+    '        If (pACTIVO = 1) Then
+    '            EnviarCorreoActualiza(obj.PropREGNOMBRE, obj.PropREGNUMERO, obj.PropREGEMAIL)
+    '        Else
+    '            EnviarCorreoActiva(obj.PropREGNOMBRE, obj.PropREGNUMERO, obj.PropREGEMAIL)
+    '        End If
+
+    '        Dim sb As New StringBuilder
+    '        Dim sw As New IO.StringWriter(sb)
+    '        Dim strOut As String = String.Empty
+    '        Using jw As New JsonTextWriter(sw)
+    '            With jw
+    '                .WriteStartObject()
+    '                .WritePropertyName("numero")
+    '                .WriteValue(obj.PropREGNUMERO)
+    '                .WritePropertyName("mensaje")
+    '                .WriteValue(lista.Item(0).PropPRODESCRI)
+    '                .WritePropertyName("estado")
+    '                .WriteValue(lista.Item(0).PropREGACTIVO)
+    '                .WriteEndObject()
+    '            End With
+    '            strOut = sw.ToString
+    '        End Using
+    '        jsoncallback = HttpContext.Current.Request.QueryString("jsoncallback")
+    '        HttpContext.Current.Response.Write(jsoncallback & "(" & strOut & ");")
+    '    End Sub
+    '    <WebMethod(EnableSession:=True)> _
+    '    Public Sub derivaAlertaSIAVE2( _
+    '                          ByVal pIntCodINC As Integer, _
+    '                          ByVal pstrComINC As String, _
+    '                          ByVal pstrCodQUEJA As String, _
+    '                          ByVal pstrUsuINC As String)
+    '        Dim strMensaje As String
+    '        Dim strEstado As String
+
+    '        Dim oCCOINCIDENCIA_BE As New CCOINCIDENCIA_BE
+    '        Dim oCCOINCIDENCIA_BL As New CCOINCIDENCIA_BL
+    '        Try
+    '            oCCOINCIDENCIA_BE.PropINCCODIGO = pIntCodINC
+    '            oCCOINCIDENCIA_BE.PropINCCOMENTARIO = pstrComINC
+    '            oCCOINCIDENCIA_BE.PropVCHCODQUEJA = pstrCodQUEJA
+    '            oCCOINCIDENCIA_BE.PropAUDUSUMODIF = pstrUsuINC
+    '            oCCOINCIDENCIA_BE.PropAUDEQPMODIF = HttpContext.Current.Request.UserHostAddress.ToString().Trim()
+    '            '-- Registra Derivacion Incidencia en BD
+    '            oCCOINCIDENCIA_BL.DerivarSIAVE2(oCCOINCIDENCIA_BE)
+    '            '-- Envia correo con Incidencia
+    '            strMensaje = "Derivacion completada!!!"
+    '            strEstado = "0"
+    '        Catch ex As Exception
+    '            strMensaje = ex.Message
+    '            strEstado = "8"
+    '        End Try
+    '    End Sub
+#End Region
+
+
+End Class

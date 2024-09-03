@@ -1,0 +1,109 @@
+﻿.Grid
+{
+ border:0px none #BDBDBB;
+ font-size:8pt;
+ font-family:Tahoma, Sans-Serif;
+ margin-right: 0px;
+    }  
+.Grid td
+{
+ border:0px none #BDBDBB;
+    } 
+.GridV
+{
+ border-bottom :0px none #BDBDBB;
+ border-top  :0px none #BDBDBB;
+ border-left: 1px solid #BDBDBB;
+ border-right: 1px solid #BDBDBB;
+ font-size:10pt;
+ font-family:Tahoma, Sans-Serif;
+ margin-right: 0px;
+    }  
+.GridV td
+{
+ border-bottom :0px none #BDBDBB;
+ border-top  :0px none #BDBDBB;
+ border-left: 1px solid #BDBDBB;
+ border-right: 1px solid #BDBDBB;
+    }     
+.GridHeader
+{
+     height:30px;
+     color:#ffffff;
+     background-color:#474546;
+     border:0;
+}
+.GridHeader th
+{
+ border:0px none #1E436E;
+ text-align:left;
+ padding-left:10px;
+ font-weight:bold;
+ vertical-align:middle;
+}
+.GridRow
+{
+	color: #555555;
+	height:30px;
+    text-transform :capitalize;	
+}
+.GridRow td
+{
+    padding-left: 10px;
+    vertical-align: middle;
+    background-color: #C0C0C0;
+}
+
+.GridAlternateRow
+{
+	color: #555555;
+	height: 30px;
+	text-transform: capitalize;
+	background-color: #FFFFFF;
+}    
+.GridAlternateRow td
+{
+    padding-left: 10px;
+    vertical-align: middle;
+    background-color: #FFFFFF;
+}
+.GridFooter
+{
+	color: #212121;
+	height:50px;
+	background-color: #EBEBEB;
+	font-size:16px;
+} 
+.GridFooter td
+{
+	 border-width: 0; 
+	 padding: 0 6px; 
+	 font-weight: bold; 
+	 color: #A40034; 
+	 vertical-align:middle;
+}
+.GridFooter td a
+{
+    color: #666; 
+    text-decoration: none;
+}
+.GridFooter td a:hover
+{
+    color: #000000; 
+    text-decoration: none;
+}
+.GridSeletedRow
+{
+color:#F0F0F0;
+height:30px;
+text-transform :capitalize;		
+}
+.GridSeletedRow td
+{
+    padding-left: 10px;
+    vertical-align: middle;
+    background-color: #FFA500;
+}
+
+ 
+

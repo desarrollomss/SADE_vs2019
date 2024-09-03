@@ -1,0 +1,18 @@
+D:\Codigo Fuente\SADE\BE\bin\Release\BE_SADE.dll
+D:\Codigo Fuente\SADE\BE\bin\Release\BE_SADE.pdb
+D:\Codigo Fuente\SADE\BE\bin\Release\BE_SADE.xml
+D:\Codigo Fuente\SADE\BE\obj\Release\BE.vbprojResolveAssemblyReference.cache
+D:\Codigo Fuente\SADE\BE\obj\Release\SISSADE.Resources.resources
+D:\Codigo Fuente\SADE\BE\obj\Release\BE.vbproj.GenerateResource.Cache
+D:\Codigo Fuente\SADE\BE\obj\Release\BE_SADE.dll
+D:\Codigo Fuente\SADE\BE\obj\Release\BE_SADE.xml
+D:\Codigo Fuente\SADE\BE\obj\Release\BE_SADE.pdb
+D:\CodeSource\SADE\BE\bin\Release\BE_SADE.dll
+D:\CodeSource\SADE\BE\bin\Release\BE_SADE.pdb
+D:\CodeSource\SADE\BE\bin\Release\BE_SADE.xml
+D:\CodeSource\SADE\BE\obj\Release\BE.vbprojResolveAssemblyReference.cache
+D:\CodeSource\SADE\BE\obj\Release\SISSADE.Resources.resources
+D:\CodeSource\SADE\BE\obj\Release\BE.vbproj.GenerateResource.Cache
+D:\CodeSource\SADE\BE\obj\Release\BE_SADE.dll
+D:\CodeSource\SADE\BE\obj\Release\BE_SADE.xml
+D:\CodeSource\SADE\BE\obj\Release\BE_SADE.pdb
